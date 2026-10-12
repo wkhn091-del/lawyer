@@ -8,11 +8,11 @@ import { reportBlocked, reportError } from "@/lib/observability/report";
 import { isSameOrigin } from "@/lib/security/origin";
 import { hashKey, rateLimit } from "@/lib/security/rate-limit";
 import { verifyTurnstile } from "@/lib/security/turnstile";
-import { deliverLead, deliverPartialLead } from "./deliver";
-import { leadSchema, stepOneSchema, toFieldErrors, type FieldErrors } from "./schema";
+import { deliverLead } from "./deliver";
+import { leadSchema, toFieldErrors, type FieldErrors } from "./schema";
 
 export type FormState = {
-  status: "idle" | "step-two" | "error";
+  status: "idle" | "error";
   errors: FieldErrors;
   message: string | null;
 };
@@ -20,10 +20,10 @@ export type FormState = {
 const MIN_FILL_MS = 2500;
 const TEN_MINUTES = 10 * 60_000;
 const ONE_HOUR = 60 * 60_000;
-const GENERIC_ERROR = "משהו השתבש אצלנו בשליחה. אפשר לנסות שוב בעוד רגע.";
+const GENERIC_ERROR = "לא הצלחנו לשלוח כרגע. נסו שוב או התקשרו.";
 const RATE_ERROR = "נשלחו הרבה בקשות מהחיבור הזה. אפשר לנסות שוב בעוד כמה דקות.";
 const BOT_ERROR = "לא הצלחנו לוודא שהשליחה הגיעה מדפדפן. אפשר לרענן את העמוד ולנסות שוב.";
-const LOCKED_ERROR = "תיאום הדמו דרך האתר עוד לא פתוח. הפרטים לא נשלחו ולא נשמרו.";
+const LOCKED_ERROR = "שליחת פניות דרך האתר עוד לא פתוחה. אפשר להתקשר אלינו ישירות.";
 const LOCKED: FormState = { status: "error", errors: {}, message: LOCKED_ERROR };
 
 const metaSchema = z.object({
@@ -43,9 +43,9 @@ const metaSchema = z.object({
     .catch(undefined),
 });
 
-const FIELDS = ["firstName", "lastName", "email", "phone", "company", "companySize", "industry"] as const;
+const FIELDS = ["fullName", "email", "phone", "practiceArea", "message"] as const;
 
-function read(formData: FormData, keys: readonly string[]): Record<string, string> {
+function readFields(formData: FormData, keys: readonly string[]): Record<string, string> {
   const values: Record<string, string> = {};
   for (const key of keys) {
     const value = formData.get(key);
@@ -56,7 +56,6 @@ function read(formData: FormData, keys: readonly string[]): Record<string, strin
 
 type RequestInfo = { ip: string; sameOrigin: boolean };
 
-/** Vercel overwrites x-forwarded-for and x-real-ip with the client address, so they cannot be spoofed there. */
 async function requestInfo(): Promise<RequestInfo> {
   const headerList = await headers();
   const ip = headerList.get("x-real-ip") || headerList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
@@ -69,34 +68,6 @@ function looksAutomated(meta: z.infer<typeof metaSchema>): boolean {
   return meta.startedAt !== undefined && Date.now() - meta.startedAt < MIN_FILL_MS;
 }
 
-export async function submitStepOne(_previous: FormState, formData: FormData): Promise<FormState> {
-  if (leadsLocked) return LOCKED;
-  const request = await requestInfo();
-  if (!request.sameOrigin) {
-    reportBlocked("origin", "step1");
-    return { status: "error", errors: {}, message: GENERIC_ERROR };
-  }
-
-  const meta = metaSchema.safeParse(read(formData, ["website", "startedAt", "source", "page"]));
-  if (!meta.success || looksAutomated(meta.data)) return { status: "step-two", errors: {}, message: null };
-
-  if (!(await rateLimit(`step1:ip:${request.ip}`, 8, TEN_MINUTES))) {
-    reportBlocked("rate_limit", "step1");
-    return { status: "error", errors: {}, message: RATE_ERROR };
-  }
-
-  const parsed = stepOneSchema.safeParse(read(formData, FIELDS));
-  if (!parsed.success) return { status: "error", errors: toFieldErrors(parsed.error), message: null };
-
-  if (!(await verifyTurnstile(formData, "demo_step1", request.ip))) {
-    reportBlocked("turnstile", "step1");
-    return { status: "error", errors: {}, message: BOT_ERROR };
-  }
-
-  await deliverPartialLead(parsed.data);
-  return { status: "step-two", errors: {}, message: null };
-}
-
 export async function submitLead(_previous: FormState, formData: FormData): Promise<FormState> {
   if (leadsLocked) return LOCKED;
   const request = await requestInfo();
@@ -105,7 +76,7 @@ export async function submitLead(_previous: FormState, formData: FormData): Prom
     return { status: "error", errors: {}, message: GENERIC_ERROR };
   }
 
-  const meta = metaSchema.safeParse(read(formData, ["website", "startedAt", "source", "page"]));
+  const meta = metaSchema.safeParse(readFields(formData, ["website", "startedAt", "source", "page"]));
   if (!meta.success) return { status: "error", errors: {}, message: GENERIC_ERROR };
   if (looksAutomated(meta.data)) redirect("/thank-you");
 
@@ -114,17 +85,17 @@ export async function submitLead(_previous: FormState, formData: FormData): Prom
     return { status: "error", errors: {}, message: RATE_ERROR };
   }
 
-  const parsed = leadSchema.safeParse(read(formData, FIELDS));
-  if (!parsed.success) return { status: "step-two", errors: toFieldErrors(parsed.error), message: null };
+  const parsed = leadSchema.safeParse(readFields(formData, FIELDS));
+  if (!parsed.success) return { status: "error", errors: toFieldErrors(parsed.error), message: null };
 
-  if (!(await verifyTurnstile(formData, "demo_step2", request.ip))) {
+  if (!(await verifyTurnstile(formData, "lead", request.ip))) {
     reportBlocked("turnstile", "lead");
-    return { status: "step-two", errors: {}, message: BOT_ERROR };
+    return { status: "error", errors: {}, message: BOT_ERROR };
   }
 
   if (!(await rateLimit(`lead:email:${await hashKey(parsed.data.email)}`, 3, ONE_HOUR))) {
     reportBlocked("rate_limit", "lead_email");
-    return { status: "step-two", errors: {}, message: RATE_ERROR };
+    return { status: "error", errors: {}, message: RATE_ERROR };
   }
 
   let delivered = false;
@@ -133,16 +104,23 @@ export async function submitLead(_previous: FormState, formData: FormData): Prom
   } catch (error) {
     reportError("lead", error);
   }
-  if (!delivered) return { status: "step-two", errors: {}, message: GENERIC_ERROR };
+  if (!delivered) return { status: "error", errors: {}, message: GENERIC_ERROR };
 
   const cookieStore = await cookies();
-  const demoCookie = { firstName: parsed.data.firstName, email: parsed.data.email, industry: parsed.data.industry };
-  cookieStore.set("cb_demo", JSON.stringify(demoCookie), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/thank-you",
-    maxAge: 60 * 30,
-  });
+  cookieStore.set(
+    "cb_demo",
+    JSON.stringify({
+      firstName: parsed.data.fullName.split(/\s+/)[0] ?? parsed.data.fullName,
+      email: parsed.data.email,
+      practiceArea: parsed.data.practiceArea,
+    }),
+    {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/thank-you",
+      maxAge: 60 * 30,
+    },
+  );
   redirect("/thank-you");
 }

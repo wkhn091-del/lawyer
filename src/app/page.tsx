@@ -1,22 +1,20 @@
-import { Audience } from "@/components/home/Audience";
-import { BookSection } from "@/components/home/BookSection";
-import { CallDemo } from "@/components/home/CallDemo";
-import { Comparison } from "@/components/home/Comparison";
-import { Faq } from "@/components/home/Faq";
+import { ArticlesTeaser } from "@/components/home/ArticlesTeaser";
+import { AtmosphereBand } from "@/components/home/AtmosphereBand";
 import { Hero } from "@/components/home/Hero";
-import { HoursCalculator } from "@/components/home/HoursCalculator";
-import { NightRoadmap } from "@/components/home/NightRoadmap";
-import { NightVoices } from "@/components/home/NightVoices";
+import { HomeFaq } from "@/components/home/HomeFaq";
+import { PracticeDoors } from "@/components/home/PracticeDoors";
+import { Process } from "@/components/home/Process";
 import { StickyCta } from "@/components/home/StickyCta";
+import { TeamTeaser } from "@/components/home/TeamTeaser";
+import { TrustBand } from "@/components/home/TrustBand";
+import { WhyUs } from "@/components/home/WhyUs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { faq } from "@/content/home";
 import { site } from "@/content/site";
 import { publicEnv } from "@/lib/env/public";
-import { leadsLocked } from "@/lib/env/server";
 
 export default function HomePage() {
   const url = publicEnv.NEXT_PUBLIC_SITE_URL;
-  const hasCalendly = Boolean(publicEnv.NEXT_PUBLIC_CALENDLY_URL);
 
   return (
     <>
@@ -25,20 +23,17 @@ export default function HomePage() {
           "@context": "https://schema.org",
           "@graph": [
             {
-              "@type": "Organization",
+              "@type": "LegalService",
               "@id": `${url}/#org`,
               name: site.company,
               url,
-              brand: { "@type": "Brand", name: site.brand },
-            },
-            {
-              "@type": "SoftwareApplication",
-              name: site.brand,
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "Web",
-              inLanguage: "he",
+              image: `${url}/brand/cohen-mark.svg`,
+              telephone: site.contact.phoneTel,
+              email: site.contact.email,
+              areaServed: "IL",
+              availableLanguage: ["he", "en"],
               description: site.description,
-              publisher: { "@id": `${url}/#org` },
+              openingHours: "Mo-Th 09:00-18:00, Fr 09:00-13:00",
             },
             {
               "@type": "FAQPage",
@@ -51,15 +46,22 @@ export default function HomePage() {
           ],
         }}
       />
-      <Hero hasCalendly={hasCalendly} />
-      <NightVoices />
-      <HoursCalculator />
-      <CallDemo />
-      <NightRoadmap />
-      <Audience />
-      <Comparison />
-      <Faq items={faq} />
-      <BookSection hasCalendly={hasCalendly} locked={leadsLocked} />
+      <Hero />
+      <TrustBand />
+      <PracticeDoors />
+      <WhyUs />
+      <AtmosphereBand
+        src="/media/corridor-dusk.jpg"
+        alt="חלון משרד בשעת בין-ערביים מעל העיר — הדמיה אווירה"
+      />
+      <TeamTeaser />
+      <Process />
+      <AtmosphereBand
+        src="/media/surface-cream-brass.jpg"
+        alt="משטח קרם עם קו פליז עדין — הדמיה טקסטורה"
+      />
+      <ArticlesTeaser />
+      <HomeFaq />
       <StickyCta />
     </>
   );

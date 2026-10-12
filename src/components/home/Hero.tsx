@@ -1,114 +1,90 @@
 import Image from "next/image";
-import { HeroEntrance } from "@/components/home/HeroEntrance";
-import { Magnetic } from "@/components/motion/Magnetic";
-import { CtaLink } from "@/components/ui/CtaLink";
-import { commitments, hero } from "@/content/home";
+import { HeroBg } from "@/components/home/HeroBg";
+import { HeroFrame, HeroGhost, HeroGoldLine, HeroLead } from "@/components/home/HeroMotion";
+import { home } from "@/content/home";
+import { site } from "@/content/site";
 
-export function Hero({ hasCalendly }: { hasCalendly: boolean }) {
-  const notes = commitments.ctaNote(hasCalendly);
+/**
+ * Production Hero — LCP-safe: H1, CTA, micro and images render in HTML immediately.
+ * Secondary choreography lives in HeroMotion / Parallax (client).
+ */
+export function Hero() {
+  const { hero } = home;
 
   return (
-    <section className="relative -mt-16 isolate overflow-hidden" aria-labelledby="hero-title">
-      <div className="absolute inset-0 -z-20 overflow-hidden">
-        <Image
-          src="/hero/night-garage.webp"
-          alt=""
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          className="object-cover object-[55%_70%] opacity-35 md:object-[70%_65%] md:opacity-45"
-        />
-        <div className="absolute inset-0 bg-night-950/82 md:bg-night-950/75" />
-        <div className="hero-ambient absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,rgb(78_205_196/0.2),transparent_55%)] md:bg-[radial-gradient(ellipse_at_85%_70%,rgb(78_205_196/0.22),transparent_52%)]" />
-      </div>
-
-      {/*
-        Desktop: LTR split — copy ~42% / character ~58%, Hebrew stays RTL.
-        Mobile: justify-end — copy + CTA then character pinned to the floor.
-      */}
+    <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden bg-navy text-cream">
+      <HeroBg src="/media/hero-office-dusk.jpg" alt={hero.backgroundAlt} />
+      <div className="absolute inset-0 bg-navy/80" aria-hidden="true" />
       <div
-        dir="ltr"
-        className="relative mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end md:grid md:grid-cols-12 md:items-center md:justify-normal md:gap-6 md:px-8 md:pb-16 md:pt-28 lg:gap-8"
-      >
-        <div
-          dir="rtl"
-          className="hero-copy relative z-20 flex shrink-0 flex-col px-5 pb-1 pt-6 md:col-span-5 md:col-start-8 md:justify-center md:px-0 md:py-0"
-        >
-          <span className="hero-ghost font-latin" aria-hidden="true">
-            {hero.ghostWord}
-          </span>
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+        style={{
+          backgroundImage:
+            "linear-gradient(105deg, rgb(18 28 53 / 0.94) 0%, rgb(18 28 53 / 0.72) 42%, rgb(18 28 53 / 0.45) 100%)",
+        }}
+      />
 
-          <HeroEntrance delay={0.2} y={8}>
-            <p className="flex items-center gap-2.5 text-micro font-medium tracking-[0.02em] text-mist-400">
-              <bdi dir="ltr" className="font-latin font-semibold tabular-nums text-teal-300">
-                {hero.eyebrowTime}
-              </bdi>
-              <span className="h-px w-6 bg-mist-100/20" aria-hidden="true" />
-              {hero.eyebrow}
-            </p>
-          </HeroEntrance>
+      <div className="relative mx-auto flex min-h-[min(92vh,880px)] max-w-6xl flex-col justify-end px-5 pb-10 pt-16 md:justify-center md:px-8 md:pb-24 md:pt-28">
+        <div className="grid items-end gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:gap-8 lg:gap-12">
+          <div className="relative z-10 max-w-xl">
+            <p className="text-small tracking-[0.08em] text-gold">{site.brand}</p>
 
-          {/* H1: server HTML + CSS rise only (no opacity hide) — LCP safe */}
-          <h1 id="hero-title" className="hero-title mt-3 font-extrabold text-balance md:mt-5">
-            {hero.title}
-          </h1>
+            <HeroGhost word={hero.ghostWord} />
 
-          <HeroEntrance delay={0.28} y={8}>
-            <p className="hero-lead mt-2.5 max-w-[22rem] text-pretty text-mist-300 md:mt-4 md:max-w-md">
-              {hero.subtitle}
-            </p>
-          </HeroEntrance>
+            <h1
+              id="hero-heading"
+              className="relative mt-4 font-display font-bold text-cream"
+              style={{
+                fontSize: "clamp(2.5rem, 1.6rem + 3.2vw, 4.25rem)",
+                lineHeight: 1.15,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              {hero.h1}
+            </h1>
 
-          <HeroEntrance delay={0.36} y={8} className="mt-5 md:mt-7">
-            <Magnetic className="flex w-full md:inline-flex md:w-auto" strength={0.18}>
-              <CtaLink
-                id="hero-cta"
-                href="#book"
-                className="hero-cta min-h-12 w-full px-7 text-small md:min-h-14 md:w-auto md:px-8 md:text-body"
+            <HeroLead>
+              <p
+                className="mt-5 max-w-lg text-cream/85"
+                style={{
+                  fontSize: "clamp(1.05rem, 1rem + 0.35vw, 1.25rem)",
+                  lineHeight: 1.65,
+                }}
               >
-                {hero.cta}
-              </CtaLink>
-            </Magnetic>
+                {hero.lead}
+              </p>
+            </HeroLead>
 
-            <p className="mt-2.5 text-micro text-mist-400 md:mt-3">
-              {notes.map((item, i) => (
-                <span key={item}>
-                  {i > 0 ? (
-                    <span className="mx-1.5 text-mist-100/25" aria-hidden="true">
-                      ·
-                    </span>
-                  ) : null}
-                  {item}
-                </span>
-              ))}
-            </p>
-          </HeroEntrance>
-        </div>
-
-        <div className="hero-character relative z-0 h-[42svh] w-full shrink-0 md:col-span-7 md:col-start-1 md:row-start-1 md:h-[min(78svh,40rem)] md:self-end md:-me-4 lg:-me-6">
-          <div className="hero-character__glow" aria-hidden="true" />
-          <div className="hero-character__stage relative mx-auto h-full w-full max-w-[17rem] md:max-w-none">
-            <Image
-              src="/hero/callbot-robot.png"
-              alt={hero.imageAlt}
-              fill
-              unoptimized
-              priority
-              fetchPriority="high"
-              sizes="(max-width: 768px) 100vw, 58vw"
-              className="hero-character__img object-contain object-bottom"
-            />
+            <div className="mt-8">
+              <HeroGoldLine />
+              <a
+                id="hero-cta"
+                href={hero.primaryHref}
+                className="mt-3 flex min-h-12 w-full items-center justify-center rounded-md bg-gold px-6 text-button font-medium text-navy transition duration-[var(--motion-instant)] hover:-translate-y-px hover:bg-gold-hover hover:shadow-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-gold motion-reduce:hover:translate-y-0 md:inline-flex md:w-auto"
+              >
+                {hero.primaryCta}
+              </a>
+              <p className="mt-3 text-small text-cream/65">{hero.reassurance}</p>
+            </div>
           </div>
+
+          <HeroFrame>
+            <div className="relative z-10 ms-0 aspect-[4/3] w-full overflow-hidden border border-white/15 md:-ms-6 md:aspect-[4/5] md:max-h-[min(520px,70vh)] md:w-[calc(100%+1.5rem)] lg:-ms-10 lg:w-[calc(100%+2.5rem)]">
+              <Image
+                src="/media/meeting-room.jpg"
+                alt={hero.frameAlt}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 42vw"
+                className="object-cover transition-[filter] duration-[var(--motion-fast)] group-hover/frame:brightness-[1.03] motion-reduce:transition-none"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-deep/90 to-transparent p-4 md:p-5">
+                <p className="text-small text-cream/70">{hero.visualNote}</p>
+              </div>
+            </div>
+          </HeroFrame>
         </div>
       </div>
-
-      <p
-        dir="rtl"
-        className="relative z-10 mx-auto hidden w-full max-w-7xl px-5 pb-3 text-center text-[0.6875rem] text-mist-500 md:block md:px-8 md:pb-4 md:text-start"
-      >
-        {hero.disclaimer}
-      </p>
     </section>
   );
 }

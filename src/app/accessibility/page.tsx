@@ -5,49 +5,33 @@ import { site } from "@/content/site";
 export const metadata: Metadata = { title: "הצהרת נגישות" };
 
 export default function AccessibilityPage() {
-  const { coordinatorName, coordinatorEmail, coordinatorPhone, lastReviewed } = site.accessibility;
-  const hasCoordinator = Boolean(coordinatorName && (coordinatorEmail || coordinatorPhone));
-
   return (
-    <LegalPage title="הצהרת נגישות" updated={lastReviewed}>
+    <LegalPage title="הצהרת נגישות" updated={site.accessibility.lastReviewed}>
       <p>
-        אנחנו ב-<bdi dir="ltr">{site.company}</bdi> רוצים שכל אחד יוכל להשתמש באתר, כולל אנשים עם מוגבלות. האתר נבנה
-        בהתאם לתקן הישראלי ת״י 5568, המבוסס על הנחיות WCAG 2.0 ברמה AA.
+        {site.company} פועל להנגשת האתר בהתאם לתקנות הנגישות ולת״י 5568, כדי לאפשר שימוש נוח גם לאנשים עם מוגבלות.
       </p>
-
-      <h2>מה עשינו באתר</h2>
+      <h2>מה נעשה באתר</h2>
       <ul>
-        <li>ניווט מלא במקלדת, עם סימון פוקוס גלוי וקישור ״לדלג לתוכן״ בראש כל עמוד.</li>
-        <li>מבנה כותרות היררכי, תוויות לכל שדה בטופס והודעות שגיאה שמוקראות לקוראי מסך.</li>
-        <li>ניגודיות צבעים שנבדקה לטקסט ולכפתורים על הרקע הכהה.</li>
-        <li>מי שביקש במערכת ההפעלה להפחית תנועה מקבל את האתר בלי אנימציות גלילה ובלי הצמדת מקטעים.</li>
-        <li>לשיחה לדוגמה יש כפתור עצירה, והטקסט שלה מוצג במלואו ונגיש לקוראי מסך.</li>
-        <li>האתר מותאם לתצוגה במחשב, בטאבלט ובטלפון, וניתן להגדלה עד 200% בלי אובדן תוכן.</li>
+        <li>מבנה סמנטי, ניווט מקלדת ודילוג לתוכן</li>
+        <li>ניגודיות גבוהה בטקסטים העיקריים</li>
+        <li>תמיכה ב-prefers-reduced-motion</li>
+        <li>טפסים עם תוויות והודעות שגיאה ברורות</li>
       </ul>
-
-      <h2>אם משהו לא נגיש</h2>
+      <h2>רכז נגישות</h2>
       <p>
-        למרות המאמץ, ייתכן שחלק מהעמודים עדיין לא נגישים במלואם. נשמח לשמוע על כל קושי ונטפל בו.
+        {site.accessibility.coordinatorName}
+        <br />
+        טלפון:{" "}
+        <a href={`tel:${site.contact.phoneTel}`} dir="ltr">
+          <bdi>{site.accessibility.coordinatorPhone}</bdi>
+        </a>
+        <br />
+        מייל:{" "}
+        <a href={`mailto:${site.accessibility.coordinatorEmail}`} dir="ltr">
+          <bdi>{site.accessibility.coordinatorEmail}</bdi>
+        </a>
       </p>
-      {hasCoordinator ? (
-        <p>
-          רכז/ת הנגישות: {coordinatorName}
-          {coordinatorPhone ? (
-            <>
-              {" "}
-              · טלפון: <bdi dir="ltr">{coordinatorPhone}</bdi>
-            </>
-          ) : null}
-          {coordinatorEmail ? (
-            <>
-              {" "}
-              · מייל: <bdi dir="ltr">{coordinatorEmail}</bdi>
-            </>
-          ) : null}
-        </p>
-      ) : (
-        <p>אפשר לפנות אלינו דרך טופס תיאום הדמו בעמוד הראשי ולציין שמדובר בפניית נגישות.</p>
-      )}
+      <p>אם נתקלתם בבעיית נגישות — נשמח שתפנו אלינו ונפעל לתקן.</p>
     </LegalPage>
   );
 }

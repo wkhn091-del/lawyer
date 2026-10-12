@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { wixRedirects } from "./src/lib/seo/wix-redirects";
 
 const securityHeaders = [
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
@@ -37,6 +38,9 @@ const nextConfig: NextConfig = {
       { source: "/thank-you", headers: noStore },
       { source: "/api/health", headers: noStore },
     ];
+  },
+  async redirects() {
+    return wixRedirects;
   },
 };
 

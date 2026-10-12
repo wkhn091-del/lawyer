@@ -1,55 +1,88 @@
-# מפת תנועה - CALLBOT (מודול א'-3)
+# מפת תנועה — כהן ושות׳ (מודול א׳-3)
 
-**אופי:** חד ושקט (מוצר טכנולוגי לבעלי עסקים). כניסות ב-ease-out, יציאות קצרות ב-ease-in. spring רק בלשוניות.
-**ספריות:** CSS למיקרו-אינטראקציות · Motion למעברי טקסט, לשוניות ומספרים · GSAP + ScrollTrigger רק ב-Roadmap (חריגה מאושרת בקבוצה 1, כי זה Tier 1).
+מקורות: כיוון 1 · N27 מהספר · `docs/motion-kit`  
+סטטוס: **הוטמע** — `src/motion` + preset `law` · Counter / Reveal / Parallax / A19 ProcessLine
 
-## טוקנים
-| טוקן | ערך | CSS | JS (`src/lib/motion/tokens.ts`) |
-|---|---|---|---|
-| motion-instant | 100ms | `--motion-instant` | `duration.instant` |
-| motion-fast | 180ms | `--motion-fast` | `duration.fast` |
-| motion-base | 280ms | `--motion-base` | `duration.base` |
-| motion-slow | 520ms | `--motion-slow` | `duration.slow` |
-| ease-out | cubic-bezier(0.16, 1, 0.3, 1) | `--ease-out` | `ease.out` |
-| ease-in | cubic-bezier(0.7, 0, 0.84, 0) | `--ease-in` | `ease.in` |
-| spring | stiffness 400, damping 30 | - | `spring` |
-| stagger | עד 60ms | - | `stagger` |
+## תחקיר (ננעל — שאלון + המלצה + ספר)
+| קבוצה | החלטה |
+|---|---|
+| 1 אופי | שקט ויוקרתי — מדויק ומעט (N27: תנועה ראוותנית מורידה אמון) |
+| 2 רגע חתימה | שלוש «דלתות» תחום + sticky CTA לשיחת ייעוץ; משוב הצלחה בטופס |
+| 3 נכסים | לוגו SVG קיים; אין וידאו; אין Lottie חיצוני |
 
-## עמוד ראשי
+## ספרייה ו-Preset
+- ערכה: `docs/motion-kit/motion-kit` → תועתק ל-`src/motion` בזמן הביצוע
+- תלויות: `gsap`, `@gsap/react`, `lenis`
+- **Preset:** `minimal` כבסיס (ה-README ממליץ כך למשרדי עו״ד) + overrides לפרויקט:
 
-| אלמנט | טריגר | תפקיד | טוקן | reduced-motion |
+```ts
+// preset מותאם "law" (יתווסף ל-config.ts בביצוע)
+{
+  ease: "power2.out",
+  duration: 0.55,
+  distance: 16,      // תואם חוק א׳-3: עד 16px
+  stagger: 0.05,     // עד 60ms בין פריטים
+  lerp: 1,           // בלי Lenis / בלי scroll-jacking
+  start: "top 90%",
+}
+```
+
+חריגה מאושרת מסקריפט א׳ (Framer כברירת מחדל): הלקוח/אבישי סיפקו Motion Kit מבוסס GSAP — משתמשים בו במקום Framer, בעוצמת `law/minimal` בלבד.
+
+## טוקנים (יישור ל-design-tokens)
+| טוקן | ערך | שימוש |
+|---|---|---|
+| motion-instant | 100ms | hover צבע |
+| motion-fast | 180ms | כפתורים |
+| motion-base | 280ms | אקורדיון FAQ, מגירת מובייל |
+| motion-slow | 500ms | Reveal בגלילה |
+| ease-out | cubic-bezier(0.16, 1, 0.3, 1) | כניסות |
+| ease-in | cubic-bezier(0.7, 0, 0.84, 0) | יציאות |
+
+בלי spring.
+
+## מה נכנס מה-Kit / מה לא
+| קומפוננטה | שימוש | הערה |
+|---|---|---|
+| MotionProvider | כן, preset law | lerp 1 |
+| Reveal | כן, מתחת לקיפול | y≤16, once |
+| SplitReveal | **לא על H1/CTA** | אופציונלי על H2 מתחת לקיפול בלבד, `by="lines"` |
+| Parallax | כן, Hero בלבד | speed ≤ 0.2; כבוי ב-reduced-motion |
+| Counter | כן | רק `12` (ותק) — מספר אמיתי |
+| Magnetic | לא | לא מתאים ל-N27 |
+| Marquee | לא | אין לוגואים אמיתיים |
+| HorizontalScroll | לא | מוריד בהירות במובייל |
+| PageTransition | עדין / אופציונלי | opacity קצר בלבד |
+
+## מפת תנועה לפי עמוד
+| עמוד / אלמנט | טריגר | תפקיד | טוקן / קומפ׳ | reduced-motion |
 |---|---|---|---|---|
-| H1, משנה, CTA ב-Hero | - | אין (LCP, מופיעים מיד) | - | - |
-| כרטיס שיחה ב-Hero: צלצול → מענה → 3 שורות → ליד נשלח | טעינה, פעם אחת (~6 שניות), בלי לולאה | הסבר | base, ease-out | מוצג ישר במצב הסופי |
-| טבעת צלצול סביב האייקון | עד שהבוט "עונה" (~0.9 שנייה) | משוב | CSS ping | מוסתרת |
-| כפתורים: hover / לחיצה | hover, לחיצה | משוב | instant; scale 0.97 | צבע בלבד |
-| חץ ב-CTA | hover | התמצאות (זז שמאלה = קדימה ב-RTL) | fast | בלי תזוזה |
-| חשיפה בגלילה (`data-reveal`) | כניסה למסך, פעם אחת, 16px | התמצאות | slow, ease-out | מוצג מיד |
-| מספרים במחשבון ובכותרת | שינוי ערך | משוב (הסכום התעדכן) | slow, ease-out | מתחלף מיד |
-| משבצות הרשת השבועית | שינוי שעות / מתג | הסבר (אדום → תכלת) | 500ms צבע, השהיה לפי שעה | צבע בלבד, בלי השהיה |
-| מתג "עם CALLBOT" | לחיצה | משוב | fast | מיד |
-| לשוניות תחום בהדגמה | לחיצה | התמצאות | spring | מיד |
-| שורות שיחה בהדגמה | ניגון | הסבר | base, ease-out | כל השיחה מוצגת מיד, בלי ניגון |
-| גל "מדבר" | רק בזמן ששורה "נאמרת" | משוב | CSS wave | מוסתר |
-| שדות כרטיס ליד | אחרי השורה הרלוונטית | הסבר | base | מלא מההתחלה |
-| עצירה / המשך | - | - | - | כפתור קיים כי הניגון מעל 5 שניות |
-| Roadmap: מילוי המסלול | גלילה (scrub), נעוץ | הסבר | scrub 0.6 | רשימה סטטית של 4 השלבים |
-| Roadmap: שעון ענק | שינוי שלב | התמצאות | slow | - (ברשימה הסטטית) |
-| Roadmap: כותרת + פסקה | שינוי שלב | הסבר | כניסה slow, יציאה fast ease-in, פסקה +stagger | - |
-| Roadmap: פעימת נקודה פעילה | שינוי שלב, 3 פעמים בלבד | הנאה | base | - |
-| Roadmap: רקע שמיים | שינוי שלב | התמצאות (ערב → בוקר) | 700ms opacity | - |
-| Roadmap: parallax לשעון | גלילה | הנאה | scrub | - |
-| CTA דביק במובייל | ה-CTA של ה-Hero יוצא מהמסך | התמצאות | 300ms, translate + opacity | מיד |
-| פס התקדמות בטופס | מעבר שלב | משוב (שלב 1 → 2) | 500ms scale-x | מיד |
-| רעידת שדה עם שגיאה | שגיאת ולידציה | משוב | shake 320ms, עד 6px | בלי רעידה; פוקוס לשדה |
-| ספינר בכפתור | שליחה | משוב | CSS spin | עצור |
+| Hero H1 + CTA + לוגו | — | — | **סטטי מיידי (LCP)** | כפי שהוא |
+| Hero רקע | גלילה | הנאה עדינה | Parallax 0.15 | תמונה סטטית |
+| דלתות 3 תחומים | כניסה ל-viewport | הסבר + התמצאות | Reveal stagger 50ms | הופעה בלי תזוזה |
+| מקטע «למה אנחנו» / Counter 12 | viewport | משוב+סמכות | Counter + Reveal | מספר סופי מיד |
+| «איך זה עובד» 3 שלבים | viewport | הסבר | Reveal + קו CSS עדין (A19) | בלי קו מונפש |
+| כפתורי hover | hover | משוב | motion-instant/fast | שינוי צבע בלבד |
+| Sticky CTA מובייל | Hero יצא מהמסך | התמצאות | slide-up 280ms | מופיע מיד |
+| שגיאת שדה | submit | משוב | רעידה ≤6px | outline אדום בלי רעידה |
+| שליחת טופס | click | משוב | ספינר בכפתור | טקסט «שולחים…» |
+| הצלחת טופס | success | משוב+הנאה | וי קצר + מעבר לתודה | הודעה סטטית |
+| FAQ אקורדיון | click | התמצאות | height via grid/opacity | פתיחה מיידית |
+| תפריט מובייל | click | התמצאות | drawer מ-inline-start (RTL) | בלי slide |
+| מעבר עמוד | ניווט | התמצאות | PageTransition קצר / כבוי | כבוי |
 
-## חוקים שנבדקו בקוד
-- רק `transform` ו-`opacity` (ו-`filter: blur` בכותרת ה-Roadmap, על אלמנט אחד). אין אנימציה של width/height/top/left.
-- אין scroll-jacking: ה-Roadmap נעוץ אבל הגלילה במהירות רגילה, ויש "לדלג לתיאום דמו".
-- אין לולאה אינסופית ליד טקסט שקוראים: גל הדיבור והצלצול רצים רק בזמן האירוע.
-- אין טקסט שנכתב אות אחר אות, אין סמן מותאם, אין פופ-אפ מונפש.
-- כיוון RTL: החץ זז שמאלה, הלשוניות והכרטיסים לפי `start`/`end`.
+## חוקי ברזל שנבדקים בסוף א׳-3
+1. לכל תנועה יש תפקיד  
+2. LCP לא מונפש  
+3. בלי scroll-jacking (Lenis כבוי)  
+4. רק transform/opacity  
+5. prefers-reduced-motion מכבה Parallax/Reveal תזוזה  
+6. RTL: מגירה מ-inline-start  
+7. תקציב INP/CLS  
 
-## חריגות מתועדות
-- משבצות הרשת (500ms), פס ההתקדמות (500ms), רקע השמיים (700ms) וה-CTA הדביק (300ms) משתמשים בערכי Tailwind סטנדרטיים ולא בטוקן. כולם בטווח motion-slow / motion-base.
+## בדיקות סיום (אחרי קוד)
+- [ ] CPU 4× מובייל — בלי קפיצות  
+- [ ] reduced-motion — אתר מלא  
+- [ ] Lighthouse LCP פער ≤200ms עם/בלי תנועה  
+- [ ] מקלדת בזמן אנימציה — פוקוס לא נאבד  
+- [ ] אין אנימציה שלא במפה  

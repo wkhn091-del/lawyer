@@ -46,19 +46,20 @@ function loadTurnstile(): Promise<TurnstileApi> {
 
 type Props = {
   siteKey: string | null;
-  action: "demo_step1" | "demo_step2";
+  action: "demo_step1" | "demo_step2" | "lead";
+  theme?: "light" | "dark" | "auto";
   /**
    * Changes after every server response. A token is single-use and siteverify consumes it even when
    * the submission then fails validation, so the widget must issue a fresh one before the next try.
    */
-  resetSignal: unknown;
+  resetSignal?: unknown;
 };
 
 /**
  * Renders inside a <form>. Turnstile adds a hidden `cf-turnstile-response` input to the container,
  * so the token travels with the form data. Most visitors never see it (interaction-only).
  */
-export function TurnstileField({ siteKey, action, resetSignal }: Props) {
+export function TurnstileField({ siteKey, action, resetSignal, theme = "dark" }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetRef = useRef<string | undefined>(undefined);
   const firstSignal = useRef(true);
@@ -77,7 +78,7 @@ export function TurnstileField({ siteKey, action, resetSignal }: Props) {
             sitekey: siteKey,
             action,
             appearance: "interaction-only",
-            theme: "dark",
+            theme,
             language: "he",
             size: "flexible",
           });
@@ -104,7 +105,7 @@ export function TurnstileField({ siteKey, action, resetSignal }: Props) {
       if (widgetRef.current) window.turnstile?.remove(widgetRef.current);
       widgetRef.current = undefined;
     };
-  }, [siteKey, action]);
+  }, [siteKey, action, theme]);
 
   useEffect(() => {
     if (firstSignal.current) {

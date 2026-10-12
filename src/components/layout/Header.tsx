@@ -1,41 +1,47 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
-import { Magnetic } from "@/components/motion/Magnetic";
-import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { MobileNav } from "@/components/layout/MobileNav";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { site } from "@/content/site";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-night-700/60 bg-night-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-white/90 backdrop-blur-md">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-3 focus:z-50 focus:rounded-chip focus:bg-teal-400 focus:px-4 focus:py-2 focus:text-night-950"
+        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-gold focus:px-4 focus:py-2 focus:text-navy"
       >
         לדלג לתוכן
       </a>
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-5 md:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 md:h-[4.5rem] md:px-8">
         <Link href="/" aria-label={`${site.brand}, לעמוד הבית`}>
           <Logo />
         </Link>
-        <nav aria-label="ניווט ראשי" className="hidden md:block">
-          <ul className="flex items-center gap-8 text-small text-mist-300">
+        <nav aria-label="ניווט ראשי" className="hidden lg:block">
+          <ul className="flex items-center gap-6 text-small text-muted">
             {site.nav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="transition-colors duration-100 hover:text-mist-100">
+                <Link href={item.href} className="transition-colors duration-[var(--motion-instant)] hover:text-navy">
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <Magnetic className="flex shrink-0" strength={0.2}>
-          <CtaLink href="/#book" className="min-h-10 whitespace-nowrap px-4 text-small">
-            לתיאום דמו
+        <div className="flex shrink-0 items-center gap-3">
+          <a
+            href={`tel:${site.contact.phoneTel}`}
+            className="hidden text-small text-navy md:inline"
+            dir="ltr"
+          >
+            <bdi>{site.contact.phone}</bdi>
+          </a>
+          <CtaLink href="/contact#lead" className="min-h-10 px-4 text-small">
+            לתיאום שיחה
           </CtaLink>
-        </Magnetic>
+          <MobileNav />
+        </div>
       </div>
-      <ScrollProgress />
     </header>
   );
 }

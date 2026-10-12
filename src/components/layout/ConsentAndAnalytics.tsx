@@ -64,29 +64,28 @@ export function ConsentAndAnalytics({ gtmId, nonce }: Props) {
     <div
       role="region"
       aria-label="הסכמה לעוגיות"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-xl rounded-card border border-night-600 bg-night-900/95 p-4 shadow-panel backdrop-blur-md md:inset-x-auto md:start-6"
+      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-xl rounded-lg border border-border bg-white/95 p-4 shadow-soft backdrop-blur-md md:inset-x-auto md:start-6"
     >
-      <p className="text-small text-mist-300">
-        נשמח להשתמש בעוגיות למדידה ולשיפור האתר, וכדי להבין מאילו קמפיינים הגעתם. אפשר לסרב, והאתר יעבוד בדיוק אותו
-        דבר.{" "}
-        <Link href="/privacy" className="text-teal-300 underline underline-offset-4">
-          מדיניות פרטיות
+      <p className="text-small text-muted">
+        נשמח להשתמש בעוגיות למדידה ולשיפור האתר. אפשר לסרב, והאתר יעבוד אותו דבר.{" "}
+        <Link href="/cookies" className="text-navy underline underline-offset-4">
+          מדיניות עוגיות
         </Link>
       </p>
       <div className="mt-3 flex gap-2">
         <button
           type="button"
           onClick={() => writeConsent("granted")}
-          className="min-h-11 rounded-control bg-teal-400 px-5 text-small font-semibold text-night-950 transition duration-100 hover:bg-teal-300"
+          className="min-h-11 rounded-md bg-navy px-5 text-small font-medium text-cream transition duration-100 hover:bg-navy-deep"
         >
-          לאשר עוגיות
+          לאישור עוגיות מדידה
         </button>
         <button
           type="button"
           onClick={() => writeConsent("denied")}
-          className="min-h-11 rounded-control border border-night-600 px-5 text-small text-mist-100 transition duration-100 hover:bg-night-800"
+          className="min-h-11 rounded-md border border-border px-5 text-small text-navy transition duration-100 hover:bg-cream"
         >
-          רק הכרחיות
+          לדחיית עוגיות מדידה
         </button>
       </div>
     </div>
