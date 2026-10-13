@@ -28,6 +28,7 @@ export function Hero() {
         <div className="grid items-end gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:gap-8 lg:gap-12">
           <div className="relative z-10 max-w-xl">
             <p className="text-small tracking-[0.08em] text-gold">{site.brand}</p>
+            <p className="mt-2 text-small text-cream/75">{hero.trust}</p>
 
             <HeroGhost word={hero.ghostWord} />
 

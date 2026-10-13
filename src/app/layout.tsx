@@ -70,7 +70,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body className="bg-cream font-sans text-body text-ink">
         <MotionProvider preset="law">
           <Header />
-          <main id="main">{children}</main>
+          <main id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
           <Footer />
         </MotionProvider>
         <RevealObserver />

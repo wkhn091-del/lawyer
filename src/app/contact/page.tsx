@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { ContactProcess } from "@/components/contact/ContactProcess";
 import { LeadForm } from "@/components/contact/LeadForm";
 import { site } from "@/content/site";
 import { leadsLocked } from "@/lib/env/server";
@@ -51,7 +52,17 @@ export default async function ContactPage({ searchParams }: Props) {
               </a>
             </li>
             <li>שעות: {site.contact.hours}</li>
+            <li>
+              מיקום:{" "}
+              {site.legal.address ?? "המשרד פועל במרכז הארץ — כתובת מדויקת תפורסם כאן לאחר עדכון."}
+            </li>
+            {site.legal.companyId ? (
+              <li>
+                ח.פ/ע.מ: <bdi dir="ltr">{site.legal.companyId}</bdi>
+              </li>
+            ) : null}
           </ul>
+          <ContactProcess />
           <div className="relative mt-10 hidden aspect-[4/3] overflow-hidden md:block">
             <Image
               src="/media/meeting-room.jpg"

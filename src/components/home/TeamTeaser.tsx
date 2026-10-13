@@ -1,51 +1,37 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/motion";
 import { home } from "@/content/home";
 
+/** Compact team strip — no fake photo placeholders (reduces “הדמיה” suspicion noise). */
 export function TeamTeaser() {
   const { team } = home;
 
   return (
-    <section className="relative overflow-hidden bg-navy py-16 text-cream md:py-24">
-      <Image
-        src="/media/about-texture.jpg"
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover opacity-25"
-        aria-hidden
-      />
-      <div className="absolute inset-0 bg-navy/75" aria-hidden />
-
-      <div className="relative mx-auto max-w-6xl px-5 md:px-8">
+    <section className="border-y border-border bg-white py-14 md:py-16">
+      <div className="mx-auto max-w-6xl px-5 md:px-8">
         <Reveal>
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
             <div className="max-w-xl">
-              <h2 className="font-display text-h2">{team.title}</h2>
-              <p className="mt-3 text-[0.9375rem] text-cream/70">{team.lead}</p>
+              <h2 className="font-display text-h2 text-navy">{team.title}</h2>
+              <p className="mt-2 text-small text-muted">
+                שותפים שמלווים את התיקים — צילומי פנים יתווספו כשיגיעו מהמשרד.
+              </p>
             </div>
             <Link
               href="/team"
-              className="text-small font-medium text-gold underline-offset-4 transition hover:underline"
+              className="text-small font-medium text-navy underline-offset-4 hover:underline"
             >
               לכל הצוות
             </Link>
           </div>
         </Reveal>
 
-        <Reveal stagger className="mt-10 grid gap-6 md:grid-cols-2">
+        <Reveal stagger className="mt-8 grid gap-4 sm:grid-cols-2">
           {team.members.map((member) => (
-            <article
-              key={member.name}
-              className="border border-cream/15 bg-navy-deep/50 p-6 backdrop-blur-[2px]"
-            >
-              <div className="flex aspect-[16/9] items-end bg-gradient-to-br from-navy-deep to-[#2a3a5c] p-4">
-                <span className="text-small text-cream/50">הדמיה — ממתין לצילום אמיתי</span>
-              </div>
-              <h3 className="mt-5 font-display text-h3">{member.name}</h3>
+            <article key={member.name} className="border-s-2 border-gold ps-4 py-1">
+              <h3 className="font-display text-h3 text-navy">{member.name}</h3>
               <p className="mt-1 text-small text-gold">{member.role}</p>
-              <p className="mt-3 text-small text-cream/65">{member.bio}</p>
+              <p className="mt-2 text-small text-muted">{member.bio}</p>
             </article>
           ))}
         </Reveal>

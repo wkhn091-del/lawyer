@@ -1,5 +1,4 @@
 import { ArticlesTeaser } from "@/components/home/ArticlesTeaser";
-import { AtmosphereBand } from "@/components/home/AtmosphereBand";
 import { Hero } from "@/components/home/Hero";
 import { HomeFaq } from "@/components/home/HomeFaq";
 import { PracticeDoors } from "@/components/home/PracticeDoors";
@@ -50,16 +49,8 @@ export default function HomePage() {
       <TrustBand />
       <PracticeDoors />
       <WhyUs />
-      <AtmosphereBand
-        src="/media/corridor-dusk.jpg"
-        alt="חלון משרד בשעת בין-ערביים מעל העיר — הדמיה אווירה"
-      />
-      <TeamTeaser />
       <Process />
-      <AtmosphereBand
-        src="/media/surface-cream-brass.jpg"
-        alt="משטח קרם עם קו פליז עדין — הדמיה טקסטורה"
-      />
+      <TeamTeaser />
       <ArticlesTeaser />
       <HomeFaq />
       <StickyCta />

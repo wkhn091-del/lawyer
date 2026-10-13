@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { site } from "@/content/site";
 
 /** Mobile bar after the hero CTA leaves view; hides while the lead form is visible. */
 export function StickyCta() {
@@ -25,21 +26,48 @@ export function StickyCta() {
   }, []);
 
   const show = !heroVisible && !formVisible;
+  const whatsapp = site.contact.whatsapp;
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-30 border-t border-border bg-white/95 pb-safe px-4 pt-3 backdrop-blur-md transition duration-[var(--motion-base)] md:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-30 border-t border-border bg-white/95 pb-safe px-4 pt-3 backdrop-blur-md transition duration-[var(--motion-base)] motion-reduce:transition-none md:hidden ${
         show ? "translate-y-0 opacity-100 ease-out" : "pointer-events-none translate-y-full opacity-0 ease-in"
       }`}
       aria-hidden={!show}
+      inert={show ? undefined : true}
     >
-      <Link
-        href="/contact#lead"
-        tabIndex={show ? 0 : -1}
-        className="flex min-h-12 items-center justify-center rounded-md bg-navy text-button font-medium text-cream active:scale-[0.97]"
-      >
-        לתיאום שיחת ייעוץ
-      </Link>
+      <div className="flex gap-2">
+        <a
+          href={`tel:${site.contact.phoneTel}`}
+          tabIndex={show ? 0 : -1}
+          className="inline-flex min-h-12 min-w-12 shrink-0 items-center justify-center rounded-md border border-navy px-3 text-small font-medium text-navy"
+          aria-label={`התקשרו אל ${site.contact.phone}`}
+        >
+          התקשרו
+        </a>
+        {whatsapp ? (
+          <a
+            href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`}
+            tabIndex={show ? 0 : -1}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-12 min-w-12 shrink-0 items-center justify-center rounded-md border border-success px-3 text-small font-medium text-success"
+            aria-label="וואטסאפ"
+          >
+            וואטסאפ
+          </a>
+        ) : null}
+        <Link
+          href="/contact#lead"
+          tabIndex={show ? 0 : -1}
+          className="flex min-h-12 flex-1 items-center justify-center rounded-md bg-navy text-button font-medium text-cream active:scale-[0.97] motion-reduce:active:scale-100"
+        >
+          לתיאום שיחת ייעוץ
+        </Link>
+      </div>
+      <p className="mt-2 pb-1 text-center text-[0.75rem] text-muted">
+        מענה תוך יום עסקים אחד · בלי התחייבות לייצוג
+      </p>
     </div>
   );
 }

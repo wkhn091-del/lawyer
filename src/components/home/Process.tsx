@@ -7,7 +7,7 @@ export function Process() {
   const { process } = home;
 
   return (
-    <section id="how" className="bg-cream py-16 md:py-24">
+    <section id="how" className="bg-cream py-12 md:py-16">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <Reveal className="max-w-2xl">
           <GoldLineDraw />
@@ -15,7 +15,7 @@ export function Process() {
           <p className="mt-3 text-muted">{process.lead}</p>
         </Reveal>
 
-        <ol className="relative mt-12 grid gap-6 md:grid-cols-3 md:gap-8">
+        <ol className="relative mt-8 grid gap-5 md:grid-cols-3 md:gap-8">
           <ProcessLine />
           {process.steps.map((step, index) => (
             <Reveal key={step.title} delay={index * 0.05} as="li" className="relative">
