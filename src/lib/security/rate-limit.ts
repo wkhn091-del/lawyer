@@ -42,7 +42,7 @@ function sharedLimiter(limit: number, windowMs: number): Ratelimit | null {
     limiter = new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
-      prefix: "callbot:rl",
+      prefix: "cohen:rl",
       analytics: false,
     });
     limiters.set(id, limiter);

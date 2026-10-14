@@ -76,7 +76,7 @@ export function Footer() {
         <FooterNavGroups groups={navGroups} />
       </div>
 
-      <div className="border-t border-cream/10 px-5 py-5 text-[0.8125rem] leading-relaxed text-cream/45 md:px-8">
+      <div className="border-t border-cream/10 px-5 py-5 text-[0.8125rem] leading-relaxed text-cream/60 md:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <p>
             {site.footer.disclaimer}

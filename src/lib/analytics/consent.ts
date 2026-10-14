@@ -1,3 +1,4 @@
+/** Preference only — never store auth/session tokens in localStorage. */
 export const CONSENT_STORAGE_KEY = "cb_consent_v1";
 export type Consent = "granted" | "denied";
 

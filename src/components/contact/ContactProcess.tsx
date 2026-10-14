@@ -13,9 +13,7 @@ export function ContactProcess() {
             {index + 1}
           </span>
           <span>
-            <span className="font-medium text-navy">{step.title}</span>
-            {" — "}
-            {step.body}
+            <span className="font-medium text-navy">{step.title}:</span> {step.body}
           </span>
         </li>
       ))}

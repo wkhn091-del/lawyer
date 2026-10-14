@@ -4,80 +4,81 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { track } from "@/lib/analytics/track";
 
-const STEP_ONE_FIELDS = new Set(["firstName", "lastName", "email", "phone"]);
-const STEP_TWO_FIELDS = new Set(["company", "companySize", "industry"]);
+const LEAD_FIELDS = new Set(["fullName", "email", "phone", "practiceArea", "message"]);
 
-/** Where on the page a click happened: the nearest section id, or the header/footer landmark. */
 function locationOf(element: Element): string {
   if (element.closest("header")) return "header";
   if (element.closest("footer")) return "footer";
-  const section = element.closest("section[id], section[aria-labelledby]");
+  if (element.closest("[data-sticky-cta]")) return "sticky_cta";
+  const section = element.closest("section[id], section[aria-labelledby], [id]");
   return section?.id || section?.getAttribute("aria-labelledby") || "page";
 }
 
-/**
- * Page-wide listeners for the KPIs in PROJECT_BRIEF.md. Delegated from `document`, so sections stay
- * free of tracking code. Each event fires once per page view, except CTA clicks.
- */
+function isConsultCta(href: string): boolean {
+  return href.includes("/contact") || href.includes("#lead");
+}
+
+/** Delegated page-wide KPIs — no tracking props on individual sections. */
 export function AnalyticsEvents() {
   const pathname = usePathname();
 
   useEffect(() => {
     const startedFields = new Set<string>();
-    let calculatorUsed = false;
+    let formStarted = false;
 
     const onClick = (event: MouseEvent) => {
       const target = event.target instanceof Element ? event.target : null;
-      const link = target?.closest<HTMLAnchorElement>('a[href*="#book"], a[href*="#demo"]');
-      if (link) {
-        const cta = link.id || (link.getAttribute("href")?.includes("#demo") ? "see_demo" : "book_demo");
+      if (!target) return;
+
+      const tel = target.closest<HTMLAnchorElement>('a[href^="tel:"]');
+      if (tel) {
+        track("tel_click", { location: locationOf(tel) });
+        return;
+      }
+
+      const link = target.closest<HTMLAnchorElement>("a[href]");
+      if (link?.getAttribute("href") && isConsultCta(link.getAttribute("href")!)) {
+        const href = link.getAttribute("href")!;
+        const cta = link.id || (href.includes("#lead") ? "consult_lead" : "consult_contact");
         track("cta_click", { cta, location: locationOf(link) });
       }
-      if (!calculatorUsed && target?.closest('#hours [role="switch"]')) {
-        calculatorUsed = true;
-        track("calculator_use", { control: "switch" });
-      }
-    };
-
-    const onChange = (event: Event) => {
-      const target = event.target instanceof HTMLElement ? event.target : null;
-      if (calculatorUsed || !target?.closest("#hours")) return;
-      calculatorUsed = true;
-      track("calculator_use", { control: target instanceof HTMLSelectElement ? "hours" : "slider" });
     };
 
     const onFocusIn = (event: FocusEvent) => {
       const target = event.target;
-      if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
-      if (!target.closest("#book form")) return;
+      if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement)) {
+        return;
+      }
+      if (!target.closest("#lead")) return;
+      if (!formStarted) {
+        formStarted = true;
+        track("form_start", { form: "lead" });
+      }
       const field = target.name;
-      const step = STEP_ONE_FIELDS.has(field) ? 1 : STEP_TWO_FIELDS.has(field) ? 2 : null;
-      if (!step || startedFields.has(field)) return;
+      if (!LEAD_FIELDS.has(field) || startedFields.has(field)) return;
       startedFields.add(field);
-      track("form_field_start", { form_step: step, field });
+      track("form_field_start", { form: "lead", field });
     };
 
     document.addEventListener("click", onClick);
-    document.addEventListener("change", onChange);
     document.addEventListener("focusin", onFocusIn);
 
-    const book = document.getElementById("book");
-    const observer = book
+    const lead = document.getElementById("lead");
+    const observer = lead
       ? new IntersectionObserver(
           (entries) => {
             if (entries.some((entry) => entry.isIntersecting)) {
               observer?.disconnect();
-              track("form_reached", {});
+              track("form_reached", { form: "lead" });
             }
           },
           { threshold: 0.25 },
         )
       : null;
-    if (book) observer?.observe(book);
+    if (lead) observer?.observe(lead);
 
     return () => {
       document.removeEventListener("click", onClick);
-      document.removeEventListener("change", onChange);
       document.removeEventListener("focusin", onFocusIn);
       observer?.disconnect();
     };

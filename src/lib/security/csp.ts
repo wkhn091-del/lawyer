@@ -1,5 +1,6 @@
 type Directives = Record<string, readonly string[]>;
 
+/** Only tools approved for launch (GTM, GA4, Ads, Clarity). Add a host here only when it ships. */
 const ANALYTICS_CONNECT = [
   "https://www.google-analytics.com",
   "https://*.google-analytics.com",
@@ -7,13 +8,7 @@ const ANALYTICS_CONNECT = [
   "https://www.googletagmanager.com",
   "https://*.doubleclick.net",
   "https://www.google.com",
-  "https://www.facebook.com",
-  "https://connect.facebook.net",
-  "https://px.ads.linkedin.com",
   "https://*.clarity.ms",
-  "https://c.bing.com",
-  "https://api.segment.io",
-  "https://cdn.segment.com",
 ] as const;
 
 const ANALYTICS_IMG = [
@@ -22,14 +17,11 @@ const ANALYTICS_IMG = [
   "https://*.doubleclick.net",
   "https://www.google.com",
   "https://www.google.co.il",
-  "https://www.facebook.com",
-  "https://px.ads.linkedin.com",
   "https://*.clarity.ms",
-  "https://c.bing.com",
 ] as const;
 
-const CALENDLY = "https://calendly.com";
 const TURNSTILE = "https://challenges.cloudflare.com";
+const CSP_REPORT_GROUP = "csp";
 
 function serialize(directives: Directives): string {
   return Object.entries(directives)
@@ -40,7 +32,7 @@ function serialize(directives: Directives): string {
 export function buildSiteCsp(nonce: string, isDev: boolean): string {
   return serialize({
     "default-src": ["'self'"],
-    // 'strict-dynamic' lets the nonced GTM loader pull GA4, Meta, LinkedIn and Clarity after consent.
+    // 'strict-dynamic' lets the nonced GTM loader pull GA4 and Clarity after consent.
     "script-src": [
       "'self'",
       `'nonce-${nonce}'`,
@@ -55,14 +47,22 @@ export function buildSiteCsp(nonce: string, isDev: boolean): string {
     "img-src": ["'self'", "data:", "blob:", ...ANALYTICS_IMG],
     "font-src": ["'self'"],
     "connect-src": ["'self'", TURNSTILE, ...ANALYTICS_CONNECT, ...(isDev ? ["ws:"] : [])],
-    "frame-src": [CALENDLY, TURNSTILE, "https://td.doubleclick.net", "https://www.googletagmanager.com"],
+    "frame-src": [TURNSTILE, "https://td.doubleclick.net", "https://www.googletagmanager.com"],
     "worker-src": ["'self'", "blob:"],
     "object-src": ["'none'"],
     "base-uri": ["'self'"],
     "form-action": ["'self'"],
     "frame-ancestors": ["'none'"],
+    // Level C — browser posts violations to our collector (no PII stored).
+    "report-uri": ["/api/csp-report"],
+    "report-to": [CSP_REPORT_GROUP],
     ...(isDev ? {} : { "upgrade-insecure-requests": [] }),
   });
+}
+
+/** Reporting-Endpoints header value (pairs with CSP report-to). */
+export function buildReportingEndpoints(): string {
+  return `${CSP_REPORT_GROUP}="/api/csp-report"`;
 }
 
 export function createNonce(): string {

@@ -13,7 +13,7 @@ const byArea: Record<Exclude<PracticeAreaId, "other">, ThankYouNext> = {
     serviceHref: "/services/family",
     serviceLabel: "דיני משפחה וגירושין",
     articleHref: "/blog",
-    articleTitle: "הסכם ממון — מתי כדאי ומה חשוב לבדוק",
+    articleTitle: "הסכם ממון: מתי כדאי ומה חשוב לבדוק",
     articleTag: "משפחה",
   },
   labor: {
@@ -27,7 +27,7 @@ const byArea: Record<Exclude<PracticeAreaId, "other">, ThankYouNext> = {
     serviceHref: "/services/real-estate",
     serviceLabel: "נדל״ן",
     articleHref: "/blog",
-    articleTitle: "רכישת דירה ראשונה — שלבי הליווי המשפטי",
+    articleTitle: "רכישת דירה ראשונה: שלבי הליווי המשפטי",
     articleTag: "נדל״ן",
   },
 };
@@ -49,14 +49,14 @@ export function nextStepsFor(practiceArea: string | undefined): ThankYouNext {
 
 export const thankYouCopy = {
   title: "הפנייה התקבלה",
-  lead: "תודה. נחזור אליכם תוך יום עסקים אחד לתיאום שיחת היכרות — בלי התחייבות לייצוג בשלב הזה.",
+  lead: "תודה. נחזור אליכם תוך יום עסקים אחד לקביעת פגישת ייעוץ — בלי התחייבות לייצוג בשלב הזה.",
   trust: [
     "12 שנות פעילות במרכז",
     "מענה תוך יום עסקים",
     "בלי התחייבות לייצוג בשלב הזה",
   ],
-  nextHeading: "בינתיים — אפשר להעמיק",
+  nextHeading: "בינתיים, אפשר להעמיק",
   callCta: "להתקשר עכשיו",
-  serviceCta: "לעמוד התחום",
+  serviceCta: "לתחומי העיסוק",
   homeCta: "חזרה לדף הבית",
 } as const;

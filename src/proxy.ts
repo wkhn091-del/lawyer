@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { buildSiteCsp, createNonce } from "@/lib/security/csp";
+import { buildReportingEndpoints, buildSiteCsp, createNonce } from "@/lib/security/csp";
+import { SECURITY_HEADERS } from "@/lib/security/headers";
 
 export function proxy(request: NextRequest) {
   const nonce = createNonce();
@@ -11,6 +12,10 @@ export function proxy(request: NextRequest) {
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
   response.headers.set("Content-Security-Policy", csp);
+  response.headers.set("Reporting-Endpoints", buildReportingEndpoints());
+  for (const header of SECURITY_HEADERS) {
+    response.headers.set(header.key, header.value);
+  }
   return response;
 }
 

@@ -57,7 +57,6 @@ export function SplitReveal({
       if (prefersReducedMotion()) return;
 
       const type = by === "lines" ? "lines" : by === "words" ? "lines,words" : "lines,words,chars";
-      let split: SplitText | undefined;
       let tween: gsap.core.Tween | undefined;
       let trigger: ScrollTrigger | undefined;
 
@@ -65,7 +64,7 @@ export function SplitReveal({
         tween?.play();
       };
 
-      split = SplitText.create(el, {
+      const split = SplitText.create(el, {
         type,
         mask: "lines",
         linesClass: "mk-split-line",

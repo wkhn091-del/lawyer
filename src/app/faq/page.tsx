@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { HomeFaq } from "@/components/home/HomeFaq";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { faq } from "@/content/home";
+import { faqPageSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "שאלות נפוצות",
@@ -7,5 +10,15 @@ export const metadata: Metadata = {
 };
 
 export default function FaqPage() {
-  return <HomeFaq />;
+  return (
+    <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          ...faqPageSchema(faq),
+        }}
+      />
+      <HomeFaq />
+    </>
+  );
 }

@@ -5,11 +5,13 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { leadsLocked } from "@/lib/env/server";
 import { reportBlocked, reportError } from "@/lib/observability/report";
+import { LEAD_ACK_COOKIE, leadAckCookieOptions } from "@/lib/security/lead-ack-cookie";
 import { isSameOrigin } from "@/lib/security/origin";
+import { safeInternalPath } from "@/lib/security/safe-path";
 import { hashKey, rateLimit } from "@/lib/security/rate-limit";
 import { verifyTurnstile } from "@/lib/security/turnstile";
 import { deliverLead } from "./deliver";
-import { leadSchema, toFieldErrors, type FieldErrors } from "./schema";
+import { leadSchema, quickLeadSchema, toFieldErrors, type FieldErrors } from "./schema";
 
 export type FormState = {
   status: "idle" | "error";
@@ -41,6 +43,7 @@ const metaSchema = z.object({
     .regex(/^\/[\w\-/]*$/)
     .optional()
     .catch(undefined),
+  variant: z.enum(["full", "quick"]).catch("full"),
 });
 
 const FIELDS = ["fullName", "email", "phone", "practiceArea", "message"] as const;
@@ -76,16 +79,17 @@ export async function submitLead(_previous: FormState, formData: FormData): Prom
     return { status: "error", errors: {}, message: GENERIC_ERROR };
   }
 
-  const meta = metaSchema.safeParse(readFields(formData, ["website", "startedAt", "source", "page"]));
+  const meta = metaSchema.safeParse(readFields(formData, ["website", "startedAt", "source", "page", "variant"]));
   if (!meta.success) return { status: "error", errors: {}, message: GENERIC_ERROR };
   if (looksAutomated(meta.data)) redirect("/thank-you");
 
-  if (!(await rateLimit(`lead:ip:${request.ip}`, 5, TEN_MINUTES))) {
+  if (!(await rateLimit(`lead:ip:${await hashKey(request.ip)}`, 5, TEN_MINUTES))) {
     reportBlocked("rate_limit", "lead");
     return { status: "error", errors: {}, message: RATE_ERROR };
   }
 
-  const parsed = leadSchema.safeParse(readFields(formData, FIELDS));
+  const schema = meta.data.variant === "quick" ? quickLeadSchema : leadSchema;
+  const parsed = schema.safeParse(readFields(formData, FIELDS));
   if (!parsed.success) return { status: "error", errors: toFieldErrors(parsed.error), message: null };
 
   if (!(await verifyTurnstile(formData, "lead", request.ip))) {
@@ -93,14 +97,17 @@ export async function submitLead(_previous: FormState, formData: FormData): Prom
     return { status: "error", errors: {}, message: BOT_ERROR };
   }
 
-  if (!(await rateLimit(`lead:email:${await hashKey(parsed.data.email)}`, 3, ONE_HOUR))) {
+  const contactKey = parsed.data.email ?? parsed.data.phone;
+  if (!(await rateLimit(`lead:contact:${await hashKey(contactKey)}`, 3, ONE_HOUR))) {
     reportBlocked("rate_limit", "lead_email");
     return { status: "error", errors: {}, message: RATE_ERROR };
   }
 
+  const page = meta.data.page ? safeInternalPath(meta.data.page, "/") : null;
+
   let delivered = false;
   try {
-    delivered = await deliverLead(parsed.data, { source: meta.data.source ?? null, page: meta.data.page ?? null });
+    delivered = await deliverLead(parsed.data, { source: meta.data.source ?? null, page });
   } catch (error) {
     reportError("lead", error);
   }
@@ -108,19 +115,13 @@ export async function submitLead(_previous: FormState, formData: FormData): Prom
 
   const cookieStore = await cookies();
   cookieStore.set(
-    "cb_demo",
+    LEAD_ACK_COOKIE,
     JSON.stringify({
+      id: crypto.randomUUID(),
       firstName: parsed.data.fullName.split(/\s+/)[0] ?? parsed.data.fullName,
-      email: parsed.data.email,
       practiceArea: parsed.data.practiceArea,
     }),
-    {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/thank-you",
-      maxAge: 60 * 30,
-    },
+    leadAckCookieOptions(),
   );
   redirect("/thank-you");
 }

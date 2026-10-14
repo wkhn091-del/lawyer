@@ -13,9 +13,7 @@ export function TeamTeaser() {
           <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
             <div className="max-w-xl">
               <h2 className="font-display text-h2 text-navy">{team.title}</h2>
-              <p className="mt-2 text-small text-muted">
-                שותפים שמלווים את התיקים — צילומי פנים יתווספו כשיגיעו מהמשרד.
-              </p>
+              <p className="mt-2 text-small text-muted">{team.lead}</p>
             </div>
             <Link
               href="/team"
@@ -30,7 +28,7 @@ export function TeamTeaser() {
           {team.members.map((member) => (
             <article key={member.name} className="border-s-2 border-gold ps-4 py-1">
               <h3 className="font-display text-h3 text-navy">{member.name}</h3>
-              <p className="mt-1 text-small text-gold">{member.role}</p>
+              <p className="mt-1 text-small text-gold-ink">{member.role}</p>
               <p className="mt-2 text-small text-muted">{member.bio}</p>
             </article>
           ))}

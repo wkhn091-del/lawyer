@@ -75,6 +75,13 @@ const serverEnvSchema = z
         });
       }
     }
+    if (env.VERCEL_ENV === "production" && !env.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["NEXT_SERVER_ACTIONS_ENCRYPTION_KEY"],
+        message: "Required in production (openssl rand -base64 32) so Server Actions stay stable across instances.",
+      });
+    }
   });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -101,10 +108,14 @@ const REQUIRED_FOR_LEADS_IN_PRODUCTION = [
   "TURNSTILE_SECRET_KEY",
   "NEXT_PUBLIC_TURNSTILE_SITE_KEY",
   "SENTRY_DSN",
+  "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY",
 ] as const;
 
 export function missingForLeads(env: ServerEnv): string[] {
-  if (env.VERCEL_ENV !== "production") return [];
+  // A live Preview delivers real leads, so it needs the same bot and rate-limit protection.
+  const enforce =
+    env.VERCEL_ENV === "production" || (env.VERCEL_ENV === "preview" && env.LEAD_DELIVERY_MODE === "live");
+  if (!enforce) return [];
   const missing: string[] = REQUIRED_FOR_LEADS_IN_PRODUCTION.filter((key) => !env[key]);
   if (env.LEAD_DELIVERY_MODE !== "live") missing.push("LEAD_DELIVERY_MODE=live");
   const hasChannel = Boolean(env.CRM_WEBHOOK_URL || env.SLACK_WEBHOOK_URL || (env.RESEND_API_KEY && env.LEAD_NOTIFY_EMAIL));

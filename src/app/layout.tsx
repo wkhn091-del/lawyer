@@ -19,7 +19,7 @@ const frank = Frank_Ruhl_Libre({
 });
 
 const rubik = Rubik({
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
   subsets: ["hebrew", "latin"],
   display: "swap",
   variable: "--font-rubik",

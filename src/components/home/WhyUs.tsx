@@ -36,7 +36,7 @@ export function WhyUs() {
               className="object-cover"
               aria-hidden
             />
-            <div className="absolute inset-0 bg-navy/55" aria-hidden />
+            <div className="scrim absolute inset-0" aria-hidden />
             <ul className="absolute inset-0 flex flex-col justify-end gap-6 p-6 md:p-8">
               {why.points.map((point) => (
                 <li key={point.suffix} className="border-t border-cream/20 pt-4 text-cream">
@@ -44,7 +44,7 @@ export function WhyUs() {
                     <Counter to={point.value} duration={1.4} locale="he-IL" />
                     <span className="ms-1 text-h3 font-normal text-cream/85">{point.suffix}</span>
                   </p>
-                  <p className="mt-2 text-small text-cream/65">{point.note}</p>
+                  <p className="mt-2 text-small text-cream/80">{point.note}</p>
                 </li>
               ))}
             </ul>

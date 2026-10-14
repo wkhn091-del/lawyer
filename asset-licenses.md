@@ -1,21 +1,26 @@
-# asset-licenses.md - CALLBOT
+# asset-licenses.md — כהן ושות׳
 
-כל נכס חיצוני באתר, המקור שלו והרישיון. נכס חדש נכנס לכאן לפני שהוא נכנס לקוד.
+כל נכס חיצוני באתר: מקור + רישיון. נכס חדש נכנס לכאן לפני הקוד.
 
 | נכס | קובץ | מקור | רישיון | צבע | הערות |
 |---|---|---|---|---|---|
-| תמונת Hero: מוסך סגור בלילה | `public/hero/night-garage.webp` | נוצרה ב-AI (כלי יצירת התמונות של Cursor), 12.10.2026 | ללא זכויות צד שלישי; בלי אנשים, לוגואים או טקסט | 🟡 | מסומנת "הדמיה" ב-alt ובכיתוב (חוק 13). להחליף בצילום אמיתי של לקוח |
-| לוגו CALLBOT | `src/components/brand/Logo.tsx` (SVG בקוד) | הלקוח (AfterHours AI) | בבעלות הלקוח | 🟢 | [?] לאשר את התאמת הצבעים לספר המותג |
-| פונט Heebo | `next/font/google` | Google Fonts | SIL Open Font License 1.1 | 🟢 | מתארח מקומית ע"י Next.js |
-| פונט Inter | `next/font/google` | Google Fonts | SIL Open Font License 1.1 | 🟢 | |
-| GSAP + ScrollTrigger | npm `gsap` | GreenSock / Webflow | GSAP Standard License (ללא תשלום, כולל שימוש מסחרי) | 🟢 | רק ב-Roadmap |
+| Hero — משרד בשעת בין־ערביים | `public/media/hero-office-dusk.jpg` | AI / אווירה כללית | שימוש באתר; בלי אנשים מזוהים | 🟡 | אווירה כללית (חוק 13) — לא מציג סניף/אדם ספציפי; בדף הבית הסימון «הדמיה» נמצא בטקסט החלופי בלבד, בשאר העמודים גם ככיתוב |
+| חדר ישיבות | `public/media/meeting-room.jpg` | AI / אווירה | כנ״ל | 🟡 | הדמיה |
+| מסדרון / טקסטורות / תחומים | `public/media/corridor-dusk.jpg`, `about-texture.jpg`, `surface-cream-brass.jpg`, `practice-*.jpg` | AI / אווירה | כנ״ל | 🟡 | הדמיה; לא פורטרט צוות |
+| OG | `public/media/og-cohen.jpg` | סוכנות | בבעלות הפרויקט | 🟢 | |
+| לוגו / מונוגרם | `public/brand/cohen-*.svg|png` + `Logo.tsx` | סוכנות | בבעלות הלקוח אחרי מסירה | 🟢 | |
+| אייקוני תחומים | `public/icons/*.svg` | סוכנות | שלנו | 🟢 | |
+| Frank Ruhl Libre + Rubik | `next/font/google` | Google Fonts | SIL OFL 1.1 | 🟢 | self-host ע״י Next |
+| GSAP + ScrollTrigger | npm `gsap` | GreenSock | Standard License | 🟢 | |
 | Motion | npm `motion` | Motion | MIT | 🟢 | |
-| תסריטי שיחות הדגמה | `src/content/calls.ts` | נכתבו לפרויקט | שלנו | 🟢 | שמות בדויים ומסומנים |
 
-**מקרא:** 🟢 מאושר · 🟡 מאושר עם תנאי (כתוב בהערות) · 🔴 נפסל
+**מקרא:** 🟢 מאושר · 🟡 מאושר עם תנאי · 🔴 נפסל
 
-## נכסים שנפסלו
-אין.
+## נכסים שהוסרו
+- נכסי CALLBOT robot מ-`public/hero/` ו-`public/scenes/` — נמחקו סופית בביקורת סקריפט 5 (13.10.2026); התיקיות אינן קיימות.
+
+## תיקיית `docs/licenses/`
+אין רישיונות צד־ג׳ בתשלום / CC שדורשים צילום חוזה. הקובץ הזה הוא מקור האמת. אם יתווסף נכס בתשלום — לשמור את הקבלה ב-`docs/licenses/` ולעדכן כאן.
 
 ## קרדיטים
-אין נכסי CC-BY, ולכן אין צורך בעמוד קרדיטים.
+אין נכסי CC-BY — אין צורך ב-`/credits`.

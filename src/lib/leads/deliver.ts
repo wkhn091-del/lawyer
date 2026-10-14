@@ -1,6 +1,7 @@
 import "server-only";
 import { serverEnv } from "@/lib/env/server";
 import { reportError } from "@/lib/observability/report";
+import { csvSafeCell } from "@/lib/security/csv-safe";
 import { PRACTICE_AREAS, type Lead } from "./schema";
 
 const TIMEOUT_MS = 6000;
@@ -25,6 +26,16 @@ function slackEscape(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/** Keep values out of email header injection (CRLF). */
+function oneLine(value: string): string {
+  return value.replace(/[\r\n\u0000]+/g, " ").trim();
+}
+
+/** The CRM UI may render fields as HTML; angle brackets become harmless lookalikes. */
+function neutralizeMarkup(value: string): string {
+  return value.replace(/</g, "‹").replace(/>/g, "›");
+}
+
 /** CRM / Lawyer Office Manager adapter — POST JSON webhook. */
 async function notifyCrm(lead: Lead, context: Context): Promise<void> {
   const url = serverEnv.CRM_WEBHOOK_URL;
@@ -42,10 +53,10 @@ async function notifyCrm(lead: Lead, context: Context): Promise<void> {
         lead: {
           fullName: lead.fullName,
           phone: lead.phone,
-          email: lead.email,
+          email: lead.email ?? null,
           practiceArea: lead.practiceArea,
           practiceAreaLabel: practiceLabel(lead.practiceArea),
-          message: lead.message,
+          message: lead.message ? neutralizeMarkup(lead.message) : null,
         },
         context,
       }),
@@ -59,8 +70,12 @@ async function notifySlack(lead: Lead, context: Context): Promise<void> {
   if (!url) throw new Error("Slack webhook missing");
   const lines = [
     `*פנייה חדשה מהאתר* · ${slackEscape(practiceLabel(lead.practiceArea))}`,
-    `${slackEscape(lead.fullName)} · ${slackEscape(lead.phone)} · ${slackEscape(lead.email)}`,
-    slackEscape(lead.message.slice(0, 300)),
+    [lead.fullName, lead.phone, lead.email]
+      .filter((part): part is string => Boolean(part))
+      .map(slackEscape)
+      .join(" · "),
+    // The case description may be privileged; it goes only to the office mailbox and CRM.
+    lead.message ? "תיאור המצב: במייל המשרד" : null,
     context.source ? `מקור: ${slackEscape(context.source)}` : null,
   ].filter(Boolean);
   await post(
@@ -81,14 +96,14 @@ async function notifyEmail(lead: Lead, context: Context): Promise<void> {
       body: JSON.stringify({
         from: serverEnv.LEAD_FROM_EMAIL ?? "onboarding@resend.dev",
         to: [to],
-        subject: `פנייה חדשה — ${practiceLabel(lead.practiceArea)}`,
+        subject: oneLine(`פנייה חדשה — ${practiceLabel(lead.practiceArea)}`),
         text: [
-          `שם: ${lead.fullName}`,
-          `טלפון: ${lead.phone}`,
-          `מייל: ${lead.email}`,
+          `שם: ${csvSafeCell(oneLine(lead.fullName))}`,
+          `טלפון: ${csvSafeCell(oneLine(lead.phone))}`,
+          lead.email ? `מייל: ${csvSafeCell(oneLine(lead.email))}` : "",
           `תחום: ${practiceLabel(lead.practiceArea)}`,
-          `הודעה: ${lead.message}`,
-          context.page ? `עמוד: ${context.page}` : "",
+          lead.message ? `הודעה: ${csvSafeCell(oneLine(lead.message))}` : "",
+          context.page ? `עמוד: ${oneLine(context.page)}` : "",
         ]
           .filter(Boolean)
           .join("\n"),
@@ -107,11 +122,8 @@ function logFailures(results: PromiseSettledResult<void>[], labels: string[]): v
 /** Returns false only when no watched channel received the lead. */
 export async function deliverLead(lead: Lead, context: Context): Promise<boolean> {
   if (serverEnv.LEAD_DELIVERY_MODE === "console") {
-    console.info("[lead]", {
-      email: lead.email,
-      practiceArea: lead.practiceArea,
-      ...context,
-    });
+    // No PII in logs — practice area + context only.
+    console.info("[lead]", { practiceArea: lead.practiceArea, ...context });
     return true;
   }
 

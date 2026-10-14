@@ -15,21 +15,47 @@ export function normalizeIsraeliPhone(raw: string): string | null {
   return null;
 }
 
+/** Keep free-text out of email/Slack header injection (CRLF / NUL). */
+function oneLine(value: string): string {
+  return value.replace(/[\r\n\u0000]+/g, " ").trim();
+}
+
 const fullName = z
-  .string({ error: "נשמח לדעת את השם המלא" })
+  .string({ error: "כתבו את השם המלא" })
   .trim()
-  .min(2, "נשמח לדעת את השם המלא")
-  .max(80, "השם ארוך מדי. אפשר לקצר?")
-  .regex(/^[\p{L}\p{M}' .\-״׳"]+$/u, "השם יכול לכלול רק אותיות");
+  .transform(oneLine)
+  .pipe(
+    z
+      .string()
+      .min(2, "כתבו את השם המלא")
+      .max(80, "השם ארוך מדי. אפשר לקצר?")
+      .regex(/^[\p{L}\p{M}' .\-״׳"]+$/u, "השם יכול לכלול רק אותיות"),
+  );
+
+const email = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .transform(oneLine)
+  .pipe(z.string().max(120, "כתובת המייל ארוכה מדי").pipe(z.email("בדקו את כתובת הדוא״ל")));
+
+const message = z
+  .string()
+  .trim()
+  .transform(oneLine)
+  .pipe(
+    z
+      .string()
+      .min(10, "ספרו בקצרה מה קרה — לפחות משפט אחד")
+      .max(2000, "התיאור ארוך מדי. אפשר לקצר?"),
+  );
+
+const blankToUndefined = (value: unknown) =>
+  typeof value === "string" && value.trim() === "" ? undefined : value;
 
 export const leadSchema = z.object({
   fullName,
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .max(120, "כתובת המייל ארוכה מדי")
-    .pipe(z.email("בדקו את כתובת הדוא״ל")),
+  email,
   phone: z
     .string()
     .max(20, "המספר ארוך מדי")
@@ -42,14 +68,16 @@ export const leadSchema = z.object({
       return normalized;
     }),
   practiceArea: z.enum(PRACTICE_IDS, { error: "בחרו תחום פנייה" }),
-  message: z
-    .string()
-    .trim()
-    .min(10, "ספרו בקצרה מה קרה — לפחות משפט אחד")
-    .max(2000, "התיאור ארוך מדי. אפשר לקצר?"),
+  message,
 });
 
-export type Lead = z.infer<typeof leadSchema>;
+/** Home quick form: name + phone + area. Email and message stay validated when provided. */
+export const quickLeadSchema = leadSchema.extend({
+  email: z.preprocess(blankToUndefined, email.optional()),
+  message: z.preprocess(blankToUndefined, message.optional()),
+});
+
+export type Lead = z.infer<typeof quickLeadSchema>;
 
 export type FieldErrors = Partial<Record<keyof Lead, string>>;
 

@@ -24,6 +24,27 @@ export function MobileNav() {
       if (event.key === "Escape") {
         setOpen(false);
         buttonRef.current?.focus();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      // aria-modal promises containment: cycle Tab between the toggle and the panel links.
+      const focusables = [
+        buttonRef.current,
+        ...(panelRef.current?.querySelectorAll<HTMLElement>("a[href]") ?? []),
+      ].filter((el): el is HTMLElement => el !== null);
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (!first || !last) return;
+
+      const active = document.activeElement;
+      const outside = !focusables.includes(active as HTMLElement);
+      if (event.shiftKey && (active === first || outside)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || outside)) {
+        event.preventDefault();
+        first.focus();
       }
     };
 
@@ -57,7 +78,7 @@ export function MobileNav() {
           role="dialog"
           aria-modal="true"
           aria-label="תפריט ניווט"
-          className="fixed inset-x-0 top-16 z-40 max-h-[min(70vh,28rem)] overflow-y-auto border-b border-border bg-white px-5 py-4 shadow-soft"
+          className="fixed inset-x-0 top-16 z-40 max-h-[min(70vh,28rem)] overflow-y-auto bg-white px-5 py-4 shadow-lift"
         >
           <ul className="flex flex-col gap-1 text-body text-navy">
             {site.nav.map((item) => (

@@ -64,7 +64,7 @@ export function ConsentAndAnalytics({ gtmId, nonce }: Props) {
     <div
       role="region"
       aria-label="הסכמה לעוגיות"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-xl rounded-lg border border-border bg-white/95 p-4 shadow-soft backdrop-blur-md md:inset-x-auto md:start-6"
+      className="glass fixed inset-x-3 bottom-3 z-50 mx-auto max-w-xl rounded-lg p-4 shadow-lift md:inset-x-auto md:start-6"
     >
       <p className="text-small text-muted">
         נשמח להשתמש בעוגיות למדידה ולשיפור האתר. אפשר לסרב, והאתר יעבוד אותו דבר.{" "}
@@ -76,14 +76,14 @@ export function ConsentAndAnalytics({ gtmId, nonce }: Props) {
         <button
           type="button"
           onClick={() => writeConsent("granted")}
-          className="min-h-11 rounded-md bg-navy px-5 text-small font-medium text-cream transition duration-100 hover:bg-navy-deep"
+          className="min-h-11 rounded-md bg-navy px-5 text-small font-medium text-cream transition duration-[var(--motion-instant)] hover:bg-navy-deep"
         >
           לאישור עוגיות מדידה
         </button>
         <button
           type="button"
           onClick={() => writeConsent("denied")}
-          className="min-h-11 rounded-md border border-border px-5 text-small text-navy transition duration-100 hover:bg-cream"
+          className="min-h-11 rounded-md border border-border px-5 text-small text-navy transition duration-[var(--motion-instant)] hover:bg-cream"
         >
           לדחיית עוגיות מדידה
         </button>

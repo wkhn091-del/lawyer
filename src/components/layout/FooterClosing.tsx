@@ -56,7 +56,7 @@ export function FooterClosing() {
         <CtaLink
           href={miniHero.href}
           variant="onDark"
-          className="w-full shadow-[0_12px_40px_rgb(18_28_53_/_0.45)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgb(201_169_97_/_0.25)] md:w-auto motion-reduce:hover:translate-y-0"
+          className="w-full md:w-auto"
         >
           {miniHero.cta}
         </CtaLink>

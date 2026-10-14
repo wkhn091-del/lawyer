@@ -16,7 +16,7 @@ export function ArticlesTeaser() {
         className="object-cover opacity-20"
         aria-hidden
       />
-      <div className="absolute inset-0 bg-navy/80" aria-hidden />
+      <div className="absolute inset-0 bg-navy-deep/85" aria-hidden />
 
       <div className="relative mx-auto max-w-6xl px-5 md:px-8">
         <Reveal>
@@ -43,7 +43,7 @@ export function ArticlesTeaser() {
               >
                 <span className="font-display text-small text-gold">0{index + 1}</span>
                 <span>
-                  <span className="mb-1 block text-[0.75rem] tracking-[0.06em] text-cream/50">
+                  <span className="mb-1 block text-[0.75rem] tracking-[0.06em] text-cream/60">
                     {item.tag}
                   </span>
                   <span className="font-display text-h3 leading-snug">{item.title}</span>

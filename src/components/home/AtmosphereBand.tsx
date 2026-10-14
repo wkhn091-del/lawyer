@@ -14,7 +14,7 @@ export function AtmosphereBand({ src, alt, caption = "הדמיה", className }: 
       <Image src={src} alt={alt} fill sizes="100vw" className="object-cover" />
       <div className="absolute inset-0 bg-navy/35" />
       {caption ? (
-        <p className="absolute bottom-3 start-5 text-small text-cream/75 md:start-8">{caption}</p>
+        <p className="photo-caption absolute bottom-3 start-5 text-small md:start-8">{caption}</p>
       ) : null}
     </aside>
   );

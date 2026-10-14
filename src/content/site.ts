@@ -4,7 +4,7 @@ export const site = {
   company: "משרד עורכי דין כהן ושות׳",
   domain: "cohen-law.co.il",
   description:
-    "משרד עורכי דין כהן ושות׳ — ייצוג משפטי בדיני משפחה וגירושין, דיני עבודה ונדל״ן. 12 שנות ליווי אישי במרכז.",
+    "משרד עורכי דין כהן ושות׳: משפחה וגירושין, דיני עבודה ונדל״ן. 12 שנה במרכז — שעה אחת של שיחה, ותדעו איפה אתם עומדים ומי מטפל בתיק.",
   nav: [
     { href: "/services/family", label: "דיני משפחה" },
     { href: "/services/labor", label: "דיני עבודה" },
@@ -33,13 +33,12 @@ export const site = {
     coordinatorPhone: "03-6125890",
     lastReviewed: "12.10.2026",
   },
-  /** Social URLs — omit icons until a real profile URL exists. */
   social: [] as ReadonlyArray<{ label: string; href: string; network: "linkedin" | "facebook" | "instagram" }>,
   footer: {
     miniHero: {
-      title: "רוצים להבין מה הצעד הבא?",
-      lead: "שיחת היכרות קצרה בשפה פשוטה — נבין את המצב ונגיד מה כדאי עכשיו. בלי התחייבות לייצוג.",
-      cta: "לתיאום שיחת ייעוץ",
+      title: "רוצים לדעת איפה אתם עומדים?",
+      lead: "שיחה אחת. תוכנית והערכת עלות. בלי התחייבות לייצוג.",
+      cta: "לקביעת פגישת ייעוץ",
       href: "/contact#lead",
     },
     office: [
@@ -66,30 +65,30 @@ export const practiceAreas = [
     href: "/services/family",
     title: "דיני משפחה וגירושין",
     door: "מצב משפחתי או גירושין",
-    summary: "גירושין, מזונות, משמורת והסכמי ממון — עם הסבר בשפה יומיומית.",
+    summary: "גירושין, מזונות, משמורת והסכמי ממון. מה חובה עכשיו, ומה יכול לחכות.",
     icon: "/icons/family.svg",
     image: "/media/practice-family.jpg",
-    imageAlt: "פינת אוכל שקטה באור בוקר — הדמיה אווירה לתחום משפחה",
+    imageAlt: "פינת אוכל שקטה באור בוקר (הדמיה אווירה לתחום משפחה)",
   },
   {
     id: "labor" as const,
     href: "/services/labor",
     title: "דיני עבודה",
     door: "פיטורין או זכויות בעבודה",
-    summary: "פיטורין, זכויות עובדים והסכמי עבודה — בדיקה מה הצעד הבא.",
+    summary: "פיטורין, זכויות עובדים והסכמי עבודה. בודקים מה מגיע לכם לפני שחותמים.",
     icon: "/icons/labor.svg",
     image: "/media/practice-labor.jpg",
-    imageAlt: "שולחן עבודה אחרי שעות — הדמיה אווירה לתחום עבודה",
+    imageAlt: "שולחן עבודה אחרי שעות (הדמיה אווירה לתחום עבודה)",
   },
   {
     id: "real-estate" as const,
     href: "/services/real-estate",
     title: "נדל״ן",
     door: "עסקת נדל״ן או חוזה",
-    summary: "חוזי מכר, ליווי עסקאות וירושות — גם באנגלית לרוכשים מחו״ל.",
+    summary: "חוזי מכר, ליווי עסקאות וירושות. גם באנגלית, לרוכשים מחו״ל.",
     icon: "/icons/real-estate.svg",
     image: "/media/practice-real-estate.jpg",
-    imageAlt: "מסדרון דירה עם אור טבעי — הדמיה אווירה לתחום נדל״ן",
+    imageAlt: "מסדרון דירה עם אור טבעי (הדמיה אווירה לתחום נדל״ן)",
   },
 ] as const;
 

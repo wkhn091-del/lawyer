@@ -16,14 +16,14 @@
 - **Preset:** `minimal` כבסיס (ה-README ממליץ כך למשרדי עו״ד) + overrides לפרויקט:
 
 ```ts
-// preset מותאם "law" (יתווסף ל-config.ts בביצוע)
+// מקור אמת: src/motion/config.ts → presets.law
 {
   ease: "power2.out",
-  duration: 0.55,
-  distance: 16,      // תואם חוק א׳-3: עד 16px
-  stagger: 0.05,     // עד 60ms בין פריטים
+  duration: 0.75,
+  distance: 28,      // כניסות Reveal — מאושר ל-law (שקט, לא ראוותני)
+  stagger: 0.07,
   lerp: 1,           // בלי Lenis / בלי scroll-jacking
-  start: "top 90%",
+  start: "top 88%",
 }
 ```
 

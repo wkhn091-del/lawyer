@@ -5,7 +5,7 @@ import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "אודות",
-  description: "על משרד עורכי דין כהן ושות׳ — 12 שנות ליווי אישי במשפחה, עבודה ונדל״ן.",
+  description: "על משרד עורכי דין כהן ושות׳: 12 שנה במרכז, בדיני משפחה, עבודה ונדל״ן.",
 };
 
 export default function AboutPage() {
@@ -14,34 +14,34 @@ export default function AboutPage() {
       <div className="relative h-64 overflow-hidden md:h-[22rem]">
         <Image
           src="/media/corridor-dusk.jpg"
-          alt="חלון משרד בשעת בין-ערביים מעל העיר — הדמיה אווירה"
+          alt="חלון משרד בשעת בין-ערביים מעל העיר (הדמיה אווירה)"
           fill
           sizes="100vw"
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-navy/50" aria-hidden="true" />
+        <div className="scrim absolute inset-0" aria-hidden="true" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-5 pb-8 md:px-8">
           <h1 className="font-display text-hero text-cream">על המשרד</h1>
-          <p className="mt-2 text-small text-cream/70">הדמיה</p>
+          <p className="mt-2 text-small text-cream/85">הדמיה</p>
         </div>
       </div>
       <div className="bg-cream">
       <div className="mx-auto max-w-3xl px-5 py-14 md:px-8 md:py-20">
         <p className="text-lead text-muted">
-          {site.company} פועל 12 שנים במרכז, ומתמחה בדיני משפחה וגירושין, דיני עבודה ונדל״ן.
+          {site.company} פועל 12 שנים במרכז: דיני משפחה וגירושין, דיני עבודה ונדל״ן.
         </p>
         <p className="mt-4 text-body text-ink">
-          אנחנו מאמינים שלקוח בלחץ צריך קודם כל הסבר פשוט — ואחר כך ייצוג מדויק. השותף המנהל, עו״ד אבי כהן, מוביל
-          צוות של ארבעה עורכי דין, שתי מתמחות ומזכירה.
+          לקוח בלחץ צריך קודם הסבר פשוט — ואחר כך ייצוג. השותף המנהל, עו״ד אבי כהן, מוביל צוות של ארבעה
+          עורכי דין, שתי מתמחות ומזכירה. אחרי הפגישה הראשונה תדעו איפה אתם עומדים ומי מטפל בתיק.
         </p>
         <p className="mt-4 text-small text-muted">
-          המשרד מעניק גם ייעוץ משפטי שוטף לעסקים קטנים, לפי צורך — בלי להעמיס על חוויית האתר.
+          לפי צורך המשרד נותן גם ייעוץ שוטף לעסקים קטנים — בלי הבטחות לתוצאה.
         </p>
         <div className="relative mt-12 aspect-[21/9] overflow-hidden">
           <Image
             src="/media/about-texture.jpg"
-            alt="פרט ארכיטקטוני שקט — הדמיה טקסטורה"
+            alt="פרט ארכיטקטוני שקט (הדמיה טקסטורה)"
             fill
             sizes="(max-width: 768px) 100vw, 720px"
             className="object-cover"
@@ -51,7 +51,7 @@ export default function AboutPage() {
         <div className="mt-10 flex flex-wrap gap-3">
           <CtaLink href="/team">להכיר את הצוות</CtaLink>
           <CtaLink href="/contact#lead" variant="ghost">
-            לתיאום שיחה
+            לקביעת פגישת ייעוץ
           </CtaLink>
         </div>
       </div>

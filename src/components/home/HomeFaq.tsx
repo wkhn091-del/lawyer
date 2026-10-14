@@ -15,7 +15,7 @@ export function HomeFaq() {
                 <span className="flex min-h-12 items-center justify-between gap-4">
                   {item.q}
                   <span
-                    className="text-gold transition duration-[var(--motion-base)] group-open:rotate-45"
+                    className="text-gold-ink transition duration-[var(--motion-base)] group-open:rotate-45"
                     aria-hidden="true"
                   >
                     +

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
 
@@ -30,7 +29,8 @@ export function StickyCta() {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-30 border-t border-border bg-white/95 pb-safe px-4 pt-3 backdrop-blur-md transition duration-[var(--motion-base)] motion-reduce:transition-none md:hidden ${
+      data-sticky-cta
+      className={`glass fixed inset-x-0 bottom-0 z-30 pb-safe px-4 pt-3 transition duration-[var(--motion-base)] motion-reduce:transition-none md:hidden ${
         show ? "translate-y-0 opacity-100 ease-out" : "pointer-events-none translate-y-full opacity-0 ease-in"
       }`}
       aria-hidden={!show}
@@ -57,15 +57,15 @@ export function StickyCta() {
             וואטסאפ
           </a>
         ) : null}
-        <Link
-          href="/contact#lead"
+        <a
+          href="#lead"
           tabIndex={show ? 0 : -1}
           className="flex min-h-12 flex-1 items-center justify-center rounded-md bg-navy text-button font-medium text-cream active:scale-[0.97] motion-reduce:active:scale-100"
         >
-          לתיאום שיחת ייעוץ
-        </Link>
+          לקביעת פגישת ייעוץ
+        </a>
       </div>
-      <p className="mt-2 pb-1 text-center text-[0.75rem] text-muted">
+      <p className="mt-2 pb-1 text-center text-small text-muted">
         מענה תוך יום עסקים אחד · בלי התחייבות לייצוג
       </p>
     </div>

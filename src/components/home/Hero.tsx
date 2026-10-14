@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden bg-navy text-cream">
       <HeroBg src="/media/hero-office-dusk.jpg" alt={hero.backgroundAlt} />
-      <div className="absolute inset-0 bg-navy/80" aria-hidden="true" />
+      <div className="absolute inset-0 bg-navy-deep/85" aria-hidden="true" />
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
@@ -28,43 +28,36 @@ export function Hero() {
         <div className="grid items-end gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:gap-8 lg:gap-12">
           <div className="relative z-10 max-w-xl">
             <p className="text-small tracking-[0.08em] text-gold">{site.brand}</p>
-            <p className="mt-2 text-small text-cream/75">{hero.trust}</p>
 
             <HeroGhost word={hero.ghostWord} />
 
-            <h1
-              id="hero-heading"
-              className="relative mt-4 font-display font-bold text-cream"
-              style={{
-                fontSize: "clamp(2.5rem, 1.6rem + 3.2vw, 4.25rem)",
-                lineHeight: 1.15,
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <h1 id="hero-heading" className="relative mt-4 font-display text-hero text-cream">
               {hero.h1}
             </h1>
 
             <HeroLead>
-              <p
-                className="mt-5 max-w-lg text-cream/85"
-                style={{
-                  fontSize: "clamp(1.05rem, 1rem + 0.35vw, 1.25rem)",
-                  lineHeight: 1.65,
-                }}
-              >
-                {hero.lead}
-              </p>
+              <p className="mt-5 max-w-lg text-lead text-cream/85">{hero.lead}</p>
             </HeroLead>
 
             <div className="mt-8">
               <HeroGoldLine />
-              <a
-                id="hero-cta"
-                href={hero.primaryHref}
-                className="mt-3 flex min-h-12 w-full items-center justify-center rounded-md bg-gold px-6 text-button font-medium text-navy transition duration-[var(--motion-instant)] hover:-translate-y-px hover:bg-gold-hover hover:shadow-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-gold motion-reduce:hover:translate-y-0 md:inline-flex md:w-auto"
-              >
-                {hero.primaryCta}
-              </a>
+              <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-center">
+                <a
+                  id="hero-cta"
+                  href={hero.primaryHref}
+                  className="flex min-h-12 w-full items-center justify-center rounded-md bg-gold px-6 text-button font-medium text-navy shadow-on-dark transition duration-[var(--motion-fast)] hover:-translate-y-px hover:bg-gold-hover hover:shadow-on-dark-hover active:translate-y-0 active:scale-[0.98] motion-reduce:hover:translate-y-0 md:inline-flex md:w-auto"
+                >
+                  {hero.primaryCta}
+                </a>
+                <a
+                  id="hero-tel"
+                  href={`tel:${site.contact.phoneTel}`}
+                  className="flex min-h-12 w-full items-center justify-center gap-2 rounded-md border border-cream/40 px-6 text-button font-medium text-cream transition duration-[var(--motion-fast)] hover:border-cream hover:bg-cream/10 active:scale-[0.98] md:inline-flex md:w-auto"
+                >
+                  {hero.phoneCta}
+                  <bdi dir="ltr">{site.contact.phone}</bdi>
+                </a>
+              </div>
               <p className="mt-3 text-small text-cream/65">{hero.reassurance}</p>
             </div>
           </div>
@@ -79,9 +72,6 @@ export function Hero() {
                 sizes="(max-width: 768px) 100vw, 42vw"
                 className="object-cover transition-[filter] duration-[var(--motion-fast)] group-hover/frame:brightness-[1.03] motion-reduce:transition-none"
               />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-deep/90 to-transparent p-4 md:p-5">
-                <p className="text-small text-cream/70">{hero.visualNote}</p>
-              </div>
             </div>
           </HeroFrame>
         </div>

@@ -1,35 +1,57 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { z } from "zod";
+import { LeadConversion } from "@/components/analytics/LeadConversion";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { thankYouCopy, nextStepsFor } from "@/content/thank-you";
 import { site } from "@/content/site";
+import { PRACTICE_AREAS, type PracticeAreaId } from "@/lib/leads/options";
+import { LEAD_ACK_COOKIE, LEAD_ACK_COOKIE_LEGACY } from "@/lib/security/lead-ack-cookie";
 
 export const metadata: Metadata = {
   title: "הפנייה התקבלה",
   robots: { index: false, follow: false },
 };
 
-export default async function ThankYouPage() {
-  const raw = (await cookies()).get("cb_demo")?.value;
-  let firstName = "";
-  let practiceArea = "";
+const PRACTICE_IDS = PRACTICE_AREAS.map((area) => area.id) as [PracticeAreaId, ...PracticeAreaId[]];
+
+/** The cookie is client-held, so treat it as untrusted input. */
+const ackSchema = z.object({
+  id: z.uuid().optional(),
+  firstName: z
+    .string()
+    .max(40)
+    .regex(/^[\p{L}\p{M}' .\-״׳"]+$/u)
+    .catch(""),
+  practiceArea: z.enum(PRACTICE_IDS).catch("other"),
+});
+
+function readAck(raw: string | undefined) {
+  if (!raw) return null;
   try {
-    if (raw) {
-      const parsed = JSON.parse(raw) as { firstName?: string; practiceArea?: string };
-      firstName = parsed.firstName ?? "";
-      practiceArea = parsed.practiceArea ?? "";
-    }
+    return ackSchema.safeParse(JSON.parse(raw)).data ?? null;
   } catch {
-    /* ignore */
+    return null;
   }
+}
+
+export default async function ThankYouPage() {
+  const jar = await cookies();
+  const raw =
+    jar.get(LEAD_ACK_COOKIE)?.value ??
+    LEAD_ACK_COOKIE_LEGACY.map((name) => jar.get(name)?.value).find(Boolean);
+  const ack = readAck(raw);
+  const firstName = ack?.firstName ?? "";
+  const practiceArea = ack?.practiceArea ?? "";
 
   const next = nextStepsFor(practiceArea);
 
   return (
     <div className="bg-cream">
+      <LeadConversion leadId={ack?.id ?? null} practiceArea={practiceArea} />
       <div className="mx-auto max-w-2xl px-5 py-16 md:px-8 md:py-20">
-        <p className="text-small tracking-[0.06em] text-gold">{site.brand}</p>
+        <p className="text-small tracking-[0.06em] text-gold-ink">{site.brand}</p>
         <h1 className="mt-3 font-display text-hero text-navy">
           {thankYouCopy.title}
           {firstName ? `, ${firstName}` : ""}
@@ -61,7 +83,7 @@ export default async function ThankYouPage() {
             {thankYouCopy.nextHeading}
           </h2>
           <p className="mt-2 text-small text-muted">
-            הצעות לפי התחום שציינתם בפנייה — בלי התחייבות ובלי שדות נוספים.
+            הצעות לפי התחום שציינתם בפנייה, בלי התחייבות ובלי שדות נוספים.
           </p>
 
           <ul className="mt-6 space-y-4">
@@ -70,7 +92,7 @@ export default async function ThankYouPage() {
                 href={next.serviceHref}
                 className="group flex flex-col border border-border bg-white p-5 transition hover:border-navy"
               >
-                <span className="text-[0.75rem] tracking-[0.06em] text-gold">התחום שלכם</span>
+                <span className="text-[0.75rem] tracking-[0.06em] text-gold-ink">התחום שלכם</span>
                 <span className="mt-2 font-display text-h3 text-navy group-hover:text-navy-deep">
                   {next.serviceLabel}
                 </span>
@@ -82,7 +104,7 @@ export default async function ThankYouPage() {
                 href={next.articleHref}
                 className="group flex flex-col border border-border bg-white p-5 transition hover:border-navy"
               >
-                <span className="text-[0.75rem] tracking-[0.06em] text-gold">{next.articleTag}</span>
+                <span className="text-[0.75rem] tracking-[0.06em] text-gold-ink">{next.articleTag}</span>
                 <span className="mt-2 font-display text-h3 text-navy group-hover:text-navy-deep">
                   {next.articleTitle}
                 </span>

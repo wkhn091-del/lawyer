@@ -6,7 +6,7 @@ import { site } from "@/content/site";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-white/90 backdrop-blur-md">
+    <header className="glass sticky top-0 z-40">
       <a href="#main" className="skip-link">
         לדלג לתוכן
       </a>
@@ -34,7 +34,7 @@ export function Header() {
             <bdi>{site.contact.phone}</bdi>
           </a>
           <CtaLink href="/contact#lead" className="min-h-10 px-4 text-small">
-            לתיאום שיחה
+            לקביעת פגישת ייעוץ
           </CtaLink>
           <MobileNav />
         </div>

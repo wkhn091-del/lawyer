@@ -22,7 +22,7 @@ export function PracticeDoors() {
               key={area.id}
               href={`${area.href}?from=door`}
               areaId={area.id}
-              className="group relative flex h-full min-h-[340px] flex-col overflow-hidden bg-navy text-cream transition duration-[var(--motion-base)] hover:shadow-soft"
+              className="group relative flex h-full min-h-[340px] flex-col overflow-hidden bg-navy text-cream shadow-contact transition duration-[var(--motion-base)] hover:-translate-y-0.5 hover:shadow-lift motion-reduce:hover:translate-y-0"
             >
               <div className="relative aspect-[5/4] overflow-hidden">
                 <Image
@@ -30,11 +30,10 @@ export function PracticeDoors() {
                   alt={area.imageAlt}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                  className="object-cover transition duration-[var(--motion-slow)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/25 to-transparent" />
                 <span className="absolute bottom-3 start-4 font-display text-small text-gold">0{index + 1}</span>
-                <span className="absolute bottom-3 end-4 text-small text-cream/55">הדמיה</span>
               </div>
               <div className="flex flex-1 flex-col p-6">
                 <h3 className="font-display text-[1.45rem] leading-snug">{area.door}</h3>

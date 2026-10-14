@@ -1,7 +1,177 @@
 # PROJECT_BRIEF — משרד עורכי דין כהן ושות׳
 
-סטטוס: **סקריפט 2 הושלם (א׳–ד׳)** — CRO · ביצועים/a11y · UX · מיצוב תחרותי.
+סטטוס: **סקריפט 5 · תיקונים אחרי ביקורת** — lint/docs/assets/השוואה/EN; חוסמי לקוח (ח.פ/כתובת/אישור קופי) עדיין פתוחים.
 עודכן: 13.10.2026
+
+## סקריפט 4 · שאלה 1 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| שם לקוח במסירה | **משרד עורכי דין כהן ושות׳** (מותג קצר: כהן ושות׳) |
+| תחום | שירותים משפטיים — לידים (לא איקומרס) |
+| URL | `https://cohen-law.co.il` (יעד פרוד; עד cutover — Preview ב-Vercel) |
+| אנשי קשר | עו״ד אבי כהן (+ דניאל בן-עמי לאישורי עיצוב) |
+
+## סקריפט 4 · שאלה 2 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| CMS | Sanity Studio על **`studio.cohen-law.co.il`** (לא embedded בדומיין הראשי) |
+| אבטחה | MFA/SSO חובה; Role **Editor** ללקוח; Viewer למתמחות אם צריך |
+| עד עליית Studio | תוכן ב-`src/content` — שינויים דרך הסוכנות / PR |
+
+## סקריפט 4 · שאלה 3 (ננעל · תמליץ)
+| פעולת ליבה | כן / לא |
+|---|---|
+| עדכון טקסטים (Hero / שירותים / FAQ) | **כן** |
+| פרסום מאמר | **כן** |
+| עדכון צוות + תמונות אמיתיות | **כן** (כשיגיע צילום) |
+| טלפון / שעות / וואטסאפ | **כן** |
+| מעקב לידים ב-CRM | **כן** (מחוץ לאתר) |
+| מלאי / קופונים / הזמנות | **לא** — מתועד |
+
+## סקריפט 4 · שאלה 4 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| קמפיין השקה | **אורגני + GSC** בשבוע הראשון; ממומן (גוגל) רק אחרי לידים תקינים מפרוד + המרות ב-GA4 |
+| גישות אנליטיקס | **אבי כהן** = בעלים; דניאל = עורך/צופה לפי צורך; מזכירה = Viewer בלבד אם בכלל |
+| כלים | GTM · GA4 · Clarity · Search Console |
+| Meta Pixel | **לא** בשלב 1 (ללא שינוי מסקריפט 3) |
+
+## סקריפט 4 · שאלה 5 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| ריטיינר | **650 ₪/חודש** (כולל מע״מ או לא — לציין בחוזה) |
+| באג / תמיכה | טופס, לינקים, תצוגה, עדכוני פרטי קשר שסופקו, ניטור אבטחה בסיסי, עדכוני תלויות קריטיים |
+| פיתוח נוסף | Studio חדש, דפי נחיתה, שפה מלאה, CRM נוסף, רידיזיין — הצעת מחיר נפרדת |
+| SLA תגובה | באג קריטי (אתר/לידים): יום עסקים אחד · אחר: עד 3 ימי עסקים |
+
+## סקריפט 4 · שאלה 6 (ננעל · תמליץ)
+| נכס | בעלות |
+|---|---|
+| דומיין + מיילים | **המשרד** (Domain The Net) |
+| Vercel / GitHub / Sanity | **סוכנות** כ-owner; אבי = member עם הרשאות פרויקט |
+| GTM / GA4 / GSC / Clarity | אבי = בעלים; דניאל = עורך/צופה |
+| סליקה | **לא רלוונטי** |
+| 2FA | **חובה** לכל חשבון לפני מסירת גישות |
+| מזכירה | Viewer בלבד אם צריך — בלי גישת deploy |
+
+## סקריפט 4 · שאלה 7 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| Baseline לפני | **לא ידוע** — נאסוף 30 יום ראשונים כבסיס |
+| KPIs | לידים/חודש (יעד 15–20) · % השלמת טופס · tel clicks · CTA clicks · Clarity (תומך) |
+| פגישת 30 יום | **+30 מיום cutover** (לקבוע תאריך ביומן במסירה) |
+| Case Study | טיוטה **פנימית** קודם; פרסום חיצוני רק באישור בכתב מהמשרד |
+
+## סקריפט 4 · חבילת מסירה
+| # | קובץ |
+|---|---|
+| 1 | `docs/handoff/01-welcome-manual.md` |
+| 2 | `docs/handoff/02-loom-script.md` |
+| 3 | `docs/handoff/03-social-launch-kit.md` |
+| 4 | `docs/handoff/04-retainer-pitch.md` |
+| 5 | `docs/handoff/05-security-incident-sheet.md` |
+| 6 | `docs/handoff/06-case-study-and-30-day-review.md` |
+
+## סקריפט 3 · מודול ב׳ — קבוצה 1 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| אחסון | **Vercel** (App Router) |
+| דומיין | `cohen-law.co.il` + `www` → apex או להפך לפי רשומה אחת קנונית |
+| DNS | Domain The Net — רק רשומות Vercel; **לא** לגעת ב-MX של המיילים |
+| PWA | **לא** ב-MVP (בלי Service Worker / התקנה לנייד) |
+| Staging | Vercel Preview + Deployment Protection |
+
+## סקריפט 3 · מודול ב׳ — קבוצה 2 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| מסירת ליד | **מייל + CRM** — Resend ל-`info@` (העתק/`LEAD_NOTIFY` כולל `avi@`) **וגם** webhook ל-Lawyer Office Manager |
+| סדר עדיפות עלייה | אם CRM עדיין בלי webhook ביום העלייה: מייל חייב; CRM מתחבר ברגע שיש URL+טוקן (כבר בקוד) |
+| Slack | אופציונלי לצוות פנימי — לא חובה להשקה |
+| Calendly / יומן | **לא** באתר — תיאום אחרי ליד בטלפון/מייל |
+| סליקה / עגלה | **לא רלוונטי** |
+
+## סקריפט 3 · מודול ב׳ — קבוצה 3 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| אימייל לפונה | **לא** ב-MVP — עמוד `/thank-you` מספיק |
+| התראת צוות | מייל + CRM (כפי שננעל בקבוצה 2); WhatsApp/SMS לצוות — **לא** מהאתר |
+| תזכורת 24 שע׳ | **לא** באתר — ב-CRM / תהליך משרדי |
+| נטישת עגלה | **לא רלוונטי** |
+
+## סקריפט 3 · מודול ב׳ — קבוצה 4 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| GA4 | **כן** — דרך GTM בלבד |
+| Clarity | **כן** — רק אחרי הסכמת עוגיות |
+| Meta / LinkedIn Pixel | **לא** בשלב 1 |
+| אירועים | `generate_lead` · `tel_click` · `form_start` (פתיחת/פוקוס טופס) · CTA ראשי; בלי PII ב-dataLayer |
+| באנר | חובה לפני טעינת GTM/Clarity |
+
+## סקריפט 3 · מודול ב׳ — קבוצה 5 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| Sitemap | `src/app/sitemap.ts` מהתוכן בקוד — **מספיק להשקה**; Sanity בהמשך בלי לשבור URLs |
+| OG | תמונה אחת `og-cohen.jpg` לכל האתר ב-MVP; per-service רק אחרי צילום אמיתי |
+| Schema | Organization + LegalService (לשירותים) + FAQPage היכן שיש FAQ — **מספיק**; בלי Product/Offer |
+
+## סקריפט 3 · מודול ב׳ — קבוצה 6 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| Google Business Profile | להפעיל/לאמת לפני או מיד אחרי העלייה; שם תצוגה = **משרד עורכי דין כהן ושות׳** |
+| כתובת / ח.פ באתר | **לא ממציאים** — שדות ב-`site.ts`/CMS; עד מילוי: טלפון + מייל + מיקום כללי «מרכז / תל אביב» |
+| NAP | חייב זהות מלאה מול GBP **רק אחרי** שיש כתובת מאושרת; עד אז בלי Schema PostalAddress מזויף |
+| LocalBusiness מלא | אחרי כתובת מאושרת — לא חוסם cutover טכני אם הפרטים המשפטיים עדיין בטיפול מול הלקוח |
+
+## סקריפט 3 · מודול ב׳ — קבוצה 7 (ננעל · תמליץ)
+| נושא | החלטה |
+|---|---|
+| אתר קיים | Wix על `cohen-law.co.il` — מעבר עם 301 (לא הכל לדף הבית) |
+| Search Console | חובה לפני/אחרי cutover — בעלות על הדומיין + sitemap חדש |
+| ייצוא URLs | אם אין קובץ: GSC Pages + סריקה; להשלים `src/lib/seo/wix-redirects.ts` + `docs/wix-url-export.csv` |
+| עמודי ליבה לשימור | בית · 3 שירותים · אודות/צוות · צור קשר · מאמרים אם מדורגים |
+| לפני DNS | רשימת redirects מלאה + בדיקת לולאות ב-build |
+
+## סקריפט 3 · מודול ב׳ — ביצוע טכני (אושר)
+| נושא | ביצוע |
+|---|---|
+| מדידה | `cta_click` · `tel_click` · `form_start` · `form_reached` · `generate_lead` (בלי PII) |
+| Schema | Organization + LegalService בבית; Service בדפי שירות; FAQPage |
+| Sitemap | `lastModified` + עדיפויות |
+| OG | `og-cohen.jpg` (כולל metadata לשירותים) |
+| צ׳קליסטים | `docs/launch-checklist.md` · `docs/go-live-security-gate.md` |
+
+## סקריפט 3 · מודול א׳ — Defense in Depth (Level A)
+| נושא | ביצוע |
+|---|---|
+| Headers | `src/lib/security/headers.ts` → proxy + `next.config` (HSTS, nosniff, DENY, COOP, CORP, Permissions-Policy) |
+| CSP | nonce ב-`src/proxy.ts` (ללא שינוי מודל) |
+| Cache | `no-store` ל-`/thank-you`, `/api/health`, `security.txt` |
+| Server Actions | `allowedOrigins` + חובת `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` בפרוד |
+| לידים | CRLF strip ב-Zod; cookie `cb_lead_ack` בלי email; `safeInternalPath` ל-page meta |
+| תג מחקר | `/.well-known/security.txt` |
+| N/A (מסחר) | אין cart/OTP/payments — לא נבנה |
+| Go-live | צ׳קליסט ב-`DEPLOY.md` |
+
+## סקריפט 3 · מודול א׳ — רמה ב׳ (30 יום / הוקדם)
+| נושא | ביצוע |
+|---|---|
+| Dependabot | `.github/dependabot.yml` (npm שבועי + Actions חודשי) |
+| npm audit ב-CI | `--omit=dev --audit-level=high` |
+| API hygiene | `/api/health` GET/HEAD; 405 ל-POST |
+| Formula injection | `csvSafeCell` במשלוח מייל לידים |
+| Error pages | `not-found` / `error` / `global-error` בלי stack |
+| Docs | `docs/security.md` + דף אירועים ללקוח |
+| N/A | העלאות קבצים, ביקורות, Clerk — לא נבנה |
+| נהלים אנושיים | 2FA / SPF-DKIM-DMARC / branch protection — ב-`DEPLOY.md` |
+
+## סקריפט 3 · מודול א׳ — רמה ג׳
+| נושא | ביצוע |
+|---|---|
+| CSP reports | `/api/csp-report` + `Reporting-Endpoints` + `report-uri`/`report-to` |
+| Cookie | `__Host-cb_lead_ack` בפרוד |
+| Go-Live Gate | `docs/go-live-security-gate.md` |
+| N/A | ATO / card testing / Trusted Types (נדחה ל-Next) |
+| WAF + ZAP | צ׳קליסט נהלים (לא בקוד) |
 
 ## סקריפט 2 · מודול ד׳ — מיצוב תחרותי
 | | |
@@ -298,12 +468,15 @@ Home, אודות, 3× שירותים (משפחה / עבודה / נדל״ן), ה�
 ### מפת מסרים (חוק 18) — בית
 Hero: מה/למי · תחומים: האם מתאים לי · למה אנחנו: למה לא מתחרה · איך זה עובד: מה אחרי הטופס · המלצות: הוכחה (רק אמיתית) · מאמרים: חינוך עדין · CTA: החלטה.
 
-## חסר לפני עלייה (לא חוסם תכנון/בנייה)
-- ח.פ/ע.מ + כתובת רחוב (שדות CMS)
+## חסר לפני עלייה (דורש לקוח / ops — לא ממציאים בקוד)
+- ח.פ/ע.מ + כתובת רחוב → `site.legal` (**חוסם השקה משפטית**)
+- אישור Copy Deck מאבי / דניאל
+- ייצוא URL מ-Wix → השלמת `wix-redirects.ts`
+- env פרוד + 2FA + SPF/DKIM/DMARC + Go-Live Gate
+- Lighthouse על Preview/פרוד
 - מספר נייד לוואטסאפ (אופציונלי)
-- צילום צוות/משרד
-- מפתחות: Sanity, GA4, GTM, Clarity, Turnstile, Upstash, Sentry, SMTP/Resend, CRM API
-- ייצוא URL מ-Wix ל-`redirect` docs
-- קופי משפטי חיצוני (לפי שאלון) — בינתיים Copy Deck סוכנות לאישור
-- המלצות לקוחות אמיתיות
-- שמות מלאים + תמונות ל-4 עורכי הדין
+- צילום צוות/משרד + שמות מלאים ל-4 עו״ד
+- המלצות לקוחות אמיתיות (מקטע מוכן, ריק)
+- גוף מאמרים + תרגום EN מלא
+- מפתחות: Sanity, GA4, GTM, Clarity, Turnstile, Upstash, Sentry, Resend, CRM
+- שם סוכנות בחבילת handoff
