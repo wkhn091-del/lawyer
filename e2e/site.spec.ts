@@ -13,7 +13,7 @@ test.describe("בית וניווט", () => {
   test("מציג מותג ו-CTA ראשי", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByText("כהן ושות׳").first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /לתיאום שיחת ייעוץ|צור קשר/ }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /לקביעת פגישת ייעוץ|צור קשר/ }).first()).toBeVisible();
   });
 
   test("JSON-LD Organization/LegalService בבית", async ({ page }) => {
@@ -33,7 +33,7 @@ test.describe("מדידה", () => {
     await page.locator("#field-phone").fill("0501234567");
     await page.locator("#field-email").fill("israel@example.co.il");
     await page.locator("#field-message").fill("אני בתהליך גירושין וצריכה ייעוץ ראשוני.");
-    await page.getByRole("button", { name: "לשליחת הפנייה" }).click();
+    await page.getByRole("button", { name: "לקביעת פגישת ייעוץ" }).click();
     await expect(page).toHaveURL(/\/thank-you$/);
     const events = await page.evaluate(() =>
       ((window as unknown as { dataLayer?: Record<string, unknown>[] }).dataLayer ?? []).filter(
@@ -47,8 +47,8 @@ test.describe("מדידה", () => {
 test.describe("טופס ליד", () => {
   test("שליחה ריקה מציגה שגיאות ומעבירה פוקוס", async ({ page }) => {
     await openLeadForm(page);
-    await page.getByRole("button", { name: "לשליחת הפנייה" }).click();
-    await expect(page.getByText("נשמח לדעת את השם המלא")).toBeVisible();
+    await page.getByRole("button", { name: "לקביעת פגישת ייעוץ" }).click();
+    await expect(page.getByText("כתבו את השם המלא")).toBeVisible();
     await expect(page.locator("#field-fullName")).toBeFocused();
   });
 
@@ -58,7 +58,7 @@ test.describe("טופס ליד", () => {
     await page.locator("#field-phone").fill("0501234567");
     await page.locator("#field-email").fill("israel@example.co.il");
     await page.locator("#field-message").fill("אני בתהליך גירושין וצריכה ייעוץ ראשוני.");
-    await page.getByRole("button", { name: "לשליחת הפנייה" }).click();
+    await page.getByRole("button", { name: "לקביעת פגישת ייעוץ" }).click();
     await expect(page).toHaveURL(/\/thank-you$/);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(/הפנייה התקבלה|קיבלנו/);
   });
@@ -97,10 +97,10 @@ test.describe("נגישות בסיסית", () => {
 
   test("טופס: שגיאה מקושרת לשדה דרך aria-describedby", async ({ page }) => {
     await openLeadForm(page);
-    await page.getByRole("button", { name: "לשליחת הפנייה" }).click();
+    await page.getByRole("button", { name: "לקביעת פגישת ייעוץ" }).click();
     const field = page.locator("#field-fullName");
     await expect(field).toHaveAttribute("aria-invalid", "true");
-    await expect(field).toHaveAccessibleDescription(/נשמח לדעת את השם המלא/);
+    await expect(field).toHaveAccessibleDescription(/כתבו את השם המלא/);
   });
 });
 
@@ -172,7 +172,7 @@ test.describe("אבטחה", () => {
     const captured = page.waitForRequest(
       (request) => request.method() === "POST" && Boolean(request.headers()["next-action"]),
     );
-    await page.getByRole("button", { name: "לשליחת הפנייה" }).click();
+    await page.getByRole("button", { name: "לקביעת פגישת ייעוץ" }).click();
     const original = await captured;
 
     const headers = { ...original.headers() };
