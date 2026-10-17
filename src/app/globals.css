@@ -129,12 +129,49 @@ body {
   --hero-brass: var(--color-gold);
   --hero-brass-hot: var(--color-gold-hover);
   --hero-line: color-mix(in srgb, var(--color-cream) 14%, transparent);
+  --hero-card-w: clamp(5.25rem, 24vw, 6.5rem);
+  --hero-card-h: calc(var(--hero-card-w) * 1.879);
+  --hero-col-shift-0: translateY(0.75rem);
+  --hero-col-shift-1: translateY(-1.75rem);
+  --hero-col-shift-2: translateY(1.25rem);
   background-color: var(--hero-ink);
   color: var(--hero-bone);
 }
 
+@media (min-width: 640px) {
+  .hero-stage {
+    --hero-card-w: clamp(6rem, 18vw, 8.25rem);
+    --hero-col-shift-0: translateY(1rem);
+    --hero-col-shift-1: translateY(-2.25rem);
+    --hero-col-shift-2: translateY(1.75rem);
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-stage {
+    --hero-card-w: 8.25rem;
+    --hero-card-h: 15.5rem;
+    --hero-col-shift-0: translateY(1.5rem);
+    --hero-col-shift-1: translateY(-2.75rem);
+    --hero-col-shift-2: translateY(2.25rem);
+  }
+}
+
 .hero-stage .hero-accent {
   color: var(--hero-brass);
+}
+
+/* Soft bottom fade on mobile only — dissolves into the photo, no hard crop */
+.hero-arch-mask {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 48%, rgb(0 0 0 / 0.55) 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 48%, rgb(0 0 0 / 0.55) 72%, transparent 100%);
+}
+
+@media (min-width: 768px) {
+  .hero-arch-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

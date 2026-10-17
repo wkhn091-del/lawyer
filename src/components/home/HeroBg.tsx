@@ -14,7 +14,7 @@ export function HeroBg({ src, alt }: { src: string; alt: string }) {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[82%_42%] scale-110"
+          className="object-cover object-[72%_38%] scale-110 md:object-[82%_42%]"
         />
       </Parallax>
     </div>
