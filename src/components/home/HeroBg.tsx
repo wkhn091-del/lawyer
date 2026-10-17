@@ -6,14 +6,15 @@ import { Parallax } from "@/motion";
 export function HeroBg({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
-      <Parallax image speed={0.15} className="absolute inset-[-10%] h-[120%] w-full">
+      {/* Crop toward the lit interior — hides the dark facade pillar on the photo’s left */}
+      <Parallax image speed={0.12} className="absolute inset-0 h-full w-full">
         <Image
           src={src}
           alt={alt}
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-[82%_42%] scale-110"
         />
       </Parallax>
     </div>

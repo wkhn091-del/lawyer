@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { site } from "@/content/site";
 
-export function MobileNav() {
+export function MobileNav({ onDark = false }: { onDark?: boolean }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -60,7 +60,11 @@ export function MobileNav() {
       <button
         ref={buttonRef}
         type="button"
-        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-border text-navy"
+        className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border ${
+          onDark
+            ? "border-cream/30 text-cream"
+            : "border-border text-navy"
+        }`}
         aria-expanded={open}
         aria-controls={panelId}
         aria-haspopup="true"

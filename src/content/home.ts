@@ -7,15 +7,34 @@ import { practiceAreas } from "./site";
  */
 export const home = {
   hero: {
+    /** Full sentence for SEO / a11y; lines drive the stacked visual like the reference hero. */
     h1: "שעה אחת של שיחה, ותצאו עם תוכנית והערכת עלות.",
-    lead: "12 שנה במרכז · משפחה, עבודה ונדל״ן. אחרי הפגישה הראשונה תדעו איפה אתם עומדים, ומי מטפל בתיק בפועל.",
+    h1Lines: ["שעה אחת של שיחה", "ותצאו עם תוכנית", "והערכת עלות"] as const,
+    badge: "מענה תוך יום עסקים",
+    meta: "כהן ושות׳ · תל אביב · ייעוץ ראשוני",
+    lead: "12 שנה במרכז · משפחה, עבודה ונדל״ן. אחרי הפגישה הראשונה תדעו איפה אתם עומדים.",
+    offer: "פגישת ייעוץ · שקיפות בעלויות מההתחלה",
     primaryCta: "לקביעת פגישת ייעוץ",
     primaryHref: "#lead",
     phoneCta: "או התקשרו עכשיו",
+    trust: "בלי התחייבות לייצוג בשלב הזה",
     reassurance: "מענה תוך יום עסקים אחד · בלי התחייבות לייצוג בשלב הזה",
-    ghostWord: "כהן",
-    frameAlt: "חדר ישיבות שקט במשרד בוטיק (הדמיה)",
-    backgroundAlt: "חזית משרד מודרנית בשעת בין-ערביים (הדמיה אווירה)",
+    archLabel: "תחומי הליבה",
+    frameAlt: "תצוגת תחומי ההתמחות במסגרת קשת (הדמיה)",
+    backgroundSrc: "/media/hero-office-dusk.jpg",
+    backgroundAlt: "חזית משרד בשעת בין-ערביים (הדמיה אווירה)",
+    /** 3×3 tilted grid — ref shows ~2.5 cols clipped by the arch. Middles of col0/1 = ייעוץ + נדל״ן. */
+    cards: [
+      { href: "/services/family", image: "/media/practice-family.jpg", title: "דיני משפחה" },
+      { href: "/services/labor", image: "/media/practice-labor.jpg", title: "דיני עבודה" },
+      { href: "/team", image: "/media/corridor-dusk.jpg", title: "הצוות" },
+      { href: "/contact", image: "/media/meeting-room.jpg", title: "ייעוץ ראשוני" },
+      { href: "/services/real-estate", image: "/media/practice-real-estate.jpg", title: "נדל״ן" },
+      { href: "/services/family", image: "/media/practice-family.jpg", title: "גירושין" },
+      { href: "/services/labor", image: "/media/practice-labor.jpg", title: "דיני עבודה" },
+      { href: "/contact", image: "/media/meeting-room.jpg", title: "ייעוץ" },
+      { href: "/services/real-estate", image: "/media/practice-real-estate.jpg", title: "נדל״ן" },
+    ] as const,
   },
   practice: {
     title: "מה המצב שלכם?",

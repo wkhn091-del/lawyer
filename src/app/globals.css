@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy: #1b2a4e;
-  --color-navy-deep: #121c35;
-  --color-gold: #c9a961;
-  --color-gold-hover: #b8924a;
+  /* Soft charcoal — quieter than hard black. */
+  --color-navy: #2a2927;
+  --color-navy-deep: #222120;
+  --color-gold: #c4a35a;
+  --color-gold-hover: #b08f45;
   /* Gold fails contrast on light surfaces (2.05:1 on cream); use gold-ink for text there. */
   --color-gold-ink: #85672b;
   /* Form control boundary, 3.98:1 on white (WCAG 1.4.11). */
@@ -115,6 +116,57 @@ body {
   outline: 2px solid var(--color-gold);
   outline-offset: 2px;
   box-shadow: 0 0 0 4px var(--color-navy);
+}
+
+/**
+ * Hero stage — same navy / cream / gold system as the rest of the site.
+ */
+.hero-stage {
+  --hero-ink: var(--color-navy-deep);
+  --hero-bone: var(--color-cream);
+  --hero-bone-dim: color-mix(in srgb, var(--color-cream) 82%, transparent);
+  --hero-bone-faint: color-mix(in srgb, var(--color-cream) 58%, transparent);
+  --hero-brass: var(--color-gold);
+  --hero-brass-hot: var(--color-gold-hover);
+  --hero-line: color-mix(in srgb, var(--color-cream) 14%, transparent);
+  background-color: var(--hero-ink);
+  color: var(--hero-bone);
+}
+
+.hero-stage .hero-accent {
+  color: var(--hero-brass);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-arch {
+    transform: none !important;
+  }
+}
+
+.hero-stage .hero-phone {
+  border-color: color-mix(in srgb, var(--color-cream) 22%, transparent);
+  background-color: var(--hero-ink);
+  box-shadow: 0 12px 28px -10px rgb(0 0 0 / 0.65);
+}
+
+.hero-stage .hero-phone:hover {
+  border-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+}
+
+.hero-stage .hero-cta {
+  background: var(--color-gold);
+  color: var(--color-navy-deep);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    0 1px 2px rgb(0 0 0 / 0.35),
+    0 10px 24px -8px rgb(0 0 0 / 0.55);
+}
+.hero-stage .hero-cta:hover {
+  background: var(--color-gold-hover);
+}
+.hero-stage .hero-cta:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
 }
 
 /* Text on photos: dark enough at the bottom that small gold text clears 4.5:1 even over white pixels. */
