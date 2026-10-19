@@ -1,0 +1,15 @@
+---
+description: Desktop layout lock — when user says נעול / locked, never change desktop
+alwaysApply: true
+---
+
+# Desktop lock (נעול)
+
+When Avishi says **נעול** / **locked** about desktop (or Hero/desktop):
+
+- Do **not** change desktop layout, desktop images, desktop CSS (`md:` / `lg:`), or desktop-only assets.
+- Mobile-only fixes are OK (`max-md`, compact branch, portrait `image` fields).
+- Desktop visuals use separate fields (`imageDesktop`, `imagePositionDesktop`) — leave those alone unless he unlocks desktop.
+- If a request would alter both, change **mobile only** and say desktop stayed locked.
+
+Current default: **desktop roadmap + Hero are locked**; phone can iterate.

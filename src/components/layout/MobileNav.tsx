@@ -28,10 +28,11 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
       }
       if (event.key !== "Tab") return;
 
-      // aria-modal promises containment: cycle Tab between the toggle and the panel links.
       const focusables = [
         buttonRef.current,
-        ...(panelRef.current?.querySelectorAll<HTMLElement>("a[href]") ?? []),
+        ...(panelRef.current?.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled])",
+        ) ?? []),
       ].filter((el): el is HTMLElement => el !== null);
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
@@ -67,7 +68,7 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
         }`}
         aria-expanded={open}
         aria-controls={panelId}
-        aria-haspopup="true"
+        aria-haspopup="dialog"
         aria-label={open ? "סגירת תפריט" : "פתיחת תפריט"}
         onClick={() => setOpen((value) => !value)}
       >
@@ -75,21 +76,56 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
           {open ? "✕" : "☰"}
         </span>
       </button>
-      {open ? (
-        <div
-          ref={panelRef}
-          id={panelId}
-          role="dialog"
-          aria-modal="true"
-          aria-label="תפריט ניווט"
-          className="fixed inset-x-0 top-16 z-40 max-h-[min(70vh,28rem)] overflow-y-auto bg-white px-5 py-4 shadow-lift"
-        >
-          <ul className="flex flex-col gap-1 text-body text-navy">
+
+      {/* Backdrop */}
+      <div
+        className={[
+          "fixed inset-0 z-50 bg-navy-deep/45 transition-opacity duration-300",
+          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+        ].join(" ")}
+        aria-hidden="true"
+        onClick={() => {
+          setOpen(false);
+          buttonRef.current?.focus();
+        }}
+      />
+
+      {/* Left drawer — premium side panel, not a top dropdown */}
+      <div
+        ref={panelRef}
+        id={panelId}
+        role="dialog"
+        aria-modal={open}
+        aria-hidden={!open}
+        aria-label="תפריט ניווט"
+        inert={open ? undefined : true}
+        className={[
+          "fixed inset-y-0 left-0 z-50 flex w-[min(20rem,86vw)] flex-col bg-cream shadow-[8px_0_40px_-12px_rgb(0_0_0/0.35)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          open ? "translate-x-0" : "pointer-events-none -translate-x-full",
+        ].join(" ")}
+      >
+        <div className="flex items-center justify-between border-b border-border/60 px-5 py-4">
+          <p className="font-display text-[0.95rem] text-navy">{site.brand}</p>
+          <button
+            type="button"
+            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md border border-border text-navy"
+            aria-label="סגירת תפריט"
+            onClick={() => {
+              setOpen(false);
+              buttonRef.current?.focus();
+            }}
+          >
+            <span aria-hidden="true">✕</span>
+          </button>
+        </div>
+
+        <nav className="flex-1 overflow-y-auto px-5 py-3" aria-label="ניווט נייד">
+          <ul className="flex flex-col gap-0.5 text-body text-navy">
             {site.nav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="flex min-h-12 items-center py-2"
+                  className="flex min-h-12 items-center border-b border-border/40 py-2 transition-colors hover:text-gold"
                   onClick={() => setOpen(false)}
                 >
                   {item.label}
@@ -97,8 +133,26 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
               </li>
             ))}
           </ul>
+        </nav>
+
+        <div className="mt-auto space-y-3 border-t border-border/60 px-5 py-5">
+          <a
+            href={`tel:${site.contact.phoneTel}`}
+            className="block text-center text-small text-navy"
+            dir="ltr"
+            onClick={() => setOpen(false)}
+          >
+            <bdi>{site.contact.phone}</bdi>
+          </a>
+          <Link
+            href="/contact#lead"
+            className="flex min-h-11 items-center justify-center rounded-full bg-gold px-4 text-small font-medium text-navy-deep transition hover:bg-gold-hover"
+            onClick={() => setOpen(false)}
+          >
+            לקביעת פגישת ייעוץ
+          </Link>
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }

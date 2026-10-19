@@ -22,8 +22,13 @@ export function Header() {
       <a href="#main" className="skip-link">
         לדלג לתוכן
       </a>
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 md:h-[4.5rem] md:px-8">
-        <Link href="/" aria-label={`${site.brand}, לעמוד הבית`}>
+      {/* Full-bleed bar — logo hugs the outer edge (RTL start), not inset to max-w-6xl */}
+      <div className="mx-auto flex h-16 w-full max-w-[100rem] items-center justify-between gap-4 px-4 sm:px-6 md:h-[4.75rem] md:px-8 lg:px-10 xl:px-14">
+        <Link
+          href="/"
+          aria-label={`${site.brand}, לעמוד הבית`}
+          className="shrink-0"
+        >
           <Logo variant={overHero ? "onDark" : "default"} />
         </Link>
         <nav aria-label="ניווט ראשי" className="hidden lg:block">
@@ -57,7 +62,7 @@ export function Header() {
           <CtaLink
             href="/contact#lead"
             variant={overHero ? "onDark" : "primary"}
-            className={`min-h-10 px-4 text-small ${overHero ? "!rounded-full" : ""}`}
+            className={`!hidden min-h-10 px-4 text-small sm:!inline-flex ${overHero ? "!rounded-full" : ""}`}
           >
             לקביעת פגישת ייעוץ
           </CtaLink>

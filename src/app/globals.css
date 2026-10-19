@@ -119,7 +119,7 @@ body {
 }
 
 /**
- * Hero stage — same navy / cream / gold system as the rest of the site.
+ * Hero stage — navy / cream / gold + Ride-style arch mosaic.
  */
 .hero-stage {
   --hero-ink: var(--color-navy-deep);
@@ -130,30 +130,20 @@ body {
   --hero-brass-hot: var(--color-gold-hover);
   --hero-line: color-mix(in srgb, var(--color-cream) 14%, transparent);
   --hero-card-w: clamp(5.25rem, 24vw, 6.5rem);
-  --hero-card-h: calc(var(--hero-card-w) * 1.879);
-  --hero-col-shift-0: translateY(0.75rem);
-  --hero-col-shift-1: translateY(-1.75rem);
-  --hero-col-shift-2: translateY(1.25rem);
+  --hero-card-h: calc(var(--hero-card-w) * 1.88);
   background-color: var(--hero-ink);
   color: var(--hero-bone);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .hero-stage {
-    --hero-card-w: clamp(6rem, 18vw, 8.25rem);
-    --hero-col-shift-0: translateY(1rem);
-    --hero-col-shift-1: translateY(-2.25rem);
-    --hero-col-shift-2: translateY(1.75rem);
+    --hero-card-w: 7.5rem;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .hero-stage {
     --hero-card-w: 8.25rem;
-    --hero-card-h: 15.5rem;
-    --hero-col-shift-0: translateY(1.5rem);
-    --hero-col-shift-1: translateY(-2.75rem);
-    --hero-col-shift-2: translateY(2.25rem);
   }
 }
 
@@ -161,10 +151,64 @@ body {
   color: var(--hero-brass);
 }
 
-/* Soft bottom fade on mobile only — dissolves into the photo, no hard crop */
+/* Lifted frame — sits in front of the photo like a cut-out window */
+.hero-arch-float {
+  position: relative;
+  width: 100%;
+  max-width: 16.5rem;
+  box-shadow:
+    0 4px 8px rgb(0 0 0 / 0.12),
+    0 22px 48px rgb(0 0 0 / 0.38),
+    0 40px 80px rgb(0 0 0 / 0.22);
+  border-radius: 999px 999px 0 0;
+}
+
+@media (min-width: 768px) {
+  .hero-arch-float {
+    max-width: 26rem;
+    box-shadow:
+      0 8px 16px rgb(0 0 0 / 0.14),
+      0 32px 64px rgb(0 0 0 / 0.42),
+      0 56px 100px rgb(0 0 0 / 0.28);
+  }
+}
+
+.hero-arch {
+  position: relative;
+  width: 100%;
+  height: 16.5rem;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  border: 1.5px solid rgb(255 255 255 / 0.72);
+  background: transparent;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    inset 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+@media (min-width: 768px) {
+  .hero-arch {
+    height: min(78svh, 40rem);
+    border-color: rgb(255 255 255 / 0.78);
+  }
+}
+
+/* Soft bottom fade on mobile — desktop keeps a hard arch cut */
 .hero-arch-mask {
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 48%, rgb(0 0 0 / 0.55) 72%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 48%, rgb(0 0 0 / 0.55) 72%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 48%,
+    rgb(0 0 0 / 0.55) 72%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 48%,
+    rgb(0 0 0 / 0.55) 72%,
+    transparent 100%
+  );
 }
 
 @media (min-width: 768px) {
@@ -174,9 +218,96 @@ body {
   }
 }
 
+.hero-arch-grid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(3, var(--hero-card-w));
+  gap: 0.5rem;
+  transform: translate3d(-50%, -47%, 0) rotate(-14deg);
+  transform-origin: center center;
+  backface-visibility: hidden;
+}
+
+/*
+ * Endless wheel: column content is duplicated in Hero;
+ * translateY(-50%) lands on the identical second copy → loops forever.
+ * Middle rises; sides sink the other way.
+ */
+@keyframes hero-loop-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes hero-loop-down {
+  from {
+    transform: translateY(-50%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.hero-arch-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  will-change: transform;
+}
+
+.hero-arch-col-0,
+.hero-arch-col-2 {
+  animation: hero-loop-down 28s linear infinite;
+}
+
+.hero-arch-col-1 {
+  animation: hero-loop-up 32s linear infinite;
+}
+
+.hero-arch-col-2 {
+  animation-duration: 34s;
+  animation-delay: -8s;
+}
+
+.hero-card-tile {
+  position: relative;
+  display: block;
+  width: var(--hero-card-w);
+  height: var(--hero-card-h);
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  background: rgb(8 8 7 / 0.35);
+  box-shadow:
+    0 10px 22px rgb(0 0 0 / 0.4),
+    0 2px 4px rgb(0 0 0 / 0.2);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-arch {
-    transform: none !important;
+  .hero-arch-grid {
+    transform: translate3d(-50%, -47%, 0);
+  }
+
+  .hero-arch-col-0,
+  .hero-arch-col-1,
+  .hero-arch-col-2 {
+    animation: none;
+  }
+
+  .hero-arch-col-0,
+  .hero-arch-col-2 {
+    transform: translateY(12%);
+  }
+
+  .hero-arch-col-1 {
+    transform: translateY(-14%);
   }
 }
 
@@ -322,6 +453,41 @@ body {
   transform: scaleX(1);
 }
 
+/* GSAP pin wrapper — keep navy so body white never flashes mid-scroll. */
+.pin-spacer:has(#roadmap) {
+  background-color: #222120;
+}
+
+/* Scroll-pinned legal roadmap — soft pulse on active node glow. */
+.roadmap-node-pulse {
+  animation: roadmap-pulse 2.4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes roadmap-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.14);
+  }
+}
+
+/* Motion book E1-11 — outline words that fill solid on scroll. */
+.word-fill-glyph {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(196 163 90 / 0.35);
+  background-image: linear-gradient(90deg, var(--color-gold) 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -341,5 +507,15 @@ body {
   .footer-link,
   .footer-link::after {
     transition: none;
+  }
+
+  .roadmap-node-pulse {
+    animation: none;
+  }
+
+  .word-fill-glyph {
+    color: var(--color-gold);
+    -webkit-text-stroke: 0;
+    background: none;
   }
 }

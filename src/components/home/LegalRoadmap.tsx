@@ -1,0 +1,418 @@
+"use client";
+
+import { useGSAP } from "@gsap/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { home } from "@/content/home";
+import { gsap, prefersReducedMotion, ScrollTrigger } from "@/motion/gsap";
+
+type RoadmapStage = {
+  n: string;
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
+  image: string;
+  /** Landscape asset for md+ — desktop layout is locked. */
+  imageDesktop?: string;
+  imageAlt: string;
+  imagePosition: string;
+  imagePositionDesktop?: string;
+};
+/** `home` is `as const`; widen stages for runtime fields we read. */
+const STAGES = [...home.roadmap.stages] as unknown as RoadmapStage[];
+
+function stagePhoto(stage: RoadmapStage, compact: boolean) {
+  return compact ? stage.image : (stage.imageDesktop ?? stage.image);
+}
+
+function stageFocus(stage: RoadmapStage, compact: boolean) {
+  return compact
+    ? stage.imagePosition
+    : (stage.imagePositionDesktop ?? stage.imagePosition);
+}
+
+/**
+ * RTL path: stage 01 starts on the right (matches Hebrew thumb order).
+ * viewBox width 1240 — mirrored from the LTR S-curve.
+ */
+const PATH =
+  "M 1180 200 C 1060 40, 940 40, 820 200 S 580 360, 460 200 S 220 40, 60 200";
+
+const NODE_POS = [
+  { x: 1180, y: 200 },
+  { x: 820, y: 200 },
+  { x: 460, y: 200 },
+  { x: 60, y: 200 },
+] as const;
+
+const VIEW_BOX = "0 0 1240 400";
+
+/**
+ * Cinematic scroll-pinned roadmap — photo slides per stage.
+ * Solid navy underlay + dark pin-spacer so no white flash while pinned.
+ */
+export function LegalRoadmap() {
+  const rootRef = useRef<HTMLElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const glowRef = useRef<SVGPathElement>(null);
+  const reduce = useReducedMotion() || prefersReducedMotion();
+  const [active, setActive] = useState(0);
+  const [dir, setDir] = useState<1 | -1>(1);
+  const [compact, setCompact] = useState(false);
+  const prevRef = useRef(0);
+
+  useEffect(() => {
+    if (active === prevRef.current) return;
+    setDir(active > prevRef.current ? 1 : -1);
+    prevRef.current = active;
+  }, [active]);
+
+  useGSAP(
+    () => {
+      const section = rootRef.current;
+      const path = pathRef.current;
+      const glow = glowRef.current;
+      if (!section || !path) return;
+
+      const paintSpacer = (st: ScrollTrigger | null | undefined) => {
+        const pinEl = st?.pin;
+        const spacer =
+          pinEl instanceof HTMLElement ? pinEl.parentElement : null;
+        if (spacer?.classList.contains("pin-spacer")) {
+          spacer.style.backgroundColor = "#222120";
+        }
+      };
+
+      const mm = gsap.matchMedia();
+
+      mm.add(
+        {
+          isMobile: "(max-width: 767px)",
+          isDesktop: "(min-width: 768px)",
+          reduceMotion: "(prefers-reduced-motion: reduce)",
+        },
+        (ctx) => {
+          const { isMobile, reduceMotion } = ctx.conditions as {
+            isMobile: boolean;
+            reduceMotion: boolean;
+          };
+          setCompact(isMobile);
+
+          const length = path.getTotalLength();
+          gsap.set([path, glow].filter(Boolean), {
+            strokeDasharray: length,
+            strokeDashoffset: length,
+          });
+
+          if (reduce || reduceMotion) {
+            gsap.set([path, glow].filter(Boolean), { strokeDashoffset: 0 });
+            setActive(STAGES.length - 1);
+            return;
+          }
+
+          const nodes = gsap.utils.toArray<HTMLElement>(section.querySelectorAll("[data-node]"));
+
+          const tween = gsap.to([path, glow].filter(Boolean), {
+            strokeDashoffset: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: isMobile ? "+=200%" : "+=260%",
+              pin: true,
+              scrub: 0.7,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              onRefresh: (self) => paintSpacer(self),
+              onEnter: (self) => paintSpacer(self),
+              onEnterBack: (self) => paintSpacer(self),
+              onUpdate: (self) => {
+                paintSpacer(self);
+                const idx = Math.min(
+                  STAGES.length - 1,
+                  Math.floor(self.progress * STAGES.length),
+                );
+                setActive(idx);
+                nodes.forEach((node, i) => {
+                  node.dataset.active = i <= idx ? "true" : "false";
+                });
+              },
+            },
+          });
+
+          paintSpacer(tween.scrollTrigger ?? undefined);
+
+          return () => {
+            tween.scrollTrigger?.kill();
+            tween.kill();
+          };
+        },
+      );
+
+      return () => mm.revert();
+    },
+    { scope: rootRef, dependencies: [reduce] },
+  );
+
+  const stage: RoadmapStage = STAGES[active] ?? STAGES[0]!;
+  const slideIn = dir === 1 ? "10%" : "-10%";
+  const slideOut = dir === 1 ? "-8%" : "8%";
+  const strokeTrack = compact ? 12 : 16;
+  const strokeGlow = compact ? 18 : 26;
+  const strokeProgress = compact ? 8 : 12;
+  const nodeSize = compact ? 40 : 52;
+  const photoSrc = stagePhoto(stage, compact);
+  const photoFocus = stageFocus(stage, compact);
+
+  return (
+    <section
+      ref={rootRef}
+      id="roadmap"
+      aria-labelledby="roadmap-heading"
+      className="relative isolate min-h-[100svh] overflow-hidden bg-navy-deep text-cream"
+    >
+      {/* Full-bleed stage photos — cover the whole pin, never a centered strip */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-navy-deep" aria-hidden>
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={photoSrc}
+            className="absolute inset-0"
+            initial={reduce ? false : { opacity: 0, x: slideIn }}
+            animate={{ opacity: 1, x: "0%" }}
+            exit={reduce ? undefined : { opacity: 0, x: slideOut }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Image
+              src={photoSrc}
+              alt=""
+              fill
+              priority={active === 0}
+              sizes="100vw"
+              className="select-none object-cover object-center"
+              style={{ objectPosition: photoFocus }}
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        <div
+          className="absolute inset-0 md:hidden"
+          style={{
+            background:
+              "linear-gradient(180deg, rgb(34 33 32 / 0.55) 0%, rgb(34 33 32 / 0.28) 42%, rgb(34 33 32 / 0.7) 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 hidden md:block"
+          style={{
+            background:
+              "linear-gradient(105deg, rgb(34 33 32 / 0.82) 0%, rgb(34 33 32 / 0.55) 42%, rgb(34 33 32 / 0.75) 100%), linear-gradient(to top, rgb(34 33 32 / 0.85) 0%, transparent 48%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-25 md:opacity-35"
+          style={{
+            background:
+              "radial-gradient(ellipse 55% 45% at 50% 28%, rgb(196 163 90 / 0.18), transparent 70%)",
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] max-w-6xl flex-col px-4 pb-[max(5.75rem,calc(env(safe-area-inset-bottom)+4.75rem))] pt-[max(0.75rem,env(safe-area-inset-top))] md:px-8 md:pb-10 md:pt-10">
+        <div className="mx-auto w-full max-w-2xl shrink-0 text-center md:me-0 md:ms-auto md:text-start">
+          <p className="text-[0.68rem] font-medium tracking-[0.2em] text-gold md:text-[0.72rem] md:tracking-[0.22em]">
+            {home.roadmap.eyebrow}
+          </p>
+
+          <div className="relative mt-2 min-h-[6.75rem] md:mt-3 md:min-h-[8.5rem]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={stage.n}
+                initial={reduce ? false : { opacity: 0, x: dir === 1 ? -24 : 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={reduce ? undefined : { opacity: 0, x: dir === 1 ? 18 : -18 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <p className="font-display text-[0.8rem] text-gold md:text-[0.85rem]">{stage.n}</p>
+                <h2
+                  id="roadmap-heading"
+                  className="mt-1 font-display text-[clamp(1.35rem,5.5vw,2.1rem)] leading-tight text-cream drop-shadow-sm"
+                >
+                  {stage.title}
+                </h2>
+                <motion.p
+                  className="mt-1.5 line-clamp-2 text-[0.84rem] leading-relaxed text-cream/85 md:mt-2 md:line-clamp-3 md:text-[1rem]"
+                  initial={reduce ? false : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {stage.description}
+                </motion.p>
+                <motion.div
+                  className="mt-3 md:mt-4"
+                  initial={reduce ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.14 }}
+                >
+                  <Link
+                    href={stage.href}
+                    className="inline-flex min-h-10 items-center justify-center rounded-full bg-gold px-5 text-small font-medium text-navy-deep shadow-on-dark transition hover:bg-gold-hover"
+                  >
+                    {stage.cta}
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        <div className="relative mt-3 flex min-h-0 flex-1 flex-col justify-end gap-2.5 pb-1 md:mt-3 md:gap-4 md:pb-2">
+          <ul className="mx-auto grid w-full max-w-2xl shrink-0 grid-cols-4 gap-1.5 md:gap-2.5">
+            {STAGES.map((s, i) => {
+              const on = i === active;
+              const passed = i < active;
+              return (
+                <li key={s.n} className="relative">
+                  <div
+                    className={[
+                      "relative h-14 overflow-hidden rounded-md border transition duration-500 md:h-20",
+                      on
+                        ? "scale-[1.03] border-gold shadow-[0_0_0_1px_rgb(196_163_90/0.35),0_8px_20px_-6px_rgb(0_0_0/0.5)]"
+                        : passed
+                          ? "border-gold/40 opacity-80"
+                          : "border-white/15 opacity-55",
+                    ].join(" ")}
+                  >
+                    <Image
+                      src={stagePhoto(s, compact)}
+                      alt={s.imageAlt}
+                      fill
+                      sizes="(max-width:768px) 22vw, 140px"
+                      className={[
+                        "object-cover transition duration-700 ease-out",
+                        on ? "scale-105" : "scale-100",
+                      ].join(" ")}
+                      style={{ objectPosition: stageFocus(s, compact) }}
+                    />
+                    <div
+                      className={[
+                        "absolute inset-0 transition duration-500",
+                        on ? "bg-navy/25" : "bg-navy/55",
+                      ].join(" ")}
+                    />
+                    <span
+                      className={[
+                        "absolute inset-x-0 bottom-0 flex items-center justify-center py-0.5 font-display text-[0.65rem] font-bold tracking-wide md:py-1 md:text-[0.75rem]",
+                        on ? "bg-gold text-navy-deep" : "bg-navy/70 text-cream/80",
+                      ].join(" ")}
+                    >
+                      {s.n}
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+
+          <svg
+            viewBox={VIEW_BOX}
+            className="mx-auto h-auto w-full max-h-[min(18vh,130px)] max-w-5xl shrink-0 drop-shadow-[0_8px_24px_rgb(0_0_0/0.35)] md:max-h-[min(32vh,260px)]"
+            preserveAspectRatio="xMidYMid meet"
+            role="img"
+            aria-label="מסלול ההחלטה — ארבעה שלבים"
+          >
+            <defs>
+              <filter id="roadmap-glow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <path
+              d={PATH}
+              fill="none"
+              stroke="rgb(255 255 255 / 0.22)"
+              strokeWidth={strokeTrack}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              ref={glowRef}
+              d={PATH}
+              fill="none"
+              stroke="rgb(196 163 90 / 0.5)"
+              strokeWidth={strokeGlow}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              filter="url(#roadmap-glow)"
+            />
+            <path
+              ref={pathRef}
+              d={PATH}
+              fill="none"
+              stroke="#c4a35a"
+              strokeWidth={strokeProgress}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+
+            {NODE_POS.map((pos, i) => {
+              const stageMeta = STAGES[i];
+              if (!stageMeta) return null;
+              const on = i <= active;
+              return (
+                <g key={stageMeta.n} data-node transform={`translate(${pos.x}, ${pos.y})`}>
+                  {on ? (
+                    <circle
+                      r={nodeSize * 0.72}
+                      fill="rgb(196 163 90 / 0.25)"
+                      className="roadmap-node-pulse"
+                    />
+                  ) : null}
+                  <rect
+                    x={-nodeSize / 2}
+                    y={-nodeSize / 2}
+                    width={nodeSize}
+                    height={nodeSize}
+                    rx={12}
+                    fill={on ? "rgb(34 33 32 / 0.92)" : "rgb(34 33 32 / 0.75)"}
+                    stroke={on ? "#c4a35a" : "rgb(255 255 255 / 0.28)"}
+                    strokeWidth={1.5}
+                    style={{
+                      transition: "stroke 0.35s ease, transform 0.35s ease",
+                      transform: on ? "scale(1.06)" : "scale(1)",
+                      transformBox: "fill-box",
+                      transformOrigin: "center",
+                    }}
+                  />
+                  <text
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fill={on ? "#c4a35a" : "rgb(255 255 255 / 0.45)"}
+                    style={{
+                      fontFamily: "var(--font-frank), serif",
+                      fontSize: compact ? 12 : 15,
+                      fontWeight: 700,
+                      transition: "fill 0.35s ease",
+                    }}
+                  >
+                    {stageMeta.n}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+
+          <p className="shrink-0 text-center text-[0.6rem] leading-snug text-cream/45 md:text-[0.65rem]">
+            המידע כללי ואינו ייעוץ משפטי. כל מקרה נבדק לגופו.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}

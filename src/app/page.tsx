@@ -8,8 +8,8 @@ import { QuickLead } from "@/components/home/QuickLead";
 import { StickyCta } from "@/components/home/StickyCta";
 import { TeamTeaser } from "@/components/home/TeamTeaser";
 import { TestimonialsBand } from "@/components/home/TestimonialsBand";
+import { LegalRoadmap } from "@/components/home/LegalRoadmap";
 import { TrustBand } from "@/components/home/TrustBand";
-import { WhyNow } from "@/components/home/WhyNow";
 import { WhyUs } from "@/components/home/WhyUs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { faq } from "@/content/home";
@@ -27,7 +27,7 @@ export default function HomePage() {
       <Hero />
       <TrustBand />
       <PracticeDoors />
-      <WhyNow />
+      <LegalRoadmap />
       <WhyUs />
       <CompareAlternatives />
       <Process />

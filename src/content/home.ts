@@ -7,12 +7,12 @@ import { practiceAreas } from "./site";
  */
 export const home = {
   hero: {
-    /** Full sentence for SEO / a11y; lines drive the stacked visual like the reference hero. */
+    /** Full sentence for SEO / a11y; lines drive the stacked visual. */
     h1: "שעה אחת של שיחה, ותצאו עם תוכנית והערכת עלות.",
-    h1Lines: ["שעה אחת של שיחה", "ותצאו עם תוכנית", "והערכת עלות"] as const,
+    h1Lines: ["שעה אחת של שיחה", "ותצאו עם תוכנית והערכת עלות"] as const,
     badge: "מענה תוך יום עסקים",
     meta: "כהן ושות׳ · תל אביב · ייעוץ ראשוני",
-    lead: "12 שנה במרכז · משפחה, עבודה ונדל״ן. אחרי הפגישה הראשונה תדעו איפה אתם עומדים.",
+    lead: "12 שנה במרכז · משפחה, עבודה ונדל״ן.",
     offer: "פגישת ייעוץ · שקיפות בעלויות מההתחלה",
     primaryCta: "לקביעת פגישת ייעוץ",
     primaryHref: "#lead",
@@ -23,7 +23,7 @@ export const home = {
     frameAlt: "תצוגת תחומי ההתמחות במסגרת קשת (הדמיה)",
     backgroundSrc: "/media/hero-office-dusk.jpg",
     backgroundAlt: "חזית משרד בשעת בין-ערביים (הדמיה אווירה)",
-    /** 3×3 tilted grid — ref shows ~2.5 cols clipped by the arch. Middles of col0/1 = ייעוץ + נדל״ן. */
+    /** 3-col tilted mosaic — extra cards so the upward drift reveals more options. */
     cards: [
       { href: "/services/family", image: "/media/practice-family.jpg", title: "דיני משפחה" },
       { href: "/services/labor", image: "/media/practice-labor.jpg", title: "דיני עבודה" },
@@ -31,9 +31,15 @@ export const home = {
       { href: "/contact", image: "/media/meeting-room.jpg", title: "ייעוץ ראשוני" },
       { href: "/services/real-estate", image: "/media/practice-real-estate.jpg", title: "נדל״ן" },
       { href: "/services/family", image: "/media/practice-family.jpg", title: "גירושין" },
-      { href: "/services/labor", image: "/media/practice-labor.jpg", title: "דיני עבודה" },
-      { href: "/contact", image: "/media/meeting-room.jpg", title: "ייעוץ" },
-      { href: "/services/real-estate", image: "/media/practice-real-estate.jpg", title: "נדל״ן" },
+      { href: "/services/labor", image: "/media/practice-labor.jpg", title: "פיטורין" },
+      { href: "/about", image: "/media/about-texture.jpg", title: "אודות" },
+      { href: "/services/real-estate", image: "/media/practice-real-estate.jpg", title: "חוזי מכר" },
+      { href: "/services/family", image: "/media/practice-family.jpg", title: "הסכמי ממון" },
+      { href: "/faq", image: "/media/meeting-room.jpg", title: "שאלות" },
+      { href: "/blog", image: "/media/surface-cream-brass.jpg", title: "מאמרים" },
+      { href: "/contact", image: "/media/corridor-dusk.jpg", title: "צור קשר" },
+      { href: "/services/real-estate", image: "/media/hero-office-dusk.jpg", title: "ירושות" },
+      { href: "/team", image: "/media/practice-labor.jpg", title: "המשרד" },
     ] as const,
   },
   practice: {
@@ -61,6 +67,71 @@ export const home = {
         body: "גם מסמך קצר שנראה ראשוני עלול להיחשב חוזה מחייב. את התנאים החשובים קובעים לפני החתימה הראשונה, לא אחריה.",
       },
     ],
+  },
+  /** Scroll-pinned roadmap — each stage has a cinematic photo that slides sideways. */
+  roadmap: {
+    eyebrow: "מסלול ההחלטה",
+    stages: [
+      {
+        n: "01",
+        title: "קוראים את המשפטים",
+        description:
+          "לפני שמגיבים למכתב, לתביעה או להסכם — מבינים מה כתוב ומה זה אומר בשבילכם. מילה אחת יכולה לשנות את כל המסלול.",
+        href: "/contact#lead",
+        cta: "לקביעת פגישת ייעוץ",
+        /** Portrait — phone only. */
+        image: "/media/roadmap-01-read.jpg",
+        /** Landscape — desktop locked look. */
+        imageDesktop: "/media/meeting-room.jpg",
+        imageAlt: "חדר ישיבות — קריאת מסמכים לפני תגובה",
+        imagePosition: "center center",
+        imagePositionDesktop: "center center",
+      },
+      {
+        n: "02",
+        title: "מזהים את הרגע",
+        description:
+          "במשפחה, בעבודה ובנדל״ן יש נקודה שאחריה קשה לתקן. אנחנו מסמנים אותה יחד — לפני שמגישים, חותמים או מתחייבים.",
+        href: "/services",
+        cta: "לתחומי העיסוק",
+        image: "/media/roadmap-02-decision.jpg",
+        imageDesktop: "/media/practice-family.jpg",
+        imageAlt: "שולחן ישיבות עם מחברת ועט מול נוף העיר — הרגע לפני החלטה",
+        imagePosition: "center 45%",
+        imagePositionDesktop: "40% 50%",
+      },
+      {
+        n: "03",
+        title: "תוכנית והערכת עלות",
+        description:
+          "שעה אחת של שיחה. יוצאים עם מפה ברורה: מה האפשרויות, מה הסיכון, ומה ההערכה הראשונית לעלות — בלי ערפל.",
+        href: "/contact#lead",
+        cta: "לקביעת פגישת ייעוץ",
+        image: "/media/roadmap-03-plan.jpg",
+        imageDesktop: "/media/hero-office-dusk.jpg",
+        imageAlt: "נוף העיר ממשרד בשעת בין־ערביים — תכנון והערכת עלות",
+        imagePosition: "center 38%",
+        imagePositionDesktop: "65% 45%",
+      },
+      {
+        n: "04",
+        title: "מחליטים על ייצוג",
+        description:
+          "רק אחרי שהמשפטים ברורים. בלי לחץ, בלי התחייבות בשלב הראשון — ורק אם זה מתאים לשני הצדדים.",
+        href: "/contact#lead",
+        cta: "השאירו פרטים",
+        image: "/media/roadmap-04-decide.jpg",
+        imageDesktop: "/media/practice-real-estate.jpg",
+        imageAlt: "ליווי עסקה — החלטה על ייצוג אחרי שהתמונה ברורה",
+        imagePosition: "center 55%",
+        imagePositionDesktop: "70% 45%",
+      },
+    ],
+  },
+  /** Kept for reuse; not shown on home (empty outline band felt flat). */
+  wordFill: {
+    label: "המילים שקובעות",
+    words: ["חוזה", "זכות", "ערכאה", "ייצוג", "הסכם", "מועד"],
   },
   quickLead: {
     title: "רוצים שנחזור אליכם?",
