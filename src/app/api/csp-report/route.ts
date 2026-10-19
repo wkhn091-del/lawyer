@@ -39,7 +39,7 @@ function hostOnly(value: string | undefined): string {
 export async function POST(request: Request) {
   const ip =
     request.headers.get("x-real-ip") ||
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("cf-connecting-ip") ||
     "unknown";
 
   if (!(await rateLimit(`csp:ip:${await hashKey(ip)}`, 30, WINDOW_MS))) {

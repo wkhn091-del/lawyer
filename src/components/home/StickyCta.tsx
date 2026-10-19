@@ -31,7 +31,9 @@ export function StickyCta() {
     <div
       data-sticky-cta
       className={`glass fixed inset-x-0 bottom-0 z-30 pb-safe px-4 pt-3 transition duration-[var(--motion-base)] motion-reduce:transition-none md:hidden ${
-        show ? "translate-y-0 opacity-100 ease-out" : "pointer-events-none translate-y-full opacity-0 ease-in"
+        show
+          ? "translate-y-0 opacity-100 ease-[var(--ease-out)]"
+          : "pointer-events-none translate-y-full opacity-0 ease-[var(--ease-in)]"
       }`}
       aria-hidden={!show}
       inert={show ? undefined : true}
@@ -62,7 +64,7 @@ export function StickyCta() {
           tabIndex={show ? 0 : -1}
           className="flex min-h-12 flex-1 items-center justify-center rounded-md bg-navy text-button font-medium text-cream active:scale-[0.97] motion-reduce:active:scale-100"
         >
-          לקביעת פגישת ייעוץ
+          לקביעת השיחה
         </a>
       </div>
       <p className="mt-2 pb-1 text-center text-small text-muted">

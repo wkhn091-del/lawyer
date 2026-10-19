@@ -1,6 +1,5 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
-import { FooterClosing } from "@/components/layout/FooterClosing";
 import { FooterNavGroups } from "@/components/layout/FooterAccordion";
 import { practiceAreas, site } from "@/content/site";
 
@@ -35,12 +34,10 @@ export function Footer() {
 
   return (
     <footer className="bg-navy-deep text-cream">
-      <FooterClosing />
-
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-5 py-12 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-10 md:px-8 md:py-14">
         <div className="space-y-5">
           <Logo variant="onDark" />
-          <p className="max-w-sm text-[0.9375rem] leading-relaxed text-cream/55">{site.company}</p>
+          <p className="max-w-sm text-[0.9375rem] leading-relaxed text-cream/75">{site.company}</p>
           <ul className="space-y-3 text-[0.9375rem] text-cream/70">
             <li>
               <a
@@ -76,7 +73,7 @@ export function Footer() {
         <FooterNavGroups groups={navGroups} />
       </div>
 
-      <div className="border-t border-cream/10 px-5 py-5 text-[0.8125rem] leading-relaxed text-cream/60 md:px-8">
+      <div className="border-t border-cream/10 px-5 py-5 text-[0.8125rem] leading-relaxed text-cream/75 md:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <p>
             {site.footer.disclaimer}
@@ -84,6 +81,14 @@ export function Footer() {
               <>
                 {" "}
                 ח.פ/ע.מ <bdi dir="ltr">{site.legal.companyId}</bdi>
+              </>
+            ) : (
+              <> · פרטי רישום העוסק יושלמו לפני עלייה לאוויר</>
+            )}
+            {site.legal.address ? (
+              <>
+                {" "}
+                · {site.legal.address}
               </>
             ) : null}
           </p>

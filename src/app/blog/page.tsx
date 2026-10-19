@@ -25,7 +25,7 @@ export default function BlogPage() {
         ))}
       </ul>
       <div className="mt-10">
-        <CtaLink href="/contact#lead">יש לכם שאלה אישית? לקביעת פגישת ייעוץ</CtaLink>
+        <CtaLink href="/contact#lead">יש לכם שאלה אישית? לקביעת השיחה</CtaLink>
       </div>
     </div>
   );

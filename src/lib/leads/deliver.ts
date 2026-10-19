@@ -51,9 +51,9 @@ async function notifyCrm(lead: Lead, context: Context): Promise<void> {
         event: "consultation_request",
         occurredAt: new Date().toISOString(),
         lead: {
-          fullName: lead.fullName,
+          fullName: neutralizeMarkup(lead.fullName),
           phone: lead.phone,
-          email: lead.email ?? null,
+          email: lead.email ? neutralizeMarkup(lead.email) : null,
           practiceArea: lead.practiceArea,
           practiceAreaLabel: practiceLabel(lead.practiceArea),
           message: lead.message ? neutralizeMarkup(lead.message) : null,

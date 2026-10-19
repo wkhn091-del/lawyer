@@ -36,7 +36,7 @@ export function ProcessLine() {
   return (
     <div
       ref={ref}
-      className="pointer-events-none absolute start-[16%] end-[16%] top-7 hidden h-px origin-right bg-gold md:block"
+      className="pointer-events-none absolute start-[8%] end-[8%] top-7 hidden h-[2px] origin-right bg-gold md:block md:top-8"
       style={{ transform: "scaleX(0)" }}
       aria-hidden="true"
     />

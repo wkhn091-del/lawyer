@@ -4,7 +4,7 @@ import type { ComponentProps } from "react";
 type Variant = "primary" | "ghost" | "onDark";
 
 const base =
-  "group inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-6 text-button font-medium transition duration-[var(--motion-fast)] ease-out active:scale-[0.98] motion-reduce:active:scale-100";
+  "group inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-6 text-button font-medium transition duration-[var(--motion-fast)] ease-[var(--ease-out)] active:scale-[0.98] motion-reduce:active:scale-100";
 
 const variants: Record<Variant, string> = {
   primary: "bg-navy text-cream shadow-contact hover:bg-navy-deep hover:shadow-soft",

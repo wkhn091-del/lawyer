@@ -61,7 +61,11 @@ type RequestInfo = { ip: string; sameOrigin: boolean };
 
 async function requestInfo(): Promise<RequestInfo> {
   const headerList = await headers();
-  const ip = headerList.get("x-real-ip") || headerList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  // Prefer platform-set client IP; do not trust spoofable x-forwarded-for[0] first.
+  const ip =
+    headerList.get("x-real-ip") ||
+    headerList.get("cf-connecting-ip") ||
+    "unknown";
   const host = headerList.get("x-forwarded-host") ?? headerList.get("host");
   return { ip, sameOrigin: isSameOrigin(headerList.get("origin"), host) };
 }
@@ -81,7 +85,9 @@ export async function submitLead(_previous: FormState, formData: FormData): Prom
 
   const meta = metaSchema.safeParse(readFields(formData, ["website", "startedAt", "source", "page", "variant"]));
   if (!meta.success) return { status: "error", errors: {}, message: GENERIC_ERROR };
-  if (looksAutomated(meta.data)) redirect("/thank-you");
+  if (looksAutomated(meta.data)) {
+    return { status: "error", errors: {}, message: GENERIC_ERROR };
+  }
 
   if (!(await rateLimit(`lead:ip:${await hashKey(request.ip)}`, 5, TEN_MINUTES))) {
     reportBlocked("rate_limit", "lead");

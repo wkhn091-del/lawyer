@@ -33,13 +33,14 @@ export function buildSiteCsp(nonce: string, isDev: boolean): string {
   return serialize({
     "default-src": ["'self'"],
     // 'strict-dynamic' lets the nonced GTM loader pull GA4 and Clarity after consent.
+    // No bare "https:" in production — legacy browsers get a narrow GTM allowlist only.
     "script-src": [
       "'self'",
       `'nonce-${nonce}'`,
       "'strict-dynamic'",
-      "https:",
       TURNSTILE,
-      ...(isDev ? ["'unsafe-eval'"] : []),
+      "https://www.googletagmanager.com",
+      ...(isDev ? ["'unsafe-eval'", "https:"] : []),
     ],
     "style-src": ["'self'", `'nonce-${nonce}'`],
     // React style props and Motion write inline style attributes, which a nonce cannot cover.

@@ -15,7 +15,7 @@ export function Logo({ variant = "default", className }: LogoProps) {
   const brass = onDark ? "text-gold" : "text-gold-ink";
   const frame = onDark ? "border-gold/90" : "border-gold-ink";
   const frameDim = onDark ? "border-gold/40" : "border-gold-ink/45";
-  const mute = onDark ? "text-cream/55" : "text-muted";
+  const mute = onDark ? "text-cream/75" : "text-muted";
   const rule = onDark ? "bg-gold/80" : "bg-gold-ink/80";
 
   return (
@@ -51,7 +51,7 @@ export function Logo({ variant = "default", className }: LogoProps) {
           {site.brand}
         </span>
         <span
-          className={`mt-1.5 hidden items-center gap-2.5 text-[0.58rem] font-medium uppercase tracking-[0.28em] sm:flex ${mute}`}
+          className={`mt-1.5 hidden items-center gap-2.5 text-[0.58rem] font-medium uppercase tracking-[0.12em] sm:flex ${mute}`}
         >
           <span className={`h-px w-4 shrink-0 ${rule}`} aria-hidden />
           {site.tagline}

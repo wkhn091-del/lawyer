@@ -116,5 +116,5 @@ export function TurnstileField({ siteKey, action, resetSignal, theme = "dark" }:
   }, [resetSignal]);
 
   if (!siteKey) return null;
-  return <div ref={containerRef} />;
+  return <div ref={containerRef} aria-label="אימות אבטחה — סינון בוטים" />;
 }

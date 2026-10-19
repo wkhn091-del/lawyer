@@ -222,11 +222,11 @@ export function LegalRoadmap() {
 
       <div className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] max-w-6xl flex-col px-4 pb-[max(5.75rem,calc(env(safe-area-inset-bottom)+4.75rem))] pt-[max(0.75rem,env(safe-area-inset-top))] md:px-8 md:pb-10 md:pt-10">
         <div className="mx-auto w-full max-w-2xl shrink-0 text-center md:me-0 md:ms-auto md:text-start">
-          <p className="text-[0.68rem] font-medium tracking-[0.2em] text-gold md:text-[0.72rem] md:tracking-[0.22em]">
+          <p className="text-[0.68rem] font-medium tracking-[0.1em] text-gold md:text-[0.72rem] md:tracking-[0.12em]">
             {home.roadmap.eyebrow}
           </p>
 
-          <div className="relative mt-2 min-h-[6.75rem] md:mt-3 md:min-h-[8.5rem]">
+          <div className="relative mt-2 min-h-[9.5rem] md:mt-3 md:min-h-[8.5rem]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={stage.n}
@@ -235,30 +235,32 @@ export function LegalRoadmap() {
                 exit={reduce ? undefined : { opacity: 0, x: dir === 1 ? 18 : -18 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               >
-                <p className="font-display text-[0.8rem] text-gold md:text-[0.85rem]">{stage.n}</p>
-                <h2
-                  id="roadmap-heading"
-                  className="mt-1 font-display text-[clamp(1.35rem,5.5vw,2.1rem)] leading-tight text-cream drop-shadow-sm"
-                >
-                  {stage.title}
-                </h2>
-                <motion.p
-                  className="mt-1.5 line-clamp-2 text-[0.84rem] leading-relaxed text-cream/85 md:mt-2 md:line-clamp-3 md:text-[1rem]"
-                  initial={reduce ? false : { opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {stage.description}
-                </motion.p>
+                <div aria-live="polite" aria-atomic="true">
+                  <p className="font-display text-[0.95rem] text-gold md:text-[0.85rem]">{stage.n}</p>
+                  <h2
+                    id="roadmap-heading"
+                    className="mt-1 font-display text-[clamp(1.65rem,6.5vw,1.95rem)] leading-[1.2] text-cream drop-shadow-sm md:text-[clamp(1.35rem,5.5vw,2.1rem)] md:leading-tight"
+                  >
+                    {stage.title}
+                  </h2>
+                  <motion.p
+                    className="mt-2 line-clamp-3 text-[1.05rem] leading-snug text-cream/90 md:mt-2 md:line-clamp-3 md:text-[1rem] md:leading-relaxed md:text-cream/85"
+                    initial={reduce ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {stage.description}
+                  </motion.p>
+                </div>
                 <motion.div
-                  className="mt-3 md:mt-4"
+                  className="mt-3.5 md:mt-4"
                   initial={reduce ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.14 }}
                 >
                   <Link
                     href={stage.href}
-                    className="inline-flex min-h-10 items-center justify-center rounded-full bg-gold px-5 text-small font-medium text-navy-deep shadow-on-dark transition hover:bg-gold-hover"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full bg-gold px-6 text-[0.95rem] font-medium text-navy-deep shadow-on-dark transition hover:bg-gold-hover md:min-h-10 md:px-5 md:text-small"
                   >
                     {stage.cta}
                   </Link>
@@ -291,7 +293,7 @@ export function LegalRoadmap() {
                       fill
                       sizes="(max-width:768px) 22vw, 140px"
                       className={[
-                        "object-cover transition duration-700 ease-out",
+                        "object-cover transition duration-[var(--motion-slow)] ease-[var(--ease-out)]",
                         on ? "scale-105" : "scale-100",
                       ].join(" ")}
                       style={{ objectPosition: stageFocus(s, compact) }}
@@ -321,7 +323,7 @@ export function LegalRoadmap() {
             className="mx-auto h-auto w-full max-h-[min(18vh,130px)] max-w-5xl shrink-0 drop-shadow-[0_8px_24px_rgb(0_0_0/0.35)] md:max-h-[min(32vh,260px)]"
             preserveAspectRatio="xMidYMid meet"
             role="img"
-            aria-label="מסלול ההחלטה — ארבעה שלבים"
+            aria-label="ארבעה שלבים"
           >
             <defs>
               <filter id="roadmap-glow" x="-40%" y="-40%" width="180%" height="180%">

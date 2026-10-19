@@ -1,21 +1,21 @@
 import Link from "next/link";
-import { site } from "@/content/site";
 
-/** Duty-to-inform notice at the point of collection (Privacy Protection Law s.11, GDPR art. 13). */
+/**
+ * Point-of-collection notice — duty-to-inform in compact form.
+ * Full copy lives on /privacy. No marketing consent: we do not send promotional mail.
+ */
 export function LeadPrivacyNotice() {
   return (
-    <div className="space-y-2 text-small text-muted">
+    <div className="space-y-1.5 text-[0.72rem] leading-relaxed text-muted">
       <p>
-        הפרטים נמסרים מרצונכם ואין חובה חוקית למסור אותם. {site.company} ישתמש בהם רק כדי לחזור אליכם בעניין
-        הפנייה. הם נשמרים אצל ספקי שירות שעובדים עבורנו, חלקם מחוץ לישראל. ניתן לבקש עיון, תיקון או מחיקה.{" "}
-        <Link href="/privacy" className="text-navy underline underline-offset-4">
+        בשליחה אתם מאשרים שמסרתם את הפרטים מרצונכם כדי שנחזור אליכם לתיאום שיחה בלבד. לא נשלח דיוור
+        שיווקי. הפרטים יועברו לספקי תשתית (אחסון, סינון בוטים, התראות משרד) כמפורט ב
+        <Link href="/privacy" className="underline underline-offset-2 hover:text-navy">
           מדיניות הפרטיות
         </Link>
+        . יש לכם זכות עיון, תיקון ומחיקה בפנייה למייל המשרד.
       </p>
-      <p>
-        שליחת הפנייה אינה יוצרת יחסי עו״ד-לקוח, והמידע באתר אינו ייעוץ משפטי. אל תפרטו כאן מידע רגיש ולא
-        תצרפו מסמכים — נחזור אליכם ונשמע את הפרטים בשיחה.
-      </p>
+      <p>הפנייה אינה יוצרת יחסי עו״ד-לקוח · אל תשלחו מסמכים או פרטים רגישים בטופס.</p>
     </div>
   );
 }

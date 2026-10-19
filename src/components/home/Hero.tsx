@@ -41,29 +41,9 @@ export function Hero() {
       */}
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-4 px-5 pb-6 pt-[4.75rem] md:min-h-[88svh] md:grid md:grid-cols-2 md:items-center md:gap-8 md:px-8 md:pb-12 md:pt-24">
         <div className="relative z-10 flex w-full flex-col items-center text-center md:max-w-xl md:items-start md:pe-2 md:text-start">
-          <span
-            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[0.72rem] font-medium tracking-wide"
-            style={{
-              background: "rgb(0 0 0 / 0.32)",
-              color: "var(--hero-bone)",
-              border: "1px solid var(--hero-line)",
-            }}
-          >
-            <span
-              className="size-1.5 shrink-0 rounded-full"
-              style={{ background: "var(--hero-brass)" }}
-              aria-hidden
-            />
-            {hero.badge}
-          </span>
-
-          <p className="mt-2.5 text-[0.75rem] font-medium tracking-wide md:mt-4 md:text-small" style={{ color: "var(--hero-bone-faint)" }}>
-            {hero.meta}
-          </p>
-
           <h1
             id="hero-heading"
-            className="mt-1.5 font-display text-[clamp(1.85rem,7vw,2.35rem)] leading-[1.15] tracking-[-0.02em] md:mt-3 md:text-hero md:leading-[1.12]"
+            className="font-display text-[clamp(2rem,7.5vw,2.55rem)] leading-[1.15] tracking-[-0.02em] md:text-hero md:leading-[1.12]"
           >
             <span className="sr-only">{hero.h1}</span>
             <span aria-hidden="true" className="block" style={{ color: "var(--hero-bone)" }}>
@@ -100,7 +80,7 @@ export function Hero() {
                 style={{ background: "var(--hero-brass)" }}
                 aria-hidden
               />
-              {hero.trust}
+              <bdi>12</bdi> שנה במרכז · מענה תוך יום עסקים
             </p>
           </div>
         </div>

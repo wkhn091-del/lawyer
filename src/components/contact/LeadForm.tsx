@@ -197,12 +197,10 @@ export function LeadForm({
         aria-busy={pending || undefined}
         className="inline-flex min-h-12 w-full items-center justify-center rounded-md bg-navy px-6 text-button font-medium text-cream transition duration-[var(--motion-fast)] hover:bg-navy-deep disabled:opacity-70"
       >
-        {pending ? "שולחים…" : quick ? "חזרו אליי" : "לקביעת פגישת ייעוץ"}
+        {pending ? "שולחים…" : quick ? "חזרו אליי" : "לקביעת השיחה"}
       </button>
-      <p className="text-center text-small text-muted">
-        {quick
-          ? "נחזור תוך יום עסקים אחד. אל תפרטו כאן מידע רגיש — את הפרטים נשמע בשיחה."
-          : "נחזור תוך יום עסקים אחד · בלי התחייבות לייצוג בשלב הזה"}
+      <p className="text-center text-[0.78rem] text-muted">
+        מענה תוך יום עסקים אחד · בלי התחייבות לייצוג בשלב הזה
       </p>
       <LeadPrivacyNotice />
     </form>
@@ -248,7 +246,7 @@ function Field({
 
 function ErrorText({ id, text }: { id?: string; text: string }) {
   return (
-    <p id={id} className="mt-1 text-small text-error">
+    <p id={id} role="status" aria-live="polite" className="mt-1 text-small text-error">
       {text}
     </p>
   );

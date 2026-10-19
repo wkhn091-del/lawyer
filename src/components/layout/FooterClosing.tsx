@@ -46,7 +46,7 @@ export function FooterClosing() {
             {miniHero.title}
           </SplitReveal>
           <p className="mt-3 text-[0.9375rem] text-cream/70">{miniHero.lead}</p>
-          <p className="mt-4 text-small text-cream/55">
+          <p className="mt-4 text-small text-cream/75">
             טלפון <bdi dir="ltr">{site.contact.phone}</bdi>
             {" · "}
             מייל <bdi dir="ltr">{site.contact.email}</bdi>

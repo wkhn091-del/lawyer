@@ -61,7 +61,7 @@ export default async function ServicePage({ params }: Props) {
         />
         <div className="scrim absolute inset-0" aria-hidden />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-5 pb-8 md:px-8">
-          <p className="text-small text-gold">תחום התמחות</p>
+          <p className="text-small text-gold-ink">תחום התמחות</p>
           <h1 className="mt-2 font-display text-hero text-cream">{service.title}</h1>
           <p className="mt-2 text-small text-cream/85">הדמיה</p>
         </div>
@@ -91,7 +91,7 @@ export default async function ServicePage({ params }: Props) {
             <p className="font-display text-h3">{service.cta}</p>
             <p className="mt-2 text-small text-cream/70">בלי התחייבות לייצוג בשלב הזה</p>
             <CtaLink href={`/contact?area=${areaId}#lead`} variant="onDark" className="mt-5">
-              לקביעת פגישת ייעוץ
+              לקביעת השיחה
             </CtaLink>
           </div>
         </div>

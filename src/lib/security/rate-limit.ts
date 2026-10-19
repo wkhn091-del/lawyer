@@ -62,6 +62,10 @@ export async function rateLimit(key: string, limit: number, windowMs: number): P
     return success;
   } catch (error) {
     reportError("rate-limit", error);
+    // Fail closed on shared hosting — memory fallback is per-instance and bypassable.
+    if (serverEnv.VERCEL_ENV === "production" || serverEnv.VERCEL_ENV === "preview") {
+      return false;
+    }
     return memoryLimit(key, limit, windowMs);
   }
 }

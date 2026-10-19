@@ -100,7 +100,7 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
         aria-label="תפריט ניווט"
         inert={open ? undefined : true}
         className={[
-          "fixed inset-y-0 left-0 z-50 flex w-[min(20rem,86vw)] flex-col bg-cream shadow-[8px_0_40px_-12px_rgb(0_0_0/0.35)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          "fixed inset-y-0 left-0 z-50 flex w-[min(20rem,86vw)] flex-col bg-cream shadow-[1px_0_0_rgb(18_28_53/0.06),8px_0_24px_-8px_rgb(0_0_0/0.28),24px_0_48px_-16px_rgb(0_0_0/0.2)] transition-transform duration-[var(--motion-base)] ease-[var(--ease-out)]",
           open ? "translate-x-0" : "pointer-events-none -translate-x-full",
         ].join(" ")}
       >
@@ -125,7 +125,7 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="flex min-h-12 items-center border-b border-border/40 py-2 transition-colors hover:text-gold"
+                  className="flex min-h-12 items-center border-b border-border/40 py-2 transition-colors hover:text-gold-ink"
                   onClick={() => setOpen(false)}
                 >
                   {item.label}
@@ -149,7 +149,7 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
             className="flex min-h-11 items-center justify-center rounded-full bg-gold px-4 text-small font-medium text-navy-deep transition hover:bg-gold-hover"
             onClick={() => setOpen(false)}
           >
-            לקביעת פגישת ייעוץ
+            לקביעת השיחה
           </Link>
         </div>
       </div>

@@ -79,7 +79,7 @@ export function WordFillBand() {
       />
 
       <div className="relative z-10 mx-auto w-full max-w-5xl px-5 py-20 md:px-8">
-        <p className="text-center text-[0.72rem] font-medium tracking-[0.22em] text-gold/70 md:text-start">
+        <p className="text-center text-[0.72rem] font-medium tracking-[0.1em] text-gold/70 md:text-start">
           {wordFill.label}
         </p>
         <ul className="mt-10 flex flex-col gap-4 md:mt-14 md:gap-6">

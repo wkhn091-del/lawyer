@@ -7,23 +7,35 @@ export function Process() {
   const { process } = home;
 
   return (
-    <section id="how" className="bg-cream py-12 md:py-16">
+    <section
+      id="how"
+      className="relative overflow-hidden bg-white py-14 md:py-24"
+      aria-labelledby="process-heading"
+    >
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <Reveal className="max-w-2xl">
+        <Reveal className="max-w-xl">
           <GoldLineDraw />
-          <h2 className="mt-4 font-display text-h2 text-navy">{process.title}</h2>
-          <p className="mt-3 text-muted">{process.lead}</p>
+          <h2 id="process-heading" className="mt-4 font-display text-h2 text-navy">
+            {process.title}
+          </h2>
+          <p className="mt-2 text-small text-muted">{process.lead}</p>
         </Reveal>
 
-        <ol className="relative mt-8 grid gap-5 md:grid-cols-3 md:gap-8">
+        <ol className="relative mt-12 grid gap-8 md:mt-16 md:grid-cols-3 md:gap-6">
           <ProcessLine />
           {process.steps.map((step, index) => (
-            <Reveal key={step.title} delay={index * 0.05} as="li" className="relative">
-              <div className="border border-border/80 bg-white/70 p-6 md:border-0 md:bg-transparent md:p-0">
-                <span className="inline-flex size-12 items-center justify-center rounded-full border border-gold/40 bg-navy font-display text-small text-cream">
+            <Reveal key={step.title} delay={index * 0.08} as="li" className="relative text-center md:text-start">
+              <div className="mx-auto flex flex-col items-center md:items-start">
+                <span className="relative z-10 inline-flex size-14 items-center justify-center rounded-full bg-navy font-display text-cream shadow-[0_0_0_8px_#fff] md:size-16">
                   {index + 1}
                 </span>
-                <h3 className="mt-5 font-display text-h3 text-navy">{step.title}</h3>
+                <p
+                  className="mt-6 font-display text-[4rem] leading-none tracking-tight text-gold/25 md:text-[5rem]"
+                  aria-hidden
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3 className="-mt-2 font-display text-h3 text-navy">{step.title}</h3>
                 <p className="mt-2 text-small text-muted">{step.body}</p>
               </div>
             </Reveal>

@@ -49,7 +49,7 @@ export function nextStepsFor(practiceArea: string | undefined): ThankYouNext {
 
 export const thankYouCopy = {
   title: "הפנייה התקבלה",
-  lead: "תודה. נחזור אליכם תוך יום עסקים אחד לקביעת פגישת ייעוץ — בלי התחייבות לייצוג בשלב הזה.",
+  lead: "תודה. נחזור אליכם תוך יום עסקים אחד לקביעת השיחה — בלי התחייבות לייצוג בשלב הזה.",
   trust: [
     "12 שנות פעילות במרכז",
     "מענה תוך יום עסקים",

@@ -64,7 +64,7 @@ export function Header() {
             variant={overHero ? "onDark" : "primary"}
             className={`!hidden min-h-10 px-4 text-small sm:!inline-flex ${overHero ? "!rounded-full" : ""}`}
           >
-            לקביעת פגישת ייעוץ
+            לקביעת השיחה
           </CtaLink>
           <MobileNav onDark={overHero} />
         </div>

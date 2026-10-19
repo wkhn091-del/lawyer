@@ -51,7 +51,7 @@ function AccordionGroup({ group }: { group: Group }) {
       >
         <span>{group.title}</span>
         <ChevronDown
-          className={`size-4 shrink-0 text-cream/50 transition-transform duration-[var(--motion-fast)] ease-in-out motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+          className={`size-4 shrink-0 text-cream/50 transition-transform duration-[var(--motion-fast)] ease-[var(--ease-out)] motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
           aria-hidden
         />
       </button>
@@ -60,7 +60,7 @@ function AccordionGroup({ group }: { group: Group }) {
         role="region"
         aria-labelledby={buttonId}
         inert={open ? undefined : true}
-        className={`grid transition-[grid-template-rows] duration-[var(--motion-base)] ease-in-out motion-reduce:transition-none ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        className={`grid transition-[grid-template-rows] duration-[var(--motion-base)] ease-[var(--ease-out)] motion-reduce:transition-none ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
         <ul className="overflow-hidden" aria-hidden={!open}>
           {group.links.map((link) => (

@@ -26,7 +26,7 @@ export function WhyNow() {
           ))}
         </Reveal>
 
-        <p className="mt-10 text-small text-cream/60">המידע כללי ואינו ייעוץ משפטי. כל מקרה נבדק לגופו.</p>
+        <p className="mt-10 text-small text-cream/75">המידע כללי ואינו ייעוץ משפטי. כל מקרה נבדק לגופו.</p>
       </div>
     </section>
   );

@@ -51,7 +51,7 @@ export default function AboutPage() {
         <div className="mt-10 flex flex-wrap gap-3">
           <CtaLink href="/team">להכיר את הצוות</CtaLink>
           <CtaLink href="/contact#lead" variant="ghost">
-            לקביעת פגישת ייעוץ
+            לקביעת השיחה
           </CtaLink>
         </div>
       </div>

@@ -16,7 +16,9 @@ export const site = {
   ],
   legal: {
     legalName: "משרד עורכי דין כהן ושות׳" as string | null,
+    /** Required before production launch — real ח.פ / ע.מ only, never invent. */
     companyId: null as string | null,
+    /** Required before production launch — full office street address. */
     address: null as string | null,
   },
   contact: {
@@ -38,7 +40,7 @@ export const site = {
     miniHero: {
       title: "רוצים לדעת איפה אתם עומדים?",
       lead: "שיחה אחת. תוכנית והערכת עלות. בלי התחייבות לייצוג.",
-      cta: "לקביעת פגישת ייעוץ",
+      cta: "לקביעת השיחה",
       href: "/contact#lead",
     },
     office: [
