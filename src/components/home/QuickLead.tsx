@@ -16,8 +16,8 @@ export function QuickLead() {
       aria-labelledby="quick-lead-heading"
     >
       <div className="mx-auto grid max-w-6xl gap-6 px-5 md:grid-cols-2 md:items-stretch md:gap-8 md:px-8">
-        {/* Right in RTL — photo panel fills the empty side */}
-        <Reveal className="relative min-h-[18rem] overflow-hidden md:min-h-full">
+        {/* Right in RTL — photo panel. Mobile height locked; desktop needs real min-h (min-h-full collapses when the form is short/locked). */}
+        <Reveal className="relative min-h-[18rem] overflow-hidden md:min-h-[32rem]">
           <Image
             src="/media/meeting-room.jpg"
             alt=""
@@ -60,12 +60,14 @@ export function QuickLead() {
           </div>
         </Reveal>
 
-        <LeadForm
-          locked={leadsLocked}
-          variant="quick"
-          page="/"
-          turnstileSiteKey={publicEnv.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-        />
+        <div className={leadsLocked ? "flex w-full md:min-h-[32rem]" : undefined}>
+          <LeadForm
+            locked={leadsLocked}
+            variant="quick"
+            page="/"
+            turnstileSiteKey={publicEnv.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+          />
+        </div>
       </div>
     </section>
   );

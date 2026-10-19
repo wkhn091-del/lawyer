@@ -73,7 +73,7 @@ export function LeadForm({
 
   if (locked) {
     return (
-      <div className="border border-border bg-cream p-6 text-small text-muted">
+      <div className="flex h-full w-full flex-col justify-center border border-border bg-cream p-6 text-small text-muted md:p-8">
         שליחת פניות דרך האתר בהכנה. בינתיים אפשר להתקשר ל-
         <a href={`tel:${site.contact.phoneTel}`} className="text-navy" dir="ltr">
           <bdi>{site.contact.phone}</bdi>
