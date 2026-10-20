@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { site } from "@/content/site";
 
-export const metadata: Metadata = { title: "תנאי שימוש" };
+export const metadata: Metadata = { title: "תנאי שימוש", alternates: { canonical: "/terms" } };
 
 export default function TermsPage() {
   return (
@@ -13,6 +13,8 @@ export default function TermsPage() {
         התכנים באתר הם מידע כללי ואינם ייעוץ משפטי. אין להסתמך עליהם כתחליף לייעוץ אישי. שליחת טופס או יצירת קשר
         אינם יוצרים יחסי עו״ד-לקוח.
       </p>
+      <h2>דין חל</h2>
+      <p>על תנאים אלה יחולו דיני מדינת ישראל, וסמכות השיפוט הבלעדית תהיה לבתי המשפט המוסמכים בישראל.</p>
       <h2>קניין רוחני</h2>
       <p>התכנים, העיצוב והסימנים באתר שייכים למשרד או לבעלי רישיון, ואין להעתיקם ללא אישור.</p>
       <h2>יצירת קשר</h2>

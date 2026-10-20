@@ -6,6 +6,7 @@ import { practiceAreas } from "@/content/site";
 export const metadata: Metadata = {
   title: "תחומי עיסוק",
   description: "דיני משפחה וגירושין, דיני עבודה ונדל״ן. משרד עורכי דין כהן ושות׳.",
+  alternates: { canonical: "/services" },
 };
 
 export default function ServicesIndexPage() {

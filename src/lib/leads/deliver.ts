@@ -119,7 +119,10 @@ function logFailures(results: PromiseSettledResult<void>[], labels: string[]): v
   });
 }
 
-/** Returns false only when no watched channel received the lead. */
+/**
+ * Returns true only when a primary channel (CRM or office email) stored the lead.
+ * Slack is a notification without the case description — it never counts as delivery.
+ */
 export async function deliverLead(lead: Lead, context: Context): Promise<boolean> {
   if (serverEnv.LEAD_DELIVERY_MODE === "console") {
     // No PII in logs — practice area + context only.
@@ -127,23 +130,25 @@ export async function deliverLead(lead: Lead, context: Context): Promise<boolean
     return true;
   }
 
-  const jobs: { label: string; run: () => Promise<void> }[] = [];
-  if (serverEnv.CRM_WEBHOOK_URL) jobs.push({ label: "CRM", run: () => notifyCrm(lead, context) });
-  if (serverEnv.SLACK_WEBHOOK_URL) jobs.push({ label: "Slack", run: () => notifySlack(lead, context) });
+  const primary: { label: string; run: () => Promise<void> }[] = [];
+  if (serverEnv.CRM_WEBHOOK_URL) primary.push({ label: "CRM", run: () => notifyCrm(lead, context) });
   if (serverEnv.RESEND_API_KEY && serverEnv.LEAD_NOTIFY_EMAIL) {
-    jobs.push({ label: "Email", run: () => notifyEmail(lead, context) });
+    primary.push({ label: "Email", run: () => notifyEmail(lead, context) });
   }
+  const notifications: { label: string; run: () => Promise<void> }[] = [];
+  if (serverEnv.SLACK_WEBHOOK_URL) notifications.push({ label: "Slack", run: () => notifySlack(lead, context) });
 
-  if (jobs.length === 0) {
-    reportError("lead", new Error("No delivery channels configured in live mode"));
+  if (primary.length === 0) {
+    reportError("lead", new Error("No primary delivery channel (CRM/email) configured in live mode"));
     return false;
   }
 
+  const jobs = [...primary, ...notifications];
   const results = await Promise.allSettled(jobs.map((job) => job.run()));
   logFailures(
     results,
     jobs.map((job) => job.label),
   );
 
-  return results.some((result) => result.status === "fulfilled");
+  return results.slice(0, primary.length).some((result) => result.status === "fulfilled");
 }

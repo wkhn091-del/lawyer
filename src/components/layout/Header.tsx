@@ -59,10 +59,11 @@ export function Header() {
           >
             <bdi>{site.contact.phone}</bdi>
           </a>
+          {/* Phone: one CTA lives in the hero / sticky bar — avoids header clutter + hamburger overlap */}
           <CtaLink
             href="/contact#lead"
             variant={overHero ? "onDark" : "primary"}
-            className={`!hidden min-h-10 px-4 text-small sm:!inline-flex ${overHero ? "!rounded-full" : ""}`}
+            className={`!hidden min-h-10 px-4 text-small md:!inline-flex ${overHero ? "!rounded-full" : ""}`}
           >
             לקביעת השיחה
           </CtaLink>

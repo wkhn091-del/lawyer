@@ -1,9 +1,9 @@
 /** Mirrors the `--motion-*` and `--ease-*` tokens in globals.css, in seconds, for Motion and GSAP. */
 export const duration = {
-  instant: 0.1,
-  fast: 0.18,
-  base: 0.28,
-  slow: 0.52,
+  instant: 0.12,
+  fast: 0.2,
+  base: 0.32,
+  slow: 0.56,
   /** Headline line reveals (SplitReveal) only: long enough to read as one gesture, not a flicker. */
   reveal: 0.8,
 } as const;

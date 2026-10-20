@@ -20,6 +20,14 @@ const ANALYTICS_IMG = [
   "https://*.clarity.ms",
 ] as const;
 
+/** Script hosts GTM is allowed to pull. No 'strict-dynamic': it would trust any script GTM injects. */
+const ANALYTICS_SCRIPT = [
+  "https://www.googletagmanager.com",
+  "https://www.google-analytics.com",
+  "https://*.clarity.ms",
+  "https://*.doubleclick.net",
+] as const;
+
 const TURNSTILE = "https://challenges.cloudflare.com";
 const CSP_REPORT_GROUP = "csp";
 
@@ -32,14 +40,13 @@ function serialize(directives: Directives): string {
 export function buildSiteCsp(nonce: string, isDev: boolean): string {
   return serialize({
     "default-src": ["'self'"],
-    // 'strict-dynamic' lets the nonced GTM loader pull GA4 and Clarity after consent.
-    // No bare "https:" in production — legacy browsers get a narrow GTM allowlist only.
+    // Explicit host allowlist, no 'strict-dynamic' and no bare "https:" in production:
+    // a compromised GTM tag cannot pull scripts from unlisted hosts.
     "script-src": [
       "'self'",
       `'nonce-${nonce}'`,
-      "'strict-dynamic'",
       TURNSTILE,
-      "https://www.googletagmanager.com",
+      ...ANALYTICS_SCRIPT,
       ...(isDev ? ["'unsafe-eval'", "https:"] : []),
     ],
     "style-src": ["'self'", `'nonce-${nonce}'`],

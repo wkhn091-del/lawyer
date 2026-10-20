@@ -1,7 +1,7 @@
 import "server-only";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { serverEnv } from "@/lib/env/server";
+import { isDeployedProduction, serverEnv } from "@/lib/env/server";
 import { reportError } from "@/lib/observability/report";
 
 type Bucket = { count: number; resetAt: number };
@@ -56,21 +56,35 @@ function sharedLimiter(limit: number, windowMs: number): Ratelimit | null {
  */
 export async function rateLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
   const limiter = sharedLimiter(limit, windowMs);
-  if (!limiter) return memoryLimit(key, limit, windowMs);
+  // No shared limiter in deployed production: per-instance memory is bypassable, so fail closed.
+  // (On Vercel the lead form is already locked by `leadsLocked` before this is reached.)
+  if (!limiter) return isDeployedProduction(serverEnv) ? false : memoryLimit(key, limit, windowMs);
   try {
     const { success } = await limiter.limit(key);
     return success;
   } catch (error) {
     reportError("rate-limit", error);
     // Fail closed on shared hosting — memory fallback is per-instance and bypassable.
-    if (serverEnv.VERCEL_ENV === "production" || serverEnv.VERCEL_ENV === "preview") {
+    if (isDeployedProduction(serverEnv) || serverEnv.VERCEL_ENV === "preview") {
       return false;
     }
     return memoryLimit(key, limit, windowMs);
   }
 }
 
+/**
+ * HMAC-SHA256 (truncated) — phone/email are low-entropy, so a plain hash is dictionary-reversible
+ * by anyone who reads the Redis keys. The secret is required in production (`missingForLeads`).
+ */
 export async function hashKey(value: string): Promise<string> {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value.trim().toLowerCase()));
-  return Array.from(new Uint8Array(digest).slice(0, 16), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  const secret = serverEnv.RATE_LIMIT_HMAC_SECRET ?? "local-development-only";
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value.trim().toLowerCase()));
+  return Array.from(new Uint8Array(signature).slice(0, 16), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }

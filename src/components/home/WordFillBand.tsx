@@ -87,7 +87,7 @@ export function WordFillBand() {
             <li key={word} className="overflow-hidden">
               <span
                 data-word
-                className="word-fill-glyph block font-display text-[clamp(2.75rem,12vw,7rem)] font-bold leading-[0.95] tracking-[-0.03em]"
+                className="word-fill-glyph block font-display text-[clamp(2.75rem,12vw,7rem)] font-bold leading-[0.95] tracking-[-0.02em]"
               >
                 {word}
               </span>

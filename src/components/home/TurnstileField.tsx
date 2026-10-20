@@ -27,7 +27,7 @@ declare global {
 
 let scriptPromise: Promise<TurnstileApi> | null = null;
 
-/** Loaded by a trusted script, so the CSP's 'strict-dynamic' admits it without a host allowlist. */
+/** challenges.cloudflare.com is on the CSP script-src allowlist (no 'strict-dynamic'). */
 function loadTurnstile(): Promise<TurnstileApi> {
   if (window.turnstile) return Promise.resolve(window.turnstile);
   scriptPromise ??= new Promise((resolve, reject) => {

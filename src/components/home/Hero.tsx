@@ -11,7 +11,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="hero-stage relative isolate overflow-x-clip text-[var(--hero-bone)]"
+      className="hero-stage relative isolate flex min-h-[100svh] flex-col overflow-x-clip text-[var(--hero-bone)] md:block md:min-h-0"
     >
       <HeroBg src={hero.backgroundSrc} alt={hero.backgroundAlt} />
 
@@ -24,26 +24,31 @@ export function Hero() {
             "linear-gradient(to left, color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 0%, color-mix(in srgb, var(--color-navy-deep) 22%, transparent) 45%, transparent 70%)",
         }}
       />
-      {/* Mobile: light wash for copy only — leave the photo open around the floating arch */}
+      {/* Mobile: stronger top wash for copy; keep photo open around the arch */}
       <div
         className="pointer-events-none absolute inset-0 md:hidden"
         aria-hidden
         style={{
           background:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 0%, color-mix(in srgb, var(--color-navy-deep) 18%, transparent) 42%, transparent 68%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--color-navy-deep) 62%, transparent) 0%, color-mix(in srgb, var(--color-navy-deep) 28%, transparent) 38%, transparent 62%)",
         }}
       />
 
+      {/* Mobile-only visible caption (desktop hero is locked). */}
+      <span className="absolute bottom-2 start-3 z-10 text-[0.62rem] text-[var(--hero-bone)]/50 md:hidden">
+        הדמיה
+      </span>
+
       {/*
-        Mobile composition matches Ride With Yoav:
-        centered copy stack → fixed-height floating arch (soft fade).
-        Desktop stays two-column: copy | arch.
+        Mobile (normal landing pattern): one full screen —
+        brand bar → headline → CTA → complete media, then scroll.
+        Desktop: two-column copy | arch (locked).
       */}
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-4 px-5 pb-6 pt-[4.75rem] md:min-h-[88svh] md:grid md:grid-cols-2 md:items-center md:gap-8 md:px-8 md:pb-12 md:pt-24">
-        <div className="relative z-10 flex w-full flex-col items-center text-center md:max-w-xl md:items-start md:pe-2 md:text-start">
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:min-h-[88svh] md:grid md:grid-cols-2 md:items-center md:gap-8 md:px-8 md:pb-12 md:pt-24">
+        <div className="relative z-10 mt-[min(12vh,5.5rem)] flex w-full shrink-0 flex-col items-center text-center md:mt-0 md:max-w-xl md:items-start md:pe-2 md:text-start">
           <h1
             id="hero-heading"
-            className="font-display text-[clamp(2rem,7.5vw,2.55rem)] leading-[1.15] tracking-[-0.02em] md:text-hero md:leading-[1.12]"
+            className="font-display text-[clamp(2.15rem,8vw,2.65rem)] leading-[1.14] tracking-[-0.02em] md:text-hero md:leading-[1.12]"
           >
             <span className="sr-only">{hero.h1}</span>
             <span aria-hidden="true" className="block" style={{ color: "var(--hero-bone)" }}>
@@ -56,23 +61,23 @@ export function Hero() {
 
           <HeroLead>
             <p
-              className="mt-2.5 max-w-[34ch] text-[0.9rem] leading-snug md:mt-5 md:max-w-md md:text-lead md:leading-relaxed"
+              className="mt-3 max-w-[30ch] text-[1.02rem] leading-snug md:mt-5 md:max-w-md md:text-lead md:leading-relaxed"
               style={{ color: "var(--hero-bone-dim)" }}
             >
               {hero.lead}
             </p>
           </HeroLead>
 
-          <div className="mt-4 w-full max-w-xs md:mt-8 md:max-w-none">
+          <div className="mt-5 w-full max-w-[18rem] md:mt-8 md:max-w-none">
             <a
               id="hero-cta"
               href={hero.primaryHref}
-              className="hero-cta inline-flex min-h-11 w-full items-center justify-center rounded-full px-8 text-[0.95rem] font-medium transition duration-[var(--motion-fast)] hover:-translate-y-px active:translate-y-0 active:scale-[0.98] motion-reduce:hover:translate-y-0 md:min-h-14 md:w-auto md:px-10 md:text-button"
+              className="hero-cta inline-flex min-h-12 w-full items-center justify-center whitespace-nowrap rounded-full px-8 text-[1rem] font-medium hover:-translate-y-px active:translate-y-0 active:scale-[0.98] motion-reduce:hover:translate-y-0 md:min-h-14 md:w-auto md:px-10 md:text-button"
             >
               {hero.primaryCta}
             </a>
             <p
-              className="mt-2.5 flex items-center justify-center gap-2 text-[0.72rem] md:mt-4 md:justify-start md:text-small"
+              className="mt-3 flex items-center justify-center gap-2 text-[0.8rem] md:mt-4 md:justify-start md:text-small"
               style={{ color: "var(--hero-bone-faint)" }}
             >
               <span
@@ -85,9 +90,9 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Arch collage — Ride layout: tilted 3-col mosaic + slow opposing drift */}
+        {/* Arch sits on the bottom of the phone hero — full frame, like a normal landing */}
         <div
-          className="relative flex justify-center px-4 pb-4 md:h-full md:items-center md:justify-center md:self-stretch md:px-6 md:pb-8 md:pt-2"
+          className="relative mt-auto flex min-h-0 shrink-0 items-end justify-center px-2 pb-1 pt-5 md:mt-0 md:h-full md:items-center md:self-stretch md:px-6 md:pb-8 md:pt-2"
           aria-label={hero.archLabel}
         >
           <p className="sr-only">{hero.frameAlt}</p>

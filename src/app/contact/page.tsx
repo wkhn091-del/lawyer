@@ -9,7 +9,8 @@ import type { PracticeAreaId } from "@/lib/leads/options";
 
 export const metadata: Metadata = {
   title: "צור קשר",
-  description: "קביעת פגישת ייעוץ עם משרד עורכי דין כהן ושות׳ — תוכנית והערכת עלות, בלי התחייבות לייצוג בשלב הראשון.",
+  description: "קביעת שיחה ראשונה עם משרד עורכי דין כהן ושות׳ — תוכנית והערכת עלות, בלי התחייבות לייצוג בשלב הראשון.",
+  alternates: { canonical: "/contact" },
 };
 
 type Props = { searchParams: Promise<{ area?: string }> };
@@ -37,7 +38,7 @@ export default async function ContactPage({ searchParams }: Props) {
 
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[0.95fr_1.05fr] md:px-8 md:py-20">
         <div>
-          <h1 className="font-display text-hero text-navy">קביעת פגישת ייעוץ</h1>
+          <h1 className="font-display text-hero text-navy">קביעת שיחה ראשונה</h1>
           <p className="mt-4 text-muted">
             השאירו פרטים ונחזור תוך יום עסקים אחד. אל תפרטו כאן מידע רגיש — את השאר נשמע בשיחה.
           </p>

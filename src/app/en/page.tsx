@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: "Cohen & Co. Law Office",
   description: "Family, employment, and real estate legal representation in central Israel.",
   alternates: { canonical: "/en", languages: { he: "/", en: "/en" } },
+  // Stub until the full English translation ships.
+  robots: { index: false, follow: true },
 };
 
 export default function EnglishHomePage() {

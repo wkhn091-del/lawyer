@@ -7,6 +7,7 @@ import { faqPageSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "שאלות נפוצות",
   description: "תשובות קצרות על פנייה למשרד, זמני חזרה ושכר טרחה.",
+  alternates: { canonical: "/faq" },
 };
 
 export default function FaqPage() {

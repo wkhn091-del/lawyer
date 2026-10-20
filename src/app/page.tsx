@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ArticlesTeaser } from "@/components/home/ArticlesTeaser";
 import { CompareAlternatives } from "@/components/home/CompareAlternatives";
 import { Hero } from "@/components/home/Hero";
@@ -12,8 +13,15 @@ import { LegalRoadmap } from "@/components/home/LegalRoadmap";
 import { TrustBand } from "@/components/home/TrustBand";
 import { WhyUs } from "@/components/home/WhyUs";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { faq } from "@/content/home";
-import { faqPageSchema, organizationGraph } from "@/lib/seo/schema";
+import { organizationGraph } from "@/lib/seo/schema";
+
+/** hreflang lives only here and on /en — the only two equivalent pages. */
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+    languages: { he: "/", en: "/en" },
+  },
+};
 
 export default function HomePage() {
   return (
@@ -21,7 +29,7 @@ export default function HomePage() {
       <JsonLd
         data={{
           "@context": "https://schema.org",
-          "@graph": [...organizationGraph(), faqPageSchema(faq)],
+          "@graph": [...organizationGraph()],
         }}
       />
       <Hero />

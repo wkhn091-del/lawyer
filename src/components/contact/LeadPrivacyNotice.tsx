@@ -6,16 +6,15 @@ import Link from "next/link";
  */
 export function LeadPrivacyNotice() {
   return (
-    <div className="space-y-1.5 text-[0.72rem] leading-relaxed text-muted">
+    <div className="space-y-1 text-[0.68rem] leading-snug text-muted md:space-y-1.5 md:text-[0.72rem] md:leading-relaxed">
       <p>
-        בשליחה אתם מאשרים שמסרתם את הפרטים מרצונכם כדי שנחזור אליכם לתיאום שיחה בלבד. לא נשלח דיוור
-        שיווקי. הפרטים יועברו לספקי תשתית (אחסון, סינון בוטים, התראות משרד) כמפורט ב
+        בשליחה מאשרים חזרה לתיאום שיחה בלבד — בלי דיוור שיווקי. פרטים עוברים לספקי תשתית כמפורט ב
         <Link href="/privacy" className="underline underline-offset-2 hover:text-navy">
           מדיניות הפרטיות
         </Link>
-        . יש לכם זכות עיון, תיקון ומחיקה בפנייה למייל המשרד.
+        .
       </p>
-      <p>הפנייה אינה יוצרת יחסי עו״ד-לקוח · אל תשלחו מסמכים או פרטים רגישים בטופס.</p>
+      <p>אינה יוצרת יחסי עו״ד-לקוח · בלי מסמכים או פרטים רגישים בטופס.</p>
     </div>
   );
 }

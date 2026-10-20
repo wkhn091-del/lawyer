@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 
-export const metadata: Metadata = { title: "מדיניות עוגיות" };
+export const metadata: Metadata = { title: "מדיניות עוגיות", alternates: { canonical: "/cookies" } };
 
 export default function CookiesPage() {
   return (
@@ -10,7 +10,7 @@ export default function CookiesPage() {
       <h2>חיוניות</h2>
       <p>נדרשות לאבטחה בסיסית ולשמירת בחירת ההסכמה. לא ניתן לכבות אותן בלי לפגוע בתפקוד.</p>
       <h2>מדידה</h2>
-      <p>Google Analytics / GTM ו-Microsoft Clarity נטענים רק אחרי הסכמה. אפשר לדחות בכל עת דרך באנר העוגיות (או ניקוי האחסון המקומי).</p>
+      <p>Google Analytics / GTM ו-Microsoft Clarity נטענים רק אחרי הסכמה. אפשר לשנות או לבטל את הבחירה בכל עת באמצעות ״הגדרות עוגיות״ בתחתית האתר — הבאנר יוצג שוב ומה שייבחר יחול מיד.</p>
     </LegalPage>
   );
 }

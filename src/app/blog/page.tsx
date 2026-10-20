@@ -5,6 +5,9 @@ import { home } from "@/content/home";
 export const metadata: Metadata = {
   title: "מאמרים",
   description: "הסברים קצרים בשפה ברורה. המידע כללי ואינו ייעוץ משפטי.",
+  alternates: { canonical: "/blog" },
+  // Draft index until the articles are written and approved.
+  robots: { index: false, follow: true },
 };
 
 export default function BlogPage() {

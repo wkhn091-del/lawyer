@@ -3,17 +3,18 @@ import Link from "next/link";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { site } from "@/content/site";
 
-export const metadata: Metadata = { title: "מדיניות פרטיות" };
+export const metadata: Metadata = { title: "מדיניות פרטיות", alternates: { canonical: "/privacy" } };
 
 const PROCESSORS = [
   { name: "Vercel", role: "אחסון האתר ועיבוד הטופס", where: "ארה״ב / אירופה" },
-  { name: "ספק הדוא״ל של המשרד", role: "העברת הפנייה לתיבת המשרד", where: "ארה״ב / אירופה" },
+  { name: "Resend", role: "העברת הפנייה לתיבת המשרד, כשהמייל הוא ערוץ המסירה הפעיל", where: "ארה״ב" },
   { name: "מערכת ניהול הלקוחות (CRM) של המשרד", role: "תיעוד הפנייה וחזרה אליכם", where: "לפי הספק" },
   { name: "Slack", role: "התראה פנימית על פנייה חדשה (שם, טלפון ותחום בלבד)", where: "ארה״ב" },
   { name: "Cloudflare Turnstile", role: "סינון בוטים בטופס", where: "גלובלי" },
-  { name: "Upstash", role: "הגבלת קצב שליחה (מזהים מוצפנים, לא פרטים אישיים)", where: "אירופה" },
+  { name: "Upstash", role: "הגבלת קצב שליחה (מזהים מגובבים ב־HMAC, בלי לשמור טלפון או דוא״ל)", where: "אירופה" },
   { name: "Sentry", role: "ניטור תקלות טכניות, ללא פרטי הטופס", where: "ארה״ב" },
   { name: "Google (Analytics, Ads)", role: "מדידה, רק אם אישרתם עוגיות", where: "ארה״ב" },
+  { name: "Microsoft Clarity", role: "מפות חום וניתוח שימוש, רק אם אישרתם עוגיות", where: "ארה״ב / אירופה" },
 ] as const;
 
 export default function PrivacyPage() {

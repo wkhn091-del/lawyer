@@ -15,7 +15,8 @@ function serverActionOrigins(): string[] {
       /* ignore bad env at build */
     }
   }
-  if (process.env.VERCEL_URL) hosts.add(process.env.VERCEL_URL);
+  // Preview deployments need their own host; production accepts only the canonical domain.
+  if (process.env.VERCEL_URL && process.env.VERCEL_ENV !== "production") hosts.add(process.env.VERCEL_URL);
   return [...hosts];
 }
 

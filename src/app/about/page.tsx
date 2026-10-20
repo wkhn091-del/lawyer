@@ -6,6 +6,7 @@ import { site } from "@/content/site";
 export const metadata: Metadata = {
   title: "אודות",
   description: "על משרד עורכי דין כהן ושות׳: 12 שנה במרכז, בדיני משפחה, עבודה ונדל״ן.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

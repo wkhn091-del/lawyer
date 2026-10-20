@@ -11,8 +11,9 @@ Stack: Next.js (App Router) על Vercel · תוכן ב-`src/content` (Sanity sch
 | `CRM_WEBHOOK_URL` | מומלץ | Lawyer Office Manager / webhook לידים |
 | `CRM_WEBHOOK_TOKEN` | אם ה-CRM דורש | Bearer |
 | `RESEND_API_KEY` + `LEAD_NOTIFY_EMAIL` | חלופה למייל | `info@` / `avi@` |
-| `SLACK_WEBHOOK_URL` | אופציונלי | התראות צוות |
+| `SLACK_WEBHOOK_URL` | אופציונלי | התראות צוות בלבד — לא נחשב מסירת ליד (חייב גם CRM או מייל) |
 | `UPSTASH_REDIS_REST_URL` + `TOKEN` | כן בפרוד | Rate limit |
+| `RATE_LIMIT_HMAC_SECRET` | כן בפרוד | `openssl rand -hex 32` — חתימת HMAC למפתחות rate-limit (טלפון/מייל) |
 | `TURNSTILE_*` | כן בפרוד | Cloudflare Turnstile |
 | `SENTRY_DSN` | כן בפרוד | |
 | `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` | כן בפרוד | `openssl rand -base64 32` — יציבות Server Actions בין instances |

@@ -27,6 +27,7 @@ const serverEnvSchema = z
       .refine((value) => value.startsWith("https://"), "Must be the https REST URL from the Upstash console")
       .optional(),
     UPSTASH_REDIS_REST_TOKEN: optionalSecret(512),
+    RATE_LIMIT_HMAC_SECRET: optionalSecret(512),
     TURNSTILE_SECRET_KEY: optionalSecret(256),
     NEXT_PUBLIC_TURNSTILE_SITE_KEY: optionalSecret(128),
     SENTRY_DSN: z
@@ -66,12 +67,13 @@ const serverEnvSchema = z
       });
     }
     if (env.LEAD_DELIVERY_MODE === "live" && env.VERCEL_ENV !== "production") {
-      const hasChannel = Boolean(env.CRM_WEBHOOK_URL || env.SLACK_WEBHOOK_URL || (env.RESEND_API_KEY && env.LEAD_NOTIFY_EMAIL));
-      if (!hasChannel) {
+      // Slack is a notification, not a system of record — a primary channel is required.
+      const hasPrimaryChannel = Boolean(env.CRM_WEBHOOK_URL || (env.RESEND_API_KEY && env.LEAD_NOTIFY_EMAIL));
+      if (!hasPrimaryChannel) {
         ctx.addIssue({
           code: "custom",
           path: ["CRM_WEBHOOK_URL"],
-          message: "At least one of CRM_WEBHOOK_URL, SLACK_WEBHOOK_URL, or Resend email is required when LEAD_DELIVERY_MODE=live.",
+          message: "CRM_WEBHOOK_URL or Resend email is required when LEAD_DELIVERY_MODE=live (Slack alone is not a lead store).",
         });
       }
     }
@@ -105,21 +107,27 @@ export const serverEnv: ServerEnv = parseServerEnv();
 
 const REQUIRED_FOR_LEADS_IN_PRODUCTION = [
   "UPSTASH_REDIS_REST_URL",
+  "RATE_LIMIT_HMAC_SECRET",
   "TURNSTILE_SECRET_KEY",
   "NEXT_PUBLIC_TURNSTILE_SITE_KEY",
   "SENTRY_DSN",
   "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY",
 ] as const;
 
+/** True on Vercel production, and on any non-Vercel host running a production build. */
+export function isDeployedProduction(env: ServerEnv): boolean {
+  return env.VERCEL_ENV ? env.VERCEL_ENV === "production" : env.NODE_ENV === "production";
+}
+
 export function missingForLeads(env: ServerEnv): string[] {
   // A live Preview delivers real leads, so it needs the same bot and rate-limit protection.
   const enforce =
-    env.VERCEL_ENV === "production" || (env.VERCEL_ENV === "preview" && env.LEAD_DELIVERY_MODE === "live");
+    isDeployedProduction(env) || (env.VERCEL_ENV === "preview" && env.LEAD_DELIVERY_MODE === "live");
   if (!enforce) return [];
   const missing: string[] = REQUIRED_FOR_LEADS_IN_PRODUCTION.filter((key) => !env[key]);
   if (env.LEAD_DELIVERY_MODE !== "live") missing.push("LEAD_DELIVERY_MODE=live");
-  const hasChannel = Boolean(env.CRM_WEBHOOK_URL || env.SLACK_WEBHOOK_URL || (env.RESEND_API_KEY && env.LEAD_NOTIFY_EMAIL));
-  if (!hasChannel) missing.push("CRM_WEBHOOK_URL|SLACK_WEBHOOK_URL|RESEND");
+  const hasPrimaryChannel = Boolean(env.CRM_WEBHOOK_URL || (env.RESEND_API_KEY && env.LEAD_NOTIFY_EMAIL));
+  if (!hasPrimaryChannel) missing.push("CRM_WEBHOOK_URL|RESEND_EMAIL");
   return missing;
 }
 

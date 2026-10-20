@@ -11,7 +11,7 @@ export function ArticlesTeaser() {
 
   return (
     <section
-      className="relative overflow-hidden py-14 text-cream md:py-20"
+      className="relative overflow-hidden py-9 text-cream md:py-20"
       aria-labelledby="articles-heading"
     >
       <Image
@@ -42,7 +42,7 @@ export function ArticlesTeaser() {
 
       <div className="relative mx-auto max-w-6xl px-5 md:px-8">
         <Reveal>
-          <div className="flex flex-col gap-4 border-b border-cream/15 pb-8 md:flex-row md:items-end md:justify-between md:pb-10">
+          <div className="flex flex-col gap-3 border-b border-cream/15 pb-6 md:flex-row md:items-end md:justify-between md:gap-4 md:pb-10">
             <div>
               <p className="font-display text-[0.68rem] tracking-[0.1em] text-gold">
                 מהבלוג
@@ -69,7 +69,7 @@ export function ArticlesTeaser() {
             <li key={item.title}>
               <Link
                 href={item.href}
-                className="group grid grid-cols-[3.5rem_1fr_auto] items-baseline gap-3 border-b border-cream/12 py-6 transition md:grid-cols-[5rem_7rem_1fr_auto] md:gap-8 md:py-7"
+                className="group grid grid-cols-[2.75rem_1fr_auto] items-baseline gap-2.5 border-b border-cream/12 py-4 transition md:grid-cols-[5rem_7rem_1fr_auto] md:gap-8 md:py-7"
               >
                 <span className="font-display text-[1.25rem] tabular-nums text-gold md:text-[1.5rem]">
                   {String(index + 1).padStart(2, "0")}

@@ -8,7 +8,7 @@ import { site } from "@/content/site";
 import { LeadPrivacyNotice } from "./LeadPrivacyNotice";
 
 const FIELD_CLASS =
-  "mt-2 w-full rounded-md border border-field bg-white px-3 py-3 text-body text-ink aria-invalid:border-error";
+  "mt-1.5 box-border w-full max-w-full rounded-md border border-field bg-white px-3 py-2.5 text-[0.95rem] text-ink aria-invalid:border-error md:mt-2 md:py-3 md:text-body";
 
 function describedBy(...ids: Array<string | undefined>): string | undefined {
   return ids.filter(Boolean).join(" ") || undefined;
@@ -90,7 +90,12 @@ export function LeadForm({
   const turnstileKey = turnstileSiteKey;
 
   return (
-    <form id="lead" action={action} className="scroll-mt-24 space-y-4 border border-border bg-white p-6 md:p-8" noValidate>
+    <form
+      id="lead"
+      action={action}
+      className="w-full max-w-full scroll-mt-24 space-y-3 overflow-hidden border border-border bg-white p-4 md:space-y-4 md:p-8"
+      noValidate
+    >
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       <input type="hidden" name="startedAt" value={String(startedAt)} />
       <input type="hidden" name="page" value={page} />

@@ -8,19 +8,20 @@ export function CompareAlternatives() {
 
   return (
     <section
-      className="relative overflow-hidden bg-cream py-14 md:py-24"
+      className="relative overflow-x-clip bg-cream py-9 md:py-24"
       aria-labelledby="compare-heading"
     >
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <Reveal className="max-w-xl">
           <GoldLineDraw />
-          <h2 id="compare-heading" className="mt-4 font-display text-h2 text-navy">
+          <h2 id="compare-heading" className="mt-3 font-display text-h2 text-navy md:mt-4">
             {compare.title}
           </h2>
-          <p className="mt-2 text-small text-muted">{compare.lead}</p>
+          <p className="mt-1.5 text-small text-muted md:mt-2">{compare.lead}</p>
         </Reveal>
 
-        <Reveal stagger as="ul" className="mt-10 grid gap-3 md:mt-12 md:grid-cols-3 md:gap-4">
+        {/* Phone: full-width stacked cards (no sideways scroll). Desktop: 3-col. */}
+        <Reveal stagger as="ul" className="mt-5 grid gap-3 md:mt-12 md:grid-cols-3 md:gap-4">
           {compare.rows.map((row) => {
             const featured = "featured" in row && row.featured;
             const image = "image" in row ? row.image : "/media/about-texture.jpg";
@@ -29,7 +30,7 @@ export function CompareAlternatives() {
               <li
                 key={row.label}
                 className={[
-                  "relative min-h-[18rem] overflow-hidden md:min-h-[22rem]",
+                  "relative min-h-[11.5rem] w-full overflow-hidden md:min-h-[22rem]",
                   featured ? "ring-1 ring-gold/60" : "",
                 ].join(" ")}
               >
@@ -39,7 +40,7 @@ export function CompareAlternatives() {
                   fill
                   sizes="(max-width:768px) 100vw, 33vw"
                   className={[
-                    "object-cover transition duration-700",
+                    "object-cover transition duration-[var(--motion-slow)] ease-[var(--ease-out)]",
                     featured ? "scale-105" : "opacity-90",
                   ].join(" ")}
                 />
@@ -53,10 +54,10 @@ export function CompareAlternatives() {
                   aria-hidden
                 />
 
-                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+                <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-7">
                   {featured ? (
                     <span
-                      className="mb-auto inline-flex size-9 items-center justify-center border border-gold font-display text-[1.05rem] text-gold"
+                      className="mb-auto inline-flex size-7 items-center justify-center border border-gold font-display text-[0.9rem] text-gold md:size-9 md:text-[1.05rem]"
                       style={{ borderRadius: 1 }}
                       aria-hidden
                     >
@@ -64,11 +65,11 @@ export function CompareAlternatives() {
                     </span>
                   ) : null}
 
-                  <h3 className="font-display text-[1.35rem] text-cream md:text-[1.5rem]">
+                  <h3 className="font-display text-[1.25rem] text-cream md:text-[1.5rem]">
                     {row.label}
                   </h3>
-                  <span className="mt-3 h-px w-10 bg-gold/80" aria-hidden />
-                  <p className="mt-3 max-w-[22ch] text-[0.9rem] leading-snug text-cream/80">
+                  <span className="mt-2 h-px w-8 bg-gold/80 md:mt-3 md:w-10" aria-hidden />
+                  <p className="mt-2 text-[0.9rem] leading-snug text-cream/85 md:mt-3 md:max-w-[22ch] md:text-[0.9rem]">
                     {row.body}
                   </p>
                 </div>

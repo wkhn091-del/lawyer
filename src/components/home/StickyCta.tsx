@@ -67,8 +67,8 @@ export function StickyCta() {
           לקביעת השיחה
         </a>
       </div>
-      <p className="mt-2 pb-1 text-center text-small text-muted">
-        מענה תוך יום עסקים אחד · בלי התחייבות לייצוג
+      <p className="mt-1.5 pb-1 text-center text-[0.72rem] leading-snug text-muted">
+        מענה תוך יום עסקים · בלי התחייבות לייצוג
       </p>
     </div>
   );

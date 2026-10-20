@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: site.company,
     title: `${site.brand} | ${site.tagline}`,
     description: site.description,
-    images: [{ url: "/media/og-cohen.jpg", width: 1200, height: 675, alt: site.company }],
+    images: [{ url: "/media/og-cohen.jpg", width: 1280, height: 720, alt: site.company }],
   },
   twitter: {
     card: "summary_large_image",
@@ -47,12 +47,6 @@ export const metadata: Metadata = {
     images: ["/media/og-cohen.jpg"],
   },
   formatDetection: { telephone: false },
-  alternates: {
-    languages: {
-      he: "/",
-      en: "/en",
-    },
-  },
 };
 
 export const viewport: Viewport = {

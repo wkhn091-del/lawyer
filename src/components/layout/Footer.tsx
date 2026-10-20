@@ -1,5 +1,6 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
+import { CookieSettingsButton } from "@/components/layout/CookieSettingsButton";
 import { FooterNavGroups } from "@/components/layout/FooterAccordion";
 import { practiceAreas, site } from "@/content/site";
 
@@ -93,7 +94,7 @@ export function Footer() {
             ) : null}
           </p>
           <p>
-            © {year} {site.company}
+            © {year} {site.company} · <CookieSettingsButton />
           </p>
         </div>
       </div>

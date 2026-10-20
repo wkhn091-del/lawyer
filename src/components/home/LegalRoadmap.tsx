@@ -201,7 +201,7 @@ export function LegalRoadmap() {
           className="absolute inset-0 md:hidden"
           style={{
             background:
-              "linear-gradient(180deg, rgb(34 33 32 / 0.55) 0%, rgb(34 33 32 / 0.28) 42%, rgb(34 33 32 / 0.7) 100%)",
+              "linear-gradient(180deg, rgb(34 33 32 / 0.72) 0%, rgb(34 33 32 / 0.35) 38%, rgb(34 33 32 / 0.22) 55%, rgb(34 33 32 / 0.78) 100%)",
           }}
         />
         <div
@@ -220,13 +220,13 @@ export function LegalRoadmap() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] max-w-6xl flex-col px-4 pb-[max(5.75rem,calc(env(safe-area-inset-bottom)+4.75rem))] pt-[max(0.75rem,env(safe-area-inset-top))] md:px-8 md:pb-10 md:pt-10">
-        <div className="mx-auto w-full max-w-2xl shrink-0 text-center md:me-0 md:ms-auto md:text-start">
-          <p className="text-[0.68rem] font-medium tracking-[0.1em] text-gold md:text-[0.72rem] md:tracking-[0.12em]">
+      <div className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] max-w-6xl flex-col px-4 pb-[max(6.25rem,calc(env(safe-area-inset-bottom)+5.25rem))] pt-[max(1.25rem,env(safe-area-inset-top))] md:px-8 md:pb-10 md:pt-10">
+        <div className="mx-auto mt-[min(6vh,2.75rem)] w-full max-w-2xl shrink-0 text-center md:me-0 md:ms-auto md:mt-0 md:text-start">
+          <p className="text-[0.78rem] font-medium tracking-[0.1em] text-gold md:text-[0.72rem] md:tracking-[0.12em]">
             {home.roadmap.eyebrow}
           </p>
 
-          <div className="relative mt-2 min-h-[9.5rem] md:mt-3 md:min-h-[8.5rem]">
+          <div className="relative mt-2.5 min-h-[12.5rem] md:mt-3 md:min-h-[8.5rem]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={stage.n}
@@ -236,15 +236,15 @@ export function LegalRoadmap() {
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div aria-live="polite" aria-atomic="true">
-                  <p className="font-display text-[0.95rem] text-gold md:text-[0.85rem]">{stage.n}</p>
+                  <p className="font-display text-[1.1rem] text-gold md:text-[0.85rem]">{stage.n}</p>
                   <h2
                     id="roadmap-heading"
-                    className="mt-1 font-display text-[clamp(1.65rem,6.5vw,1.95rem)] leading-[1.2] text-cream drop-shadow-sm md:text-[clamp(1.35rem,5.5vw,2.1rem)] md:leading-tight"
+                    className="mt-1.5 font-display text-[clamp(2rem,7.5vw,2.45rem)] leading-[1.15] text-cream drop-shadow-sm md:mt-1 md:text-[clamp(1.35rem,5.5vw,2.1rem)] md:leading-tight"
                   >
                     {stage.title}
                   </h2>
                   <motion.p
-                    className="mt-2 line-clamp-3 text-[1.05rem] leading-snug text-cream/90 md:mt-2 md:line-clamp-3 md:text-[1rem] md:leading-relaxed md:text-cream/85"
+                    className="mx-auto mt-3 max-w-[34ch] text-[1.12rem] leading-snug text-cream/92 md:mx-0 md:mt-2 md:max-w-none md:line-clamp-3 md:text-[1rem] md:leading-relaxed md:text-cream/85"
                     initial={reduce ? false : { opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
@@ -253,14 +253,14 @@ export function LegalRoadmap() {
                   </motion.p>
                 </div>
                 <motion.div
-                  className="mt-3.5 md:mt-4"
+                  className="mt-5 md:mt-4"
                   initial={reduce ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.14 }}
                 >
                   <Link
                     href={stage.href}
-                    className="inline-flex min-h-11 items-center justify-center rounded-full bg-gold px-6 text-[0.95rem] font-medium text-navy-deep shadow-on-dark transition hover:bg-gold-hover md:min-h-10 md:px-5 md:text-small"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-gold px-7 text-[1rem] font-medium text-navy-deep shadow-on-dark transition hover:bg-gold-hover md:min-h-10 md:px-5 md:text-small"
                   >
                     {stage.cta}
                   </Link>
@@ -270,8 +270,8 @@ export function LegalRoadmap() {
           </div>
         </div>
 
-        <div className="relative mt-3 flex min-h-0 flex-1 flex-col justify-end gap-2.5 pb-1 md:mt-3 md:gap-4 md:pb-2">
-          <ul className="mx-auto grid w-full max-w-2xl shrink-0 grid-cols-4 gap-1.5 md:gap-2.5">
+        <div className="relative mt-auto flex min-h-0 flex-col justify-end gap-2.5 pb-1 pt-4 md:mt-3 md:gap-4 md:pb-2 md:pt-0">
+          <ul className="mx-auto grid w-full max-w-2xl shrink-0 grid-cols-4 gap-2 md:gap-2.5">
             {STAGES.map((s, i) => {
               const on = i === active;
               const passed = i < active;
@@ -279,7 +279,7 @@ export function LegalRoadmap() {
                 <li key={s.n} className="relative">
                   <div
                     className={[
-                      "relative h-14 overflow-hidden rounded-md border transition duration-500 md:h-20",
+                      "relative h-16 overflow-hidden rounded-md border transition duration-[var(--motion-slow)] ease-[var(--ease-out)] md:h-20",
                       on
                         ? "scale-[1.03] border-gold shadow-[0_0_0_1px_rgb(196_163_90/0.35),0_8px_20px_-6px_rgb(0_0_0/0.5)]"
                         : passed
@@ -300,7 +300,7 @@ export function LegalRoadmap() {
                     />
                     <div
                       className={[
-                        "absolute inset-0 transition duration-500",
+                        "absolute inset-0 transition duration-[var(--motion-slow)] ease-[var(--ease-out)]",
                         on ? "bg-navy/25" : "bg-navy/55",
                       ].join(" ")}
                     />
@@ -386,7 +386,8 @@ export function LegalRoadmap() {
                     stroke={on ? "#c4a35a" : "rgb(255 255 255 / 0.28)"}
                     strokeWidth={1.5}
                     style={{
-                      transition: "stroke 0.35s ease, transform 0.35s ease",
+                      transition:
+                        "stroke 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1)",
                       transform: on ? "scale(1.06)" : "scale(1)",
                       transformBox: "fill-box",
                       transformOrigin: "center",
@@ -400,7 +401,7 @@ export function LegalRoadmap() {
                       fontFamily: "var(--font-frank), serif",
                       fontSize: compact ? 12 : 15,
                       fontWeight: 700,
-                      transition: "fill 0.35s ease",
+                      transition: "fill 350ms cubic-bezier(0.16, 1, 0.3, 1)",
                     }}
                   >
                     {stageMeta.n}

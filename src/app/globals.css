@@ -47,14 +47,17 @@
   --radius-md: 4px;
   --radius-lg: 8px;
 
-  /* Layers: hairline ring → contact shadow → soft ambient. Negative spread keeps sides clean. */
-  --shadow-contact: 0 1px 1px rgb(18 28 53 / 0.08), 0 2px 4px -1px rgb(18 28 53 / 0.06);
+  /* Layers: hairline ring → contact shadow → soft ambient. Warm charcoal tint matches --color-navy. */
+  --shadow-contact: 0 1px 1px rgb(34 33 32 / 0.08), 0 2px 4px -1px rgb(34 33 32 / 0.06);
   --shadow-soft:
-    0 0 0 1px rgb(27 42 78 / 0.04), 0 1px 2px rgb(27 42 78 / 0.06), 0 4px 8px -2px rgb(27 42 78 / 0.06),
-    0 12px 24px -6px rgb(27 42 78 / 0.08);
+    0 0 0 1px rgb(34 33 32 / 0.04), 0 1px 2px rgb(34 33 32 / 0.06), 0 4px 8px -2px rgb(34 33 32 / 0.06),
+    0 12px 24px -6px rgb(34 33 32 / 0.09);
   --shadow-lift:
-    0 0 0 1px rgb(27 42 78 / 0.05), 0 2px 4px rgb(27 42 78 / 0.06), 0 8px 16px -4px rgb(27 42 78 / 0.1),
-    0 24px 48px -12px rgb(27 42 78 / 0.16);
+    0 0 0 1px rgb(34 33 32 / 0.05), 0 2px 4px rgb(34 33 32 / 0.06), 0 8px 16px -4px rgb(34 33 32 / 0.1),
+    0 24px 48px -12px rgb(34 33 32 / 0.17);
+  --shadow-hero-card:
+    inset 0 1px 0 rgb(255 255 255 / 0.18), 0 1px 2px rgb(0 0 0 / 0.28),
+    0 6px 14px -4px rgb(0 0 0 / 0.34), 0 18px 34px -12px rgb(0 0 0 / 0.42);
   /* On navy surfaces: top highlight + black drop. A navy-tinted shadow is invisible there. */
   --shadow-on-dark: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 20px -6px rgb(0 0 0 / 0.45);
   --shadow-on-dark-hover:
@@ -131,7 +134,8 @@ body {
   --hero-brass: var(--color-gold);
   --hero-brass-hot: var(--color-gold-hover);
   --hero-line: color-mix(in srgb, var(--color-cream) 14%, transparent);
-  --hero-card-w: clamp(5.25rem, 24vw, 6.5rem);
+  /* Smaller tiles on phone so several cards read complete inside the arch */
+  --hero-card-w: clamp(3.65rem, 17vw, 4.65rem);
   --hero-card-h: calc(var(--hero-card-w) * 1.88);
   background-color: var(--hero-ink);
   color: var(--hero-bone);
@@ -157,7 +161,8 @@ body {
 .hero-arch-float {
   position: relative;
   width: 100%;
-  max-width: 16.5rem;
+  /* Phone: complete frame that fits the leftover viewport under the copy */
+  max-width: min(16.75rem, 72vw);
   box-shadow:
     0 4px 8px rgb(0 0 0 / 0.12),
     0 22px 48px rgb(0 0 0 / 0.38),
@@ -178,7 +183,8 @@ body {
 .hero-arch {
   position: relative;
   width: 100%;
-  height: 16.5rem;
+  /* Phone: shorter complete arch that parks at the bottom of the first screen */
+  height: clamp(12.5rem, 36svh, 16.75rem);
   overflow: hidden;
   border-radius: 999px 999px 0 0;
   border: 1.5px solid rgb(255 255 255 / 0.72);
@@ -195,22 +201,10 @@ body {
   }
 }
 
-/* Soft bottom fade on mobile — desktop keeps a hard arch cut */
+/* Mobile: no dissolve — solid arch reads as one finished object */
 .hero-arch-mask {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 48%,
-    rgb(0 0 0 / 0.55) 72%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 48%,
-    rgb(0 0 0 / 0.55) 72%,
-    transparent 100%
-  );
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 @media (min-width: 768px) {
@@ -285,9 +279,7 @@ body {
   border-radius: 16px;
   border: 1px solid rgb(255 255 255 / 0.28);
   background: rgb(8 8 7 / 0.35);
-  box-shadow:
-    0 10px 22px rgb(0 0 0 / 0.4),
-    0 2px 4px rgb(0 0 0 / 0.2);
+  box-shadow: var(--shadow-hero-card);
   transform: translateZ(0);
   backface-visibility: hidden;
 }
@@ -334,6 +326,10 @@ body {
     inset 0 1px 0 rgb(255 255 255 / 0.22),
     0 1px 2px rgb(0 0 0 / 0.35),
     0 10px 24px -8px rgb(0 0 0 / 0.55);
+  transition:
+    transform var(--motion-fast) var(--ease-press),
+    background-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
 }
 .hero-stage .hero-cta:hover {
   background: var(--color-gold-hover);
@@ -347,16 +343,16 @@ body {
 .scrim {
   background: linear-gradient(
     to top,
-    rgb(18 28 53 / 0.95) 0%,
-    rgb(18 28 53 / 0.86) 65%,
-    rgb(27 42 78 / 0.5) 100%
+    rgb(34 33 32 / 0.95) 0%,
+    rgb(34 33 32 / 0.86) 65%,
+    rgb(34 33 32 / 0.5) 100%
   );
 }
 
 /* Caption chip over a photo: carries its own background instead of relying on the image. */
 .photo-caption {
   border-radius: 0.125rem;
-  background: rgb(18 28 53 / 0.85);
+  background: rgb(34 33 32 / 0.85);
   padding: 0.125rem 0.5rem;
   color: var(--color-cream);
 }
@@ -368,7 +364,7 @@ body {
   backdrop-filter: saturate(1.6) blur(16px);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.35),
-    inset 0 -1px 0 rgb(27 42 78 / 0.08),
+    inset 0 -1px 0 rgb(34 33 32 / 0.08),
     0 -8px 32px -12px rgb(0 0 0 / 0.18);
 }
 
