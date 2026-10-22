@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { home } from "@/content/home";
+import { useMotion } from "@/motion";
 import { gsap, prefersReducedMotion, ScrollTrigger } from "@/motion/gsap";
 
 type RoadmapStage = {
@@ -55,6 +56,11 @@ const VIEW_BOX = "0 0 1240 400";
  * Solid navy underlay + dark pin-spacer so no white flash while pinned.
  */
 export function LegalRoadmap() {
+  const { scrollTo } = useMotion();
+  const scrollToRef = useRef(scrollTo);
+  useEffect(() => {
+    scrollToRef.current = scrollTo;
+  }, [scrollTo]);
   const rootRef = useRef<HTMLElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const glowRef = useRef<SVGPathElement>(null);
@@ -63,12 +69,61 @@ export function LegalRoadmap() {
   const [dir, setDir] = useState<1 | -1>(1);
   const [compact, setCompact] = useState(false);
   const prevRef = useRef(0);
+  const activeRef = useRef(0);
 
   useEffect(() => {
+    activeRef.current = active;
     if (active === prevRef.current) return;
     setDir(active > prevRef.current ? 1 : -1);
     prevRef.current = active;
   }, [active]);
+
+  /*
+   * Phone: one finger swipe = exactly one stage. On touchend we animate the
+   * scroll to that stage's anchor inside the pin — a swipe never lands between
+   * numbers, never skips two, and at the first/last stage the page scrolls on.
+   */
+  useEffect(() => {
+    if (!compact || reduce) return;
+    const section = rootRef.current;
+    if (!section) return;
+
+    let startY = 0;
+    let startIdx = 0;
+
+    const onStart = (event: TouchEvent) => {
+      startY = event.touches[0]?.clientY ?? 0;
+      startIdx = activeRef.current;
+    };
+
+    const onEnd = (event: TouchEvent) => {
+      /* Stage anchors from the pin-spacer geometry — no reliance on ST state. */
+      const spacer = section.parentElement;
+      if (!spacer) return;
+      const pinStart = spacer.getBoundingClientRect().top + window.scrollY;
+      const pinDistance = spacer.offsetHeight - section.offsetHeight;
+      if (pinDistance <= 0) return;
+      const yNow = window.scrollY;
+      if (yNow < pinStart - 4 || yNow > pinStart + pinDistance + 4) return;
+
+      const endY = event.changedTouches[0]?.clientY ?? startY;
+      const dy = startY - endY;
+      const step = Math.abs(dy) < 40 ? 0 : dy > 0 ? 1 : -1;
+      const target = Math.min(STAGES.length - 1, Math.max(0, startIdx + step));
+      const y = pinStart + (target / (STAGES.length - 1)) * pinDistance;
+      if (Math.abs(yNow - y) > 2) {
+        /* Scroll through the site's own scroller (Lenis) — a raw window tween fights it. */
+        scrollToRef.current(y);
+      }
+    };
+
+    section.addEventListener("touchstart", onStart, { passive: true });
+    section.addEventListener("touchend", onEnd, { passive: true });
+    return () => {
+      section.removeEventListener("touchstart", onStart);
+      section.removeEventListener("touchend", onEnd);
+    };
+  }, [compact, reduce]);
 
   useGSAP(
     () => {
@@ -121,7 +176,7 @@ export function LegalRoadmap() {
             scrollTrigger: {
               trigger: section,
               start: "top top",
-              end: isMobile ? "+=200%" : "+=260%",
+              end: isMobile ? "+=150%" : "+=260%",
               pin: true,
               scrub: 0.7,
               anticipatePin: 1,
@@ -131,10 +186,15 @@ export function LegalRoadmap() {
               onEnterBack: (self) => paintSpacer(self),
               onUpdate: (self) => {
                 paintSpacer(self);
-                const idx = Math.min(
-                  STAGES.length - 1,
-                  Math.floor(self.progress * STAGES.length),
-                );
+                const idx = isMobile
+                  ? Math.min(
+                      STAGES.length - 1,
+                      Math.round(self.progress * (STAGES.length - 1)),
+                    )
+                  : Math.min(
+                      STAGES.length - 1,
+                      Math.floor(self.progress * STAGES.length),
+                    );
                 setActive(idx);
                 nodes.forEach((node, i) => {
                   node.dataset.active = i <= idx ? "true" : "false";
