@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [],
   },
   experimental: {
+    agentUpgrade: "security",
     serverActions: {
       bodySizeLimit: "64kb",
       allowedOrigins: serverActionOrigins(),
