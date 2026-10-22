@@ -1,14 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { site } from "@/content/site";
 
 export function MobileNav({ onDark = false }: { onDark?: boolean }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const panelId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  useEffect(() => setMounted(true), []);
+
+  /* Close on any route change (back/forward, programmatic nav) — not only link clicks. */
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -56,31 +67,17 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  return (
-    <div className="lg:hidden">
-      <button
-        ref={buttonRef}
-        type="button"
-        className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border ${
-          onDark
-            ? "border-cream/30 text-cream"
-            : "border-border text-navy"
-        }`}
-        aria-expanded={open}
-        aria-controls={panelId}
-        aria-haspopup="dialog"
-        aria-label={open ? "סגירת תפריט" : "פתיחת תפריט"}
-        onClick={() => setOpen((value) => !value)}
-      >
-        <span aria-hidden="true" className="text-body font-medium">
-          {open ? "✕" : "☰"}
-        </span>
-      </button>
-
+  /*
+   * The drawer is portaled to <body>: the sticky glass header (backdrop-filter)
+   * and any transformed ancestor would otherwise become the containing block for
+   * `position: fixed`, collapsing the panel into the header on non-hero pages.
+   */
+  const drawer = (
+    <>
       {/* Backdrop */}
       <div
         className={[
-          "fixed inset-0 z-50 bg-navy-deep/45 transition-opacity duration-300",
+          "fixed inset-0 z-[60] bg-navy-deep/45 transition-opacity duration-300",
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         ].join(" ")}
         aria-hidden="true"
@@ -100,7 +97,7 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
         aria-label="תפריט ניווט"
         inert={open ? undefined : true}
         className={[
-          "fixed inset-y-0 left-0 z-50 flex w-[min(20rem,86vw)] flex-col bg-cream shadow-[1px_0_0_rgb(18_28_53/0.06),8px_0_24px_-8px_rgb(0_0_0/0.28),24px_0_48px_-16px_rgb(0_0_0/0.2)] transition-transform duration-[var(--motion-base)] ease-[var(--ease-out)]",
+          "fixed inset-y-0 left-0 z-[70] flex w-[min(20rem,86vw)] flex-col bg-cream shadow-[1px_0_0_rgb(34_33_32/0.06),8px_0_24px_-8px_rgb(0_0_0/0.28),24px_0_48px_-16px_rgb(0_0_0/0.2)] transition-transform duration-[var(--motion-base)] ease-[var(--ease-out)]",
           open ? "translate-x-0" : "pointer-events-none -translate-x-full",
         ].join(" ")}
       >
@@ -153,6 +150,31 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
           </Link>
         </div>
       </div>
+    </>
+  );
+
+  return (
+    <div className="lg:hidden">
+      <button
+        ref={buttonRef}
+        type="button"
+        className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border ${
+          onDark
+            ? "border-cream/30 text-cream"
+            : "border-border text-navy"
+        }`}
+        aria-expanded={open}
+        aria-controls={panelId}
+        aria-haspopup="dialog"
+        aria-label={open ? "סגירת תפריט" : "פתיחת תפריט"}
+        onClick={() => setOpen((value) => !value)}
+      >
+        <span aria-hidden="true" className="text-body font-medium">
+          {open ? "✕" : "☰"}
+        </span>
+      </button>
+
+      {mounted ? createPortal(drawer, document.body) : null}
     </div>
   );
 }
