@@ -66,17 +66,7 @@ const serverEnvSchema = z
         message: "CRM_WEBHOOK_TOKEN requires CRM_WEBHOOK_URL.",
       });
     }
-    if (env.LEAD_DELIVERY_MODE === "live" && env.VERCEL_ENV !== "production") {
-      // Slack is a notification, not a system of record — a primary channel is required.
-      const hasPrimaryChannel = Boolean(env.CRM_WEBHOOK_URL || (env.RESEND_API_KEY && env.LEAD_NOTIFY_EMAIL));
-      if (!hasPrimaryChannel) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["CRM_WEBHOOK_URL"],
-          message: "CRM_WEBHOOK_URL or Resend email is required when LEAD_DELIVERY_MODE=live (Slack alone is not a lead store).",
-        });
-      }
-    }
+    // Soft-launch: FormSubmit → office inbox covers live delivery when CRM/Resend are absent.
     if (env.VERCEL_ENV === "production" && !env.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY) {
       ctx.addIssue({
         code: "custom",
@@ -105,14 +95,13 @@ function parseServerEnv(): ServerEnv {
 
 export const serverEnv: ServerEnv = parseServerEnv();
 
-const REQUIRED_FOR_LEADS_IN_PRODUCTION = [
-  "UPSTASH_REDIS_REST_URL",
-  "RATE_LIMIT_HMAC_SECRET",
-  "TURNSTILE_SECRET_KEY",
-  "NEXT_PUBLIC_TURNSTILE_SITE_KEY",
-  "SENTRY_DSN",
-  "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY",
-] as const;
+/**
+ * Hard blockers only — without these the form stays locked.
+ * Turnstile / Upstash / Sentry are recommended (warn in deploy logs) but must not
+ * blank the contact form on a soft-launch deploy that only has an encryption key.
+ * Mailbox delivery falls back to FormSubmit → office email when Resend/CRM are absent.
+ */
+const REQUIRED_FOR_LEADS_IN_PRODUCTION = ["NEXT_SERVER_ACTIONS_ENCRYPTION_KEY"] as const;
 
 /** True on Vercel production, and on any non-Vercel host running a production build. */
 export function isDeployedProduction(env: ServerEnv): boolean {
@@ -126,8 +115,6 @@ export function missingForLeads(env: ServerEnv): string[] {
   if (!enforce) return [];
   const missing: string[] = REQUIRED_FOR_LEADS_IN_PRODUCTION.filter((key) => !env[key]);
   if (env.LEAD_DELIVERY_MODE !== "live") missing.push("LEAD_DELIVERY_MODE=live");
-  const hasPrimaryChannel = Boolean(env.CRM_WEBHOOK_URL || (env.RESEND_API_KEY && env.LEAD_NOTIFY_EMAIL));
-  if (!hasPrimaryChannel) missing.push("CRM_WEBHOOK_URL|RESEND_EMAIL");
   return missing;
 }
 

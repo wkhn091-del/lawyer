@@ -56,28 +56,33 @@ function sharedLimiter(limit: number, windowMs: number): Ratelimit | null {
  */
 export async function rateLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
   const limiter = sharedLimiter(limit, windowMs);
-  // No shared limiter in deployed production: per-instance memory is bypassable, so fail closed.
-  // (On Vercel the lead form is already locked by `leadsLocked` before this is reached.)
-  if (!limiter) return isDeployedProduction(serverEnv) ? false : memoryLimit(key, limit, windowMs);
+  // Soft-launch: without Upstash use per-instance memory so the form still accepts leads.
+  // Add UPSTASH_* in production ASAP — memory limits do not share across Vercel instances.
+  if (!limiter) {
+    if (isDeployedProduction(serverEnv)) {
+      reportError("rate-limit", new Error("Upstash missing — using per-instance memory limit"));
+    }
+    return memoryLimit(key, limit, windowMs);
+  }
   try {
     const { success } = await limiter.limit(key);
     return success;
   } catch (error) {
     reportError("rate-limit", error);
-    // Fail closed on shared hosting — memory fallback is per-instance and bypassable.
-    if (isDeployedProduction(serverEnv) || serverEnv.VERCEL_ENV === "preview") {
-      return false;
-    }
+    // Prefer accepting the lead over a hard outage when Redis blips.
     return memoryLimit(key, limit, windowMs);
   }
 }
 
 /**
  * HMAC-SHA256 (truncated) — phone/email are low-entropy, so a plain hash is dictionary-reversible
- * by anyone who reads the Redis keys. The secret is required in production (`missingForLeads`).
+ * by anyone who reads the Redis keys. Prefers RATE_LIMIT_HMAC_SECRET, else the Server Actions key.
  */
 export async function hashKey(value: string): Promise<string> {
-  const secret = serverEnv.RATE_LIMIT_HMAC_SECRET ?? "local-development-only";
+  const secret =
+    serverEnv.RATE_LIMIT_HMAC_SECRET ??
+    serverEnv.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY ??
+    "local-development-only";
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(secret),

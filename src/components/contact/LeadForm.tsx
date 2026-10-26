@@ -73,16 +73,25 @@ export function LeadForm({
 
   if (locked) {
     return (
-      <div className="flex h-full w-full flex-col justify-center border border-border bg-cream p-6 text-small text-muted md:p-8">
-        שליחת פניות דרך האתר בהכנה. בינתיים אפשר להתקשר ל-
-        <a href={`tel:${site.contact.phoneTel}`} className="text-navy" dir="ltr">
+      <div className="flex h-full w-full flex-col justify-center gap-4 border border-border bg-white p-6 md:p-8">
+        <p className="font-display text-h3 text-navy">בינתיים — שיחה ישירה</p>
+        <p className="text-small text-muted">
+          טופס האתר בהגדרה אחרונה. אפשר להתקשר או לכתוב עכשיו — נחזור תוך יום עסקים.
+        </p>
+        <a
+          href={`tel:${site.contact.phoneTel}`}
+          className="inline-flex min-h-12 items-center justify-center rounded-md bg-navy px-6 text-button font-medium text-cream"
+          dir="ltr"
+        >
           <bdi>{site.contact.phone}</bdi>
-        </a>{" "}
-        או לכתוב ל-
-        <a href={`mailto:${site.contact.email}`} className="text-navy" dir="ltr">
+        </a>
+        <a
+          href={`mailto:${site.contact.email}`}
+          className="text-center text-small text-navy underline-offset-4 hover:underline"
+          dir="ltr"
+        >
           <bdi>{site.contact.email}</bdi>
         </a>
-        .
       </div>
     );
   }

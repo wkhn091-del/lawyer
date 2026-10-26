@@ -1,4 +1,5 @@
 import "server-only";
+import { site } from "@/content/site";
 import { serverEnv } from "@/lib/env/server";
 import { reportError } from "@/lib/observability/report";
 import { csvSafeCell } from "@/lib/security/csv-safe";
@@ -113,6 +114,33 @@ async function notifyEmail(lead: Lead, context: Context): Promise<void> {
   );
 }
 
+/**
+ * Soft-launch mailbox — FormSubmit posts to the office inbox when Resend/CRM are not wired yet.
+ * First production hit may require confirming the address once (email from FormSubmit).
+ */
+async function notifyMailbox(lead: Lead, context: Context): Promise<void> {
+  const to = serverEnv.LEAD_NOTIFY_EMAIL ?? site.contact.email;
+  await post(
+    `https://formsubmit.co/ajax/${encodeURIComponent(to)}`,
+    {
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        _subject: oneLine(`פנייה חדשה מהאתר — ${practiceLabel(lead.practiceArea)}`),
+        _template: "table",
+        _captcha: "false",
+        name: oneLine(lead.fullName),
+        phone: oneLine(lead.phone),
+        email: lead.email ? oneLine(lead.email) : "",
+        practiceArea: practiceLabel(lead.practiceArea),
+        message: lead.message ? oneLine(lead.message) : "",
+        page: context.page ? oneLine(context.page) : "",
+        source: context.source ? oneLine(context.source) : "",
+      }),
+    },
+    "Mailbox",
+  );
+}
+
 function logFailures(results: PromiseSettledResult<void>[], labels: string[]): void {
   results.forEach((result, index) => {
     if (result.status === "rejected") reportError("lead", result.reason, { channel: labels[index] ?? "unknown" });
@@ -135,13 +163,12 @@ export async function deliverLead(lead: Lead, context: Context): Promise<boolean
   if (serverEnv.RESEND_API_KEY && serverEnv.LEAD_NOTIFY_EMAIL) {
     primary.push({ label: "Email", run: () => notifyEmail(lead, context) });
   }
+  // Soft-launch: office inbox via FormSubmit when no CRM/Resend yet.
+  if (primary.length === 0) {
+    primary.push({ label: "Mailbox", run: () => notifyMailbox(lead, context) });
+  }
   const notifications: { label: string; run: () => Promise<void> }[] = [];
   if (serverEnv.SLACK_WEBHOOK_URL) notifications.push({ label: "Slack", run: () => notifySlack(lead, context) });
-
-  if (primary.length === 0) {
-    reportError("lead", new Error("No primary delivery channel (CRM/email) configured in live mode"));
-    return false;
-  }
 
   const jobs = [...primary, ...notifications];
   const results = await Promise.allSettled(jobs.map((job) => job.run()));

@@ -8,6 +8,7 @@ export const metadata: Metadata = { title: "מדיניות פרטיות", altern
 const PROCESSORS = [
   { name: "Vercel", role: "אחסון האתר ועיבוד הטופס", where: "ארה״ב / אירופה" },
   { name: "Resend", role: "העברת הפנייה לתיבת המשרד, כשהמייל הוא ערוץ המסירה הפעיל", where: "ארה״ב" },
+  { name: "FormSubmit", role: "העברת פנייה לתיבת המשרד בשלב ההשקה (כשאין Resend/CRM)", where: "גלובלי" },
   { name: "מערכת ניהול הלקוחות (CRM) של המשרד", role: "תיעוד הפנייה וחזרה אליכם", where: "לפי הספק" },
   { name: "Slack", role: "התראה פנימית על פנייה חדשה (שם, טלפון ותחום בלבד)", where: "ארה״ב" },
   { name: "Cloudflare Turnstile", role: "סינון בוטים בטופס", where: "גלובלי" },
