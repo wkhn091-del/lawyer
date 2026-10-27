@@ -134,8 +134,11 @@ body {
   --hero-brass: var(--color-gold);
   --hero-brass-hot: var(--color-gold-hover);
   --hero-line: color-mix(in srgb, var(--color-cream) 14%, transparent);
-  /* Smaller tiles on phone so several cards read complete inside the arch */
-  --hero-card-w: clamp(3.65rem, 17vw, 4.65rem);
+  /*
+   * Original phone tiles — sized to fill the arch (3 cols ≈ frame width).
+   * Do not shrink these; that creates empty side gutters.
+   */
+  --hero-card-w: clamp(5.25rem, 24vw, 6.5rem);
   --hero-card-h: calc(var(--hero-card-w) * 1.88);
   background-color: var(--hero-ink);
   color: var(--hero-bone);
@@ -157,22 +160,22 @@ body {
   color: var(--hero-brass);
 }
 
-/* Lifted frame — sits in front of the photo like a cut-out window */
+/* Lifted frame — original phone size, hugs the 3 phone columns */
 .hero-arch-float {
   position: relative;
-  /* Mobile default: tight frame — refined further in max-md block below */
-  width: min(13.5rem, 50vw);
-  max-width: 50vw;
+  width: 100%;
+  max-width: 16.5rem;
   box-shadow:
-    0 4px 8px rgb(0 0 0 / 0.1),
-    0 14px 28px rgb(0 0 0 / 0.22);
+    0 4px 8px rgb(0 0 0 / 0.12),
+    0 22px 48px rgb(0 0 0 / 0.38),
+    0 40px 80px rgb(0 0 0 / 0.22);
   border-radius: 999px 999px 0 0;
   background: transparent;
 }
 
 @media (min-width: 768px) {
   .hero-arch-float {
-    /* Fits the full frame inside 100svh — rounded top + flat bottom both visible */
+    /* Desktop locked */
     width: min(32rem, 42vw);
     max-width: none;
     height: min(calc(100svh - 6.75rem), 46rem);
@@ -186,13 +189,11 @@ body {
 .hero-arch {
   position: relative;
   width: 100%;
-  /* Phone: compact arch that parks at the bottom of the first screen */
-  height: clamp(13.5rem, 36svh, 16.25rem);
+  height: 16.5rem;
   overflow: hidden;
   border-radius: 999px 999px 0 0;
   border: 1.5px solid rgb(255 255 255 / 0.72);
-  /* Empty gaps must show the hero photo — never a solid fill on phone */
-  background: transparent !important;
+  background: transparent;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.35),
     inset 0 0 0 1px rgb(255 255 255 / 0.08);
@@ -200,13 +201,13 @@ body {
 
 @media (min-width: 768px) {
   .hero-arch {
+    /* Desktop locked */
     height: 100%;
     border-color: rgb(255 255 255 / 0.78);
-    background: var(--hero-ink) !important;
+    background: var(--hero-ink);
   }
 }
 
-/* Mobile: no dissolve — solid arch reads as one finished object */
 .hero-arch-mask {
   -webkit-mask-image: none;
   mask-image: none;
@@ -256,7 +257,7 @@ body {
   animation-delay: -8s;
 }
 
-/* Phone-shaped tiles in a tilted wheel — the locked arch look. */
+/* Original tilted phone wheel */
 .hero-arch-grid {
   position: absolute;
   top: 50%;
@@ -290,37 +291,9 @@ body {
   backface-visibility: hidden;
 }
 
-/* After base grid rules so these win on phone */
-@media (max-width: 767.98px) {
-  .hero-stage {
-    --hero-card-w: clamp(4rem, 19vw, 4.7rem);
-  }
-
-  .hero-arch-float {
-    width: min(13.5rem, 50vw);
-    max-width: 50vw;
-  }
-
-  .hero-arch-grid {
-    gap: 0.25rem;
-    /* Fill side gutters without zooming into a single card */
-    transform: translate3d(-50%, -46%, 0) rotate(-10deg) scale(1.3);
-  }
-
-  .hero-arch-col {
-    gap: 0.25rem;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .hero-arch-grid {
-    transform: translate3d(-50%, -47%, 0) scale(1.05);
-  }
-
-  @media (max-width: 767.98px) {
-    .hero-arch-grid {
-      transform: translate3d(-50%, -46%, 0) scale(1.3);
-    }
+    transform: translate3d(-50%, -47%, 0);
   }
 
   .hero-arch-col-0,
