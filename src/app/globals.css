@@ -160,14 +160,12 @@ body {
 /* Lifted frame — sits in front of the photo like a cut-out window */
 .hero-arch-float {
   position: relative;
-  /*
-   * Mobile: hug the 3 phone columns — no empty side gutters inside the frame.
-   */
-  width: calc(3 * var(--hero-card-w) + 0.7rem);
-  max-width: min(calc(3 * var(--hero-card-w) + 0.7rem), 58vw);
+  /* Mobile default: tight frame — overridden further in max-md block below */
+  width: min(13.25rem, 48vw);
+  max-width: 48vw;
   box-shadow:
-    0 4px 8px rgb(0 0 0 / 0.12),
-    0 18px 36px rgb(0 0 0 / 0.28);
+    0 4px 8px rgb(0 0 0 / 0.1),
+    0 14px 28px rgb(0 0 0 / 0.22);
   border-radius: 999px 999px 0 0;
   background: transparent;
 }
@@ -189,12 +187,12 @@ body {
   position: relative;
   width: 100%;
   /* Phone: compact arch that parks at the bottom of the first screen */
-  height: clamp(12.25rem, 33svh, 15.25rem);
+  height: clamp(13.5rem, 36svh, 16.25rem);
   overflow: hidden;
   border-radius: 999px 999px 0 0;
   border: 1.5px solid rgb(255 255 255 / 0.72);
-  /* Gaps between phones show the hero photo through */
-  background: transparent;
+  /* Empty gaps must show the hero photo — never a solid fill on phone */
+  background: transparent !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.35),
     inset 0 0 0 1px rgb(255 255 255 / 0.08);
@@ -204,7 +202,7 @@ body {
   .hero-arch {
     height: 100%;
     border-color: rgb(255 255 255 / 0.78);
-    background: var(--hero-ink);
+    background: var(--hero-ink) !important;
   }
 }
 
@@ -295,17 +293,25 @@ body {
 /* After base grid rules so these win on phone */
 @media (max-width: 767.98px) {
   .hero-stage {
-    --hero-card-w: clamp(4.35rem, 20.5vw, 5.1rem);
+    --hero-card-w: clamp(3.9rem, 18.5vw, 4.6rem);
+  }
+
+  .hero-arch-float {
+    width: min(12.75rem, 46vw);
+    max-width: 46vw;
   }
 
   .hero-arch-grid {
-    gap: 0.28rem;
-    /* Milder tilt + scale so phones fill the frame edge-to-edge */
-    transform: translate3d(-50%, -46%, 0) rotate(-10deg) scale(1.22);
+    gap: 0.22rem;
+    /*
+     * Scale past the frame so phones meet the white rim —
+     * kills the empty side gutters inside the arch.
+     */
+    transform: translate3d(-50%, -45%, 0) rotate(-9deg) scale(1.48);
   }
 
   .hero-arch-col {
-    gap: 0.28rem;
+    gap: 0.22rem;
   }
 }
 
@@ -316,7 +322,7 @@ body {
 
   @media (max-width: 767.98px) {
     .hero-arch-grid {
-      transform: translate3d(-50%, -46%, 0) scale(1.22);
+      transform: translate3d(-50%, -45%, 0) scale(1.48);
     }
   }
 
