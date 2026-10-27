@@ -42,8 +42,8 @@ export function Hero() {
         One locked viewport (like RideWithYoav): copy + full arch frame in view —
         nothing cut at the bottom edge.
       */}
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-1 flex-col px-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:grid md:grid-cols-2 md:items-stretch md:gap-8 md:px-8 md:pb-5 md:pt-[5.5rem] lg:gap-12">
-        <div className="relative z-10 mt-[min(8vh,3.5rem)] flex w-full shrink-0 flex-col items-center text-center md:mt-0 md:max-w-xl md:items-start md:justify-center md:pe-2 md:text-start">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-1 flex-col px-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:min-h-[88svh] md:grid md:grid-cols-2 md:items-center md:gap-8 md:px-8 md:pb-12 md:pt-24 lg:gap-12">
+        <div className="relative z-10 mt-[min(8vh,3.5rem)] flex w-full shrink-0 flex-col items-center text-center md:mt-0 md:max-w-xl md:items-start md:pe-2 md:text-start">
           <h1
             id="hero-heading"
             className="font-display text-[clamp(2.15rem,8vw,2.65rem)] leading-[1.14] tracking-[-0.02em] md:text-hero md:leading-[1.12]"
@@ -89,7 +89,7 @@ export function Hero() {
         </div>
 
         <div
-          className="relative mt-auto flex min-h-0 flex-1 items-end justify-center px-2 pb-[4.25rem] pt-4 md:mt-0 md:h-full md:items-end md:justify-center md:self-stretch md:px-1 md:pb-0 md:pt-2"
+          className="relative mt-auto flex min-h-0 flex-1 items-end justify-center px-2 pb-[4.25rem] pt-4 md:mt-0 md:h-full md:items-center md:justify-center md:self-stretch md:px-6 md:pb-8 md:pt-2"
           aria-label={hero.archLabel}
         >
           <p className="sr-only">{hero.frameAlt}</p>
