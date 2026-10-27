@@ -120,9 +120,9 @@ export function Hero() {
                             alt=""
                             fill
                             priority={loopIndex < columnCards.length}
-                            quality={88}
+                            unoptimized
                             sizes="(max-width: 768px) 32vw, 18vw"
-                            className="object-cover transition duration-[var(--motion-base)] group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
+                            className="object-cover transition duration-[var(--motion-base)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100"
                           />
                           <span
                             aria-hidden="true"

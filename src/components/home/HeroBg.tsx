@@ -1,18 +1,18 @@
 import Image from "next/image";
 
-/** Full-bleed hero photo — sharp, no parallax scale (that softens low-res crops). */
+/** Full-bleed hero photo — serve the file as-is (no AVIF recompress that softens edges). */
 export function HeroBg({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden bg-[var(--color-navy-deep)]">
       <Image
         src={src}
         alt={alt}
         fill
         priority
         fetchPriority="high"
-        quality={90}
+        unoptimized
         sizes="100vw"
-        className="object-cover object-[62%_42%] md:object-[58%_40%]"
+        className="object-cover object-[58%_40%]"
       />
     </div>
   );
