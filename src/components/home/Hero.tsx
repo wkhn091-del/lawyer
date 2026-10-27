@@ -11,7 +11,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="hero-stage relative isolate flex min-h-[100svh] flex-col overflow-x-clip text-[var(--hero-bone)] md:block md:min-h-0"
+      className="hero-stage relative isolate flex min-h-[100svh] flex-col overflow-x-clip text-[var(--hero-bone)] md:block md:min-h-[100svh]"
     >
       <HeroBg src={hero.backgroundSrc} alt={hero.backgroundAlt} />
 
@@ -44,7 +44,7 @@ export function Hero() {
         brand bar → headline → CTA → complete media, then scroll.
         Desktop: two-column copy | arch (locked).
       */}
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:min-h-[88svh] md:grid md:grid-cols-2 md:items-center md:gap-8 md:px-8 md:pb-12 md:pt-24">
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:min-h-[100svh] md:grid md:grid-cols-2 md:items-center md:gap-6 md:px-8 md:pb-8 md:pt-20 lg:gap-10">
         <div className="relative z-10 mt-[min(12vh,5.5rem)] flex w-full shrink-0 flex-col items-center text-center md:mt-0 md:max-w-xl md:items-start md:pe-2 md:text-start">
           <h1
             id="hero-heading"
@@ -92,7 +92,7 @@ export function Hero() {
 
         {/* Arch sits on the bottom of the phone hero — full frame, like a normal landing */}
         <div
-          className="relative mt-auto flex min-h-0 shrink-0 items-end justify-center px-2 pb-1 pt-5 md:mt-0 md:h-full md:items-center md:self-stretch md:px-6 md:pb-8 md:pt-2"
+          className="relative mt-auto flex min-h-0 shrink-0 items-end justify-center px-2 pb-1 pt-5 md:mt-0 md:h-full md:items-end md:justify-center md:self-stretch md:px-2 md:pb-6 md:pt-16"
           aria-label={hero.archLabel}
         >
           <p className="sr-only">{hero.frameAlt}</p>
