@@ -160,14 +160,16 @@ body {
 /* Lifted frame — sits in front of the photo like a cut-out window */
 .hero-arch-float {
   position: relative;
-  width: 100%;
-  /* Phone: complete frame that fits the leftover viewport under the copy */
-  max-width: min(16.75rem, 72vw);
+  /*
+   * Mobile: hug the 3 phone columns — no empty side gutters inside the frame.
+   */
+  width: calc(3 * var(--hero-card-w) + 0.7rem);
+  max-width: min(calc(3 * var(--hero-card-w) + 0.7rem), 58vw);
   box-shadow:
     0 4px 8px rgb(0 0 0 / 0.12),
-    0 22px 48px rgb(0 0 0 / 0.38),
-    0 40px 80px rgb(0 0 0 / 0.22);
+    0 18px 36px rgb(0 0 0 / 0.28);
   border-radius: 999px 999px 0 0;
+  background: transparent;
 }
 
 @media (min-width: 768px) {
@@ -186,11 +188,12 @@ body {
 .hero-arch {
   position: relative;
   width: 100%;
-  /* Phone: shorter complete arch that parks at the bottom of the first screen */
-  height: clamp(12.5rem, 36svh, 16.75rem);
+  /* Phone: compact arch that parks at the bottom of the first screen */
+  height: clamp(12.25rem, 33svh, 15.25rem);
   overflow: hidden;
   border-radius: 999px 999px 0 0;
   border: 1.5px solid rgb(255 255 255 / 0.72);
+  /* Gaps between phones show the hero photo through */
   background: transparent;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.35),
@@ -289,9 +292,32 @@ body {
   backface-visibility: hidden;
 }
 
+/* After base grid rules so these win on phone */
+@media (max-width: 767.98px) {
+  .hero-stage {
+    --hero-card-w: clamp(4.35rem, 20.5vw, 5.1rem);
+  }
+
+  .hero-arch-grid {
+    gap: 0.28rem;
+    /* Milder tilt + scale so phones fill the frame edge-to-edge */
+    transform: translate3d(-50%, -46%, 0) rotate(-10deg) scale(1.22);
+  }
+
+  .hero-arch-col {
+    gap: 0.28rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-arch-grid {
-    transform: translate3d(-50%, -47%, 0);
+    transform: translate3d(-50%, -47%, 0) scale(1.05);
+  }
+
+  @media (max-width: 767.98px) {
+    .hero-arch-grid {
+      transform: translate3d(-50%, -46%, 0) scale(1.22);
+    }
   }
 
   .hero-arch-col-0,
