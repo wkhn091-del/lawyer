@@ -1,22 +1,19 @@
-"use client";
-
 import Image from "next/image";
-import { Parallax } from "@/motion";
 
+/** Full-bleed hero photo — sharp, no parallax scale (that softens low-res crops). */
 export function HeroBg({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Crop toward the lit interior — hides the dark facade pillar on the photo’s left */}
-      <Parallax image speed={0.12} className="absolute inset-0 h-full w-full">
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[72%_38%] scale-110 md:object-[70%_40%] md:scale-105"
-        />
-      </Parallax>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority
+        fetchPriority="high"
+        quality={90}
+        sizes="100vw"
+        className="object-cover object-[62%_42%] md:object-[58%_40%]"
+      />
     </div>
   );
 }

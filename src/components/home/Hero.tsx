@@ -11,17 +11,17 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="hero-stage relative isolate flex min-h-[100svh] flex-col overflow-x-clip text-[var(--hero-bone)] md:block md:min-h-[100svh]"
+      className="hero-stage relative isolate flex h-[100svh] max-h-[100svh] min-h-[100svh] flex-col overflow-hidden text-[var(--hero-bone)]"
     >
       <HeroBg src={hero.backgroundSrc} alt={hero.backgroundAlt} />
 
-      {/* Desktop: scrim toward the copy column (RTL = from the right) */}
+      {/* Desktop: light scrim on the copy side — keep the photo crisp */}
       <div
         className="pointer-events-none absolute inset-0 hidden md:block"
         aria-hidden
         style={{
           background:
-            "linear-gradient(to left, color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 0%, color-mix(in srgb, var(--color-navy-deep) 22%, transparent) 45%, transparent 70%)",
+            "linear-gradient(to left, color-mix(in srgb, var(--color-navy-deep) 42%, transparent) 0%, color-mix(in srgb, var(--color-navy-deep) 14%, transparent) 42%, transparent 68%)",
         }}
       />
       {/* Mobile: stronger top wash for copy; keep photo open around the arch */}
@@ -34,18 +34,16 @@ export function Hero() {
         }}
       />
 
-      {/* Mobile-only visible caption (desktop hero is locked). */}
       <span className="absolute bottom-2 start-3 z-10 text-[0.62rem] text-[var(--hero-bone)]/50 md:hidden">
         הדמיה
       </span>
 
       {/*
-        Mobile (normal landing pattern): one full screen —
-        brand bar → headline → CTA → complete media, then scroll.
-        Desktop: two-column copy | arch (locked).
+        One locked viewport (like RideWithYoav): copy + full arch frame in view —
+        nothing cut at the bottom edge.
       */}
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:min-h-[100svh] md:grid md:grid-cols-2 md:items-center md:gap-6 md:px-8 md:pb-8 md:pt-20 lg:gap-10">
-        <div className="relative z-10 mt-[min(12vh,5.5rem)] flex w-full shrink-0 flex-col items-center text-center md:mt-0 md:max-w-xl md:items-start md:pe-2 md:text-start">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-1 flex-col px-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:grid md:grid-cols-2 md:items-stretch md:gap-8 md:px-8 md:pb-5 md:pt-[5.5rem] lg:gap-12">
+        <div className="relative z-10 mt-[min(8vh,3.5rem)] flex w-full shrink-0 flex-col items-center text-center md:mt-0 md:max-w-xl md:items-start md:justify-center md:pe-2 md:text-start">
           <h1
             id="hero-heading"
             className="font-display text-[clamp(2.15rem,8vw,2.65rem)] leading-[1.14] tracking-[-0.02em] md:text-hero md:leading-[1.12]"
@@ -90,9 +88,8 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Arch sits on the bottom of the phone hero — full frame, like a normal landing */}
         <div
-          className="relative mt-auto flex min-h-0 shrink-0 items-end justify-center px-2 pb-1 pt-5 md:mt-0 md:h-full md:items-end md:justify-center md:self-stretch md:px-2 md:pb-6 md:pt-16"
+          className="relative mt-auto flex min-h-0 flex-1 items-end justify-center px-2 pb-1 pt-4 md:mt-0 md:items-end md:justify-center md:self-stretch md:px-1 md:pb-0 md:pt-2"
           aria-label={hero.archLabel}
         >
           <p className="sr-only">{hero.frameAlt}</p>
@@ -123,7 +120,8 @@ export function Hero() {
                             alt=""
                             fill
                             priority={loopIndex < columnCards.length}
-                            sizes="(max-width: 768px) 40vw, 220px"
+                            quality={88}
+                            sizes="(max-width: 768px) 32vw, 18vw"
                             className="object-cover transition duration-[var(--motion-base)] group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
                           />
                           <span

@@ -4,9 +4,9 @@
 
 | נכס | קובץ | מקור | רישיון | צבע | הערות |
 |---|---|---|---|---|---|
-| Hero — משרד בשעת בין־ערביים | `public/media/hero-office-dusk.jpg` | AI / אווירה כללית | שימוש באתר; בלי אנשים מזוהים | 🟡 | אווירה כללית (חוק 13) — לא מציג סניף/אדם ספציפי; בדף הבית הסימון «הדמיה» נמצא בטקסט החלופי בלבד, בשאר העמודים גם ככיתוב |
-| חדר ישיבות | `public/media/meeting-room.jpg` | AI / אווירה | כנ״ל | 🟡 | הדמיה |
-| מסדרון / טקסטורות / תחומים | `public/media/corridor-dusk.jpg`, `about-texture.jpg`, `surface-cream-brass.jpg`, `practice-*.jpg` | AI / אווירה | כנ״ל | 🟡 | הדמיה; לא פורטרט צוות |
+| Hero — משרד / חלון לעיר | `public/media/hero-office-dusk.jpg` | Unsplash (photo-1497366216548) | Unsplash License | 🟢 | הדמיה אווירה — לא סניף אמיתי |
+| חדר ישיבות | `public/media/meeting-room.jpg` | Unsplash (photo-1497366754035) | Unsplash License | 🟢 | הדמיה |
+| מסדרון / טקסטורות / תחומים | `public/media/corridor-dusk.jpg`, `about-texture.jpg`, `surface-cream-brass.jpg`, `practice-*.jpg` | Unsplash / אווירה | Unsplash License / פנימי | 🟢/🟡 | הדמיה; לא פורטרט צוות |
 | OG | `public/media/og-cohen.jpg` | סוכנות | בבעלות הפרויקט | 🟢 | |
 | לוגו / מונוגרם | `public/brand/cohen-*.svg|png` + `Logo.tsx` | סוכנות | בבעלות הלקוח אחרי מסירה | 🟢 | |
 | אייקוני תחומים | `public/icons/*.svg` | סוכנות | שלנו | 🟢 | |
