@@ -89,7 +89,7 @@ export function Hero() {
         </div>
 
         <div
-          className="relative mt-auto flex min-h-0 shrink-0 items-end justify-center px-2 pb-1 pt-5 md:mt-0 md:h-full md:items-end md:justify-center md:self-stretch md:px-1 md:pb-0 md:pt-2"
+          className="relative mt-auto flex min-h-0 flex-1 items-end justify-center px-2 pb-[4.25rem] pt-4 md:mt-0 md:h-full md:items-end md:justify-center md:self-stretch md:px-1 md:pb-0 md:pt-2"
           aria-label={hero.archLabel}
         >
           <p className="sr-only">{hero.frameAlt}</p>

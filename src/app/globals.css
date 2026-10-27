@@ -134,11 +134,8 @@ body {
   --hero-brass: var(--color-gold);
   --hero-brass-hot: var(--color-gold-hover);
   --hero-line: color-mix(in srgb, var(--color-cream) 14%, transparent);
-  /*
-   * Original phone tiles — sized to fill the arch (3 cols ≈ frame width).
-   * Do not shrink these; that creates empty side gutters.
-   */
-  --hero-card-w: clamp(5.25rem, 24vw, 6.5rem);
+  /* Script-6 mobile size — phones fill the arch frame */
+  --hero-card-w: clamp(5rem, 22vw, 5.75rem);
   --hero-card-h: calc(var(--hero-card-w) * 1.88);
   background-color: var(--hero-ink);
   color: var(--hero-bone);
@@ -160,11 +157,11 @@ body {
   color: var(--hero-brass);
 }
 
-/* Lifted frame — original phone size, hugs the 3 phone columns */
+/* Lifted frame — original mobile size (complete frame in the first screen) */
 .hero-arch-float {
   position: relative;
   width: 100%;
-  max-width: 16.5rem;
+  max-width: min(16.75rem, 72vw);
   box-shadow:
     0 4px 8px rgb(0 0 0 / 0.12),
     0 22px 48px rgb(0 0 0 / 0.38),
@@ -189,7 +186,8 @@ body {
 .hero-arch {
   position: relative;
   width: 100%;
-  height: 16.5rem;
+  /* Shorter on phone so the full rounded frame stays above the sticky bar */
+  height: clamp(12.5rem, 36svh, 16.75rem);
   overflow: hidden;
   border-radius: 999px 999px 0 0;
   border: 1.5px solid rgb(255 255 255 / 0.72);
