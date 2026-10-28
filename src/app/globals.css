@@ -143,13 +143,14 @@ body {
 
 @media (min-width: 768px) {
   .hero-stage {
-    --hero-card-w: 7.75rem;
+    /* Exact Script-6 desktop tiles — locked */
+    --hero-card-w: 7.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .hero-stage {
-    --hero-card-w: 8.75rem;
+    --hero-card-w: 8.25rem;
   }
 }
 
@@ -157,11 +158,14 @@ body {
   color: var(--hero-brass);
 }
 
-/* Lifted frame — original mobile size (complete frame in the first screen) */
+/* Lifted frame — sits in front of the photo like a cut-out window */
 .hero-arch-float {
   position: relative;
   width: 100%;
+  /* Phone: complete frame that fits the leftover viewport under the copy */
   max-width: min(16.75rem, 72vw);
+  /* Nudge down on mobile so the rim doesn’t cover «12 שנה…» */
+  transform: translateY(0.65rem);
   box-shadow:
     0 4px 8px rgb(0 0 0 / 0.12),
     0 22px 48px rgb(0 0 0 / 0.38),
@@ -172,10 +176,9 @@ body {
 
 @media (min-width: 768px) {
   .hero-arch-float {
-    /* Original desktop size — before the edge-to-edge mosaic fill */
-    width: 100%;
+    /* Exact Script-6 desktop — before mosaic experiments */
     max-width: 26rem;
-    height: auto;
+    transform: none;
     box-shadow:
       0 8px 16px rgb(0 0 0 / 0.14),
       0 32px 64px rgb(0 0 0 / 0.42),
@@ -186,8 +189,8 @@ body {
 .hero-arch {
   position: relative;
   width: 100%;
-  /* Shorter on phone so the full rounded frame stays above the sticky bar */
-  height: clamp(12.5rem, 36svh, 16.75rem);
+  /* Phone: slightly shorter so the dome clears the micro line above */
+  height: clamp(11.75rem, 33svh, 15.5rem);
   overflow: hidden;
   border-radius: 999px 999px 0 0;
   border: 1.5px solid rgb(255 255 255 / 0.72);
@@ -199,10 +202,8 @@ body {
 
 @media (min-width: 768px) {
   .hero-arch {
-    /* Original desktop: smaller frame, photo shows through empty gaps */
     height: min(78svh, 40rem);
     border-color: rgb(255 255 255 / 0.78);
-    background: transparent;
   }
 }
 

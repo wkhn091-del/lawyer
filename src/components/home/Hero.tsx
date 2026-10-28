@@ -11,17 +11,17 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="hero-stage relative isolate flex h-[100svh] max-h-[100svh] min-h-[100svh] flex-col overflow-hidden text-[var(--hero-bone)]"
+      className="hero-stage relative isolate flex min-h-[100svh] flex-col overflow-x-clip text-[var(--hero-bone)] md:block md:min-h-0 max-md:h-[100svh] max-md:max-h-[100svh] max-md:overflow-hidden"
     >
       <HeroBg src={hero.backgroundSrc} alt={hero.backgroundAlt} />
 
-      {/* Desktop: light scrim on the copy side — keep the photo crisp */}
+      {/* Desktop: scrim toward the copy column (RTL = from the right) */}
       <div
         className="pointer-events-none absolute inset-0 hidden md:block"
         aria-hidden
         style={{
           background:
-            "linear-gradient(to left, color-mix(in srgb, var(--color-navy-deep) 42%, transparent) 0%, color-mix(in srgb, var(--color-navy-deep) 14%, transparent) 42%, transparent 68%)",
+            "linear-gradient(to left, color-mix(in srgb, var(--color-navy-deep) 55%, transparent) 0%, color-mix(in srgb, var(--color-navy-deep) 22%, transparent) 45%, transparent 70%)",
         }}
       />
       {/* Mobile: stronger top wash for copy; keep photo open around the arch */}
@@ -34,16 +34,18 @@ export function Hero() {
         }}
       />
 
+      {/* Mobile-only visible caption (desktop hero is locked). */}
       <span className="absolute bottom-2 start-3 z-10 text-[0.62rem] text-[var(--hero-bone)]/50 md:hidden">
         הדמיה
       </span>
 
       {/*
-        One locked viewport (like RideWithYoav): copy + full arch frame in view —
-        nothing cut at the bottom edge.
+        Mobile (normal landing pattern): one full screen —
+        brand bar → headline → CTA → complete media, then scroll.
+        Desktop: two-column copy | arch (locked — exact Script-6).
       */}
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-1 flex-col px-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:min-h-[88svh] md:grid md:grid-cols-2 md:items-center md:gap-8 md:px-8 md:pb-12 md:pt-24 lg:gap-12">
-        <div className="relative z-10 mt-[min(8vh,3.5rem)] flex w-full shrink-0 flex-col items-center text-center md:mt-0 md:max-w-xl md:items-start md:pe-2 md:text-start">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-1 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[5.75rem] md:min-h-[88svh] md:grid md:grid-cols-2 md:items-center md:gap-8 md:px-8 md:pb-12 md:pt-24">
+        <div className="relative z-10 mt-[min(12vh,5.5rem)] flex w-full shrink-0 flex-col items-center text-center md:mt-0 md:max-w-xl md:items-start md:pe-2 md:text-start max-md:mt-[min(8vh,3.5rem)]">
           <h1
             id="hero-heading"
             className="font-display text-[clamp(2.15rem,8vw,2.65rem)] leading-[1.14] tracking-[-0.02em] md:text-hero md:leading-[1.12]"
@@ -75,7 +77,7 @@ export function Hero() {
               {hero.primaryCta}
             </a>
             <p
-              className="mt-3 flex items-center justify-center gap-2 text-[0.8rem] md:mt-4 md:justify-start md:text-small"
+              className="mt-3 mb-1 flex items-center justify-center gap-2 text-[0.8rem] md:mb-0 md:mt-4 md:justify-start md:text-small"
               style={{ color: "var(--hero-bone-faint)" }}
             >
               <span
@@ -88,8 +90,9 @@ export function Hero() {
           </div>
         </div>
 
+        {/* Arch sits on the bottom of the phone hero — full frame, like a normal landing */}
         <div
-          className="relative mt-auto flex min-h-0 flex-1 items-end justify-center px-2 pb-[4.25rem] pt-4 md:mt-0 md:h-full md:items-center md:justify-center md:self-stretch md:px-6 md:pb-8 md:pt-2"
+          className="relative mt-auto flex min-h-0 shrink-0 items-end justify-center overflow-hidden px-2 pb-1 pt-5 md:mt-0 md:h-full md:items-center md:overflow-visible md:self-stretch md:px-6 md:pb-8 md:pt-2 max-md:flex-1 max-md:pb-[4.25rem] max-md:pt-9"
           aria-label={hero.archLabel}
         >
           <p className="sr-only">{hero.frameAlt}</p>
@@ -121,7 +124,7 @@ export function Hero() {
                             fill
                             priority={loopIndex < columnCards.length}
                             quality={88}
-                            sizes="(max-width: 768px) 32vw, 18vw"
+                            sizes="(max-width: 768px) 40vw, 220px"
                             className="object-cover transition duration-[var(--motion-base)] group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
                           />
                           <span

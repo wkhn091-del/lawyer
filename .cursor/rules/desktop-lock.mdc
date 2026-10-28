@@ -1,15 +1,18 @@
 ---
-description: Desktop layout lock — when user says נעול / locked, never change desktop
+description: Full site lock — change nothing unless Avishi explicitly asks
 alwaysApply: true
 ---
 
-# Desktop lock (נעול)
+# Site lock (נעול)
 
-When Avishi says **נעול** / **locked** about desktop (or Hero/desktop):
+Avishi locked the **entire site**. Do **not** change any site code, CSS, media, copy, layout, or deploy unless he **explicitly** asks for that change in the current message.
 
-- Do **not** change desktop layout, desktop images, desktop CSS (`md:` / `lg:`), or desktop-only assets.
-- Mobile-only fixes are OK (`max-md`, compact branch, portrait `image` fields).
-- Desktop visuals use separate fields (`imageDesktop`, `imagePositionDesktop`) — leave those alone unless he unlocks desktop.
-- If a request would alter both, change **mobile only** and say desktop stayed locked.
+- No drive-by fixes, refactors, “while I’m here”, or deploy.
+- Cursor rules / agent config may be updated when he sets lock/unlock policy.
+- When he unlocks a specific piece (e.g. “תקן רק את ה־roadmap במובייל”), change **only** that piece.
 
-Current default: **desktop roadmap + Hero are locked**; phone can iterate.
+## Noted, waiting for explicit ask
+
+- Mobile Roadmap path line under the stage thumbs looks jagged / “V” / Z-shaped — restore to how it always was. **Do not fix until he says to.**
+
+Previous desktop-lock (Hero/roadmap desktop) is superseded by this full lock.
