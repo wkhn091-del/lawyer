@@ -7,16 +7,16 @@ import { practiceAreas } from "./site";
  */
 export const home = {
   hero: {
-    /** Full sentence for SEO / a11y; lines drive the stacked visual. */
-    h1: "לפני שחותמים — תדעו מה כתוב.",
+    /** Full sentence for SEO / a11y; lines drive the stacked visual — short, punchy (Script-6). */
+    h1: "לפני שחותמים. תדעו מה כתוב.",
     h1Lines: ["לפני שחותמים", "תדעו מה כתוב."] as const,
     lead: "שעה אחת. תוכנית והערכת עלות. בלי התחייבות לייצוג.",
-    offer: "שיחה ראשונה · שקיפות בעלויות מההתחלה",
+    offer: "שיחה ראשונה · שקיפות בעלויות",
     primaryCta: "לקביעת השיחה",
     primaryHref: "#lead",
     phoneCta: "או התקשרו עכשיו",
     trust: "12 שנה במרכז · מענה תוך יום עסקים",
-    reassurance: "מענה תוך יום עסקים · בלי התחייבות לייצוג בשלב הזה",
+    reassurance: "מענה תוך יום עסקים · בלי התחייבות לייצוג",
     archLabel: "תחומי הליבה",
     frameAlt: "תצוגת תחומי ההתמחות במסגרת קשת (הדמיה)",
     backgroundSrc: "/media/hero-office-dusk.jpg",

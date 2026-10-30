@@ -61,7 +61,7 @@ export function Hero() {
 
           <HeroLead>
             <p
-              className="mt-3 max-w-[30ch] text-[1.02rem] leading-snug md:mt-5 md:max-w-md md:text-lead md:leading-relaxed"
+              className="mt-3 max-w-[26ch] text-[1.02rem] leading-snug md:mt-5 md:max-w-[34ch] md:text-lead md:leading-snug"
               style={{ color: "var(--hero-bone-dim)" }}
             >
               {hero.lead}
@@ -85,7 +85,7 @@ export function Hero() {
                 style={{ background: "var(--hero-brass)" }}
                 aria-hidden
               />
-              <bdi>12</bdi> שנה במרכז · מענה תוך יום עסקים
+              {hero.trust}
             </p>
           </div>
         </div>

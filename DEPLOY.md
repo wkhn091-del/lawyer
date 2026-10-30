@@ -2,11 +2,18 @@
 
 Stack: Next.js (App Router) על Vercel · תוכן ב-`src/content` (Sanity schemas ב-`sanity/schemas` לחיבור עתידי)
 
+## כתובת ציבורית חיה (נוכחית)
+
+**https://lawyer-seven-snowy.vercel.app/**
+
+(לא `en-snowy.vercel.app` — זה לא הפרויקט / לא הכתובת התקפה.)  
+יעד דומיין מותאם: `https://cohen-law.co.il`
+
 ## משתני סביבה
 
 | משתנה | חובה בפרודקשן | הערה |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | כן | `https://cohen-law.co.il` |
+| `NEXT_PUBLIC_SITE_URL` | כן | כרגע `https://lawyer-seven-snowy.vercel.app` · אחרי cutover: `https://cohen-law.co.il` |
 | `LEAD_DELIVERY_MODE` | כן | `live` בפרודקשן, `console` בפיתוח |
 | `CRM_WEBHOOK_URL` | מומלץ | Lawyer Office Manager / webhook לידים |
 | `CRM_WEBHOOK_TOKEN` | אם ה-CRM דורש | Bearer |
